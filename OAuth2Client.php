@@ -415,10 +415,11 @@ class OAuth2Client extends AbstractModule implements
                 return $this->viewResponse(
                     $this->name() . '::user_data',
                     [
-                        'title'         => 'User Data',
-                        'user_id'       => $user_data['id'] ?? '',
-                        'user_name'     => $user_data['username'] ?? '',
-                        'email'         => $user_data['email'] ?? '',
+                        'title'    => 'User Data',
+                        'id'       => $user_data['id'] ?? '',
+                        'name'     => $user_data['name'] ?? '',
+                        'username' => $user_data['username'] ?? '',
+                        'email'    => $user_data['email'] ?? '',
                     ]
                 );                
         

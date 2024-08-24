@@ -9,8 +9,9 @@ use function e;
 
 /**
  * @var string $title
- * @var string $user_id
- * @var string $user_name
+ * @var string $id
+ * @var string $name
+ * @var string $username
  * @var string $email
  */
 
@@ -26,7 +27,7 @@ use function e;
 		<?= I18N::translate('User ID: ') ?>
 	</label>
 	<div class="col-sm-9 wt-page-options-value">
-		<span class="input-group-text"><?= e($user_id) ?></span>
+		<span class="input-group-text"><?= e($id) ?></span>
 	</div>
 </div>
 
@@ -35,7 +36,16 @@ use function e;
 		<?= I18N::translate('User Name: ') ?>
 	</label>
 	<div class="col-sm-9 wt-page-options-value">
-		<span class="input-group-text"><?= e($user_name) ?></span>
+		<span class="input-group-text"><?= e($name) ?></span>
+	</div>
+</div>
+
+<div class="row mb-3">
+	<label class="col-sm-3 col-form-label wt-page-options-label">
+		<?= I18N::translate('User Name: ') ?>
+	</label>
+	<div class="col-sm-9 wt-page-options-value">
+		<span class="input-group-text"><?= e($username) ?></span>
 	</div>
 </div>
 
