@@ -409,7 +409,18 @@ class OAuth2Client extends AbstractModule implements
                 // resource owner.
                 $resourceOwner = $provider->getResourceOwner($accessToken);
         
-                //var_export($resourceOwner->toArray());
+                $user_data = $resourceOwner->toArray();
+
+                $this->layout = 'layouts/administration';
+                return $this->viewResponse(
+                    $this->name() . '::user_data',
+                    [
+                        'title'         => 'User Data',
+                        'user_id'       => $user_data['id'] ?? '',
+                        'user_name'     => $user_data['username'] ?? '',
+                        'email'         => $user_data['email'] ?? '',
+                    ]
+                );                
         
                 // The provider provides a way to get an authenticated API request for
                 // the service, using the access token; it returns an object conforming
@@ -435,13 +446,5 @@ class OAuth2Client extends AbstractModule implements
                 );
             }
         }
-
-        return $this->viewResponse(
-            $this->name() . '::access_token',
-            [
-                'title'         => 'Access Token Data',
-                'access_token'  => $accessToken,
-            ]
-        );
     }
 }

@@ -1,0 +1,49 @@
+<?php
+
+namespace Jefferson49\Webtrees\Module\OAuth2Client;
+
+use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
+use Fisharebest\Webtrees\I18N;
+
+use function e;
+
+/**
+ * @var string $title
+ * @var string $user_id
+ * @var string $user_name
+ * @var string $email
+ */
+
+?>
+
+<?= view('components/breadcrumbs', ['links' => [route(ControlPanel::class) => I18N::translate('Control panel'), e($title)]]) ?>
+
+<h1><?=e($title) ?></h1>
+<div class="row mb-3"><?= view('icons/spacer') ?></div>
+
+<div class="row mb-3">
+	<label class="col-sm-3 col-form-label wt-page-options-label">
+		<?= I18N::translate('User ID: ') ?>
+	</label>
+	<div class="col-sm-9 wt-page-options-value">
+		<span class="input-group-text"><?= e($user_id) ?></span>
+	</div>
+</div>
+
+<div class="row mb-3">
+	<label class="col-sm-3 col-form-label wt-page-options-label">
+		<?= I18N::translate('User Name: ') ?>
+	</label>
+	<div class="col-sm-9 wt-page-options-value">
+		<span class="input-group-text"><?= e($user_name) ?></span>
+	</div>
+</div>
+
+<div class="row mb-3">
+	<label class="col-sm-3 col-form-label wt-page-options-label">
+		<?= I18N::translate('Email: ') ?>
+	</label>
+	<div class="col-sm-9 wt-page-options-value">
+		<span class="input-group-text"><?= e($email) ?></span>
+	</div>
+</div>
