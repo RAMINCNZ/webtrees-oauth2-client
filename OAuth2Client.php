@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
+use Fig\Http\Message\RequestMethodInterface;
 use Fig\Http\Message\StatusCodeInterface;
 use Fisharebest\Localization\Translation;
 use Fisharebest\Webtrees\FlashMessages;
@@ -45,25 +46,36 @@ use Fisharebest\Webtrees\Module\ModuleConfigTrait;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
 use Fisharebest\Webtrees\Module\ModuleCustomTrait;
 use Fisharebest\Webtrees\Registry;
+use Fisharebest\Webtrees\Session;
 use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\View;
 use GuzzleHttp\Client;
+use League\OAuth2\Client\Provider\GenericProvider;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 use function substr;
 
 
 class OAuth2Client extends AbstractModule implements
 	ModuleCustomInterface, 
-	ModuleConfigInterface
+	ModuleConfigInterface,
+    RequestHandlerInterface
 {
     use ModuleCustomTrait;
     use ModuleConfigTrait;
 
+    //State of the OAuth2 session
+    private $oauth2state;
+
 	//Custom module version
 	public const CUSTOM_VERSION = '0.0.1';
+
+    //Routes
+	protected const REDIRECT_ROUTE = '/OAuth2Client';
 
 	//Github repository
 	public const GITHUB_REPO = 'Jefferson49/OAuth2-Client';
@@ -77,6 +89,10 @@ class OAuth2Client extends AbstractModule implements
 
     //Prefences, Settings
 	public const PREF_MODULE_VERSION = 'module_version';
+
+	//Alert tpyes
+	public const ALERT_DANGER = 'alert_danger';
+	public const ALERT_SUCCESS = 'alert_success';
 
 
    /**
@@ -98,6 +114,12 @@ class OAuth2Client extends AbstractModule implements
 
 		// Register a namespace for the views.
 		View::registerNamespace($this->name(), $this->resourcesFolder() . 'views/');
+
+        //Register a route for remote requests
+        $router = Registry::routeFactory()->routeMap();                 
+        $router
+        ->get(static::class, self::REDIRECT_ROUTE, $this)
+        ->allows(RequestMethodInterface::METHOD_POST);     
     }
 	
     /**
@@ -313,5 +335,113 @@ class OAuth2Client extends AbstractModule implements
             $message = I18N::translate('The preferences for the custom module "%s" were sucessfully updated to the new module version %s.', $this->title(), self::CUSTOM_VERSION);
             FlashMessages::addMessage($message, 'success');	
         }        
+    }
+
+    /**
+     * Handle OAuth2 access with generic provider
+     *
+     * @param ServerRequestInterface $request
+     *
+     * @return ResponseInterface
+     */	
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        $code  = Validator::queryParams($request)->string('code', '');
+        $state = Validator::queryParams($request)->string('state', '');
+
+        $provider = new GenericProvider([
+            'clientId'                => 'EyOiaMTefADMiqQMUGzbbwdQYeIxSH',    // The client ID assigned to you by the provider
+            'clientSecret'            => 'EYSittQRplBhuzbsCfxCOIxwJZrbwJ',    // The client password assigned to you by the provider
+            'redirectUri'             => 'http://nas-synology220/webtrees/index.php?route=/webtrees' . self::REDIRECT_ROUTE,
+            'urlAuthorize'            => 'http://nas-synology220/joomla/index.php',
+            'urlAccessToken'          => 'http://nas-synology220/joomla/index.php',
+            'urlResourceOwnerDetails' => 'http://nas-synology220/joomla/plugins/system/mooauthserver/miniorangeoauthserver.php'
+        ]);
+        
+        // If we don't have an authorization code then get one
+        if ($code === '') {
+        
+            // Fetch the authorization URL from the provider; this returns the
+            // urlAuthorize option and generates and applies any necessary parameters
+            // (e.g. state).
+            $authorizationUrl = $provider->getAuthorizationUrl();
+
+            // Get the state generated for you and store it to the session.
+            Session::put($this->name() . 'oauth2state', $provider->getState());
+        
+            // Redirect the user to the authorization URL.
+            return redirect($authorizationUrl);
+        
+        // Check given state against previously stored one to mitigate CSRF attack
+        } elseif ($state === '' ||  !Session::has($this->name() . 'oauth2state') || $state !== Session::get($this->name() . 'oauth2state', '')) {
+        
+            if (Session::get($this->name() . 'oauth2state', '') !== '') {
+                Session::forget($this->name() . 'oauth2state');
+            }
+        
+            return $this->viewResponse(
+                $this->name() . '::alert',
+                [
+                    'alert_tpye'   => self::ALERT_DANGER,
+                    'module_name'  => $this->name(),
+                    'text'         => 'Invalid state',
+                ]
+            );
+
+        } else {
+        
+            try {
+                // Try to get an access token using the authorization code grant.
+                $accessToken = $provider->getAccessToken('authorization_code', [
+                    'code' => $code
+                ]);
+        
+                // We have an access token, which we may use in authenticated
+                // requests against the service provider's API.
+                /*
+                echo 'Access Token: ' . $accessToken->getToken() . "<br>";
+                echo 'Refresh Token: ' . $accessToken->getRefreshToken() . "<br>";
+                echo 'Expired in: ' . $accessToken->getExpires() . "<br>";
+                echo 'Already expired? ' . ($accessToken->hasExpired() ? 'expired' : 'not expired') . "<br>";
+                */
+        
+                // Using the access token, we may look up details about the
+                // resource owner.
+                $resourceOwner = $provider->getResourceOwner($accessToken);
+        
+                //var_export($resourceOwner->toArray());
+        
+                // The provider provides a way to get an authenticated API request for
+                // the service, using the access token; it returns an object conforming
+                // to Psr\Http\Message\RequestInterface.
+                /*
+                $request = $provider->getAuthenticatedRequest(
+                    'GET',
+                    'https://service.example.com/resource',
+                    $accessToken
+                );
+                */
+        
+            } catch (IdentityProviderException $e) {
+        
+                // Failed to get the access token or user details.
+                return $this->viewResponse(
+                    $this->name() . '::alert',
+                    [
+                        'alert_tpye'   => self::ALERT_DANGER,
+                        'module_name'  => $this->name(),
+                        'text'         => $e->getMessage(),
+                    ]
+                );
+            }
+        }
+
+        return $this->viewResponse(
+            $this->name() . '::access_token',
+            [
+                'title'         => 'Access Token Data',
+                'access_token'  => $accessToken,
+            ]
+        );
     }
 }

@@ -21,7 +21,7 @@ use function e;
 
 <div class="row mb-3"><?= view('icons/spacer') ?></div>
 
-<form method="post" action="<?= e(route(OAuth2Client::class)) ?>" enctype="multipart/form-data">
+<form method="post" id="settings-form">
 	<?= csrf_field() ?>
 	<input type="hidden" name="save" id="save" value="1">
 
@@ -33,11 +33,8 @@ use function e;
 		<div class="col">
 			<button type="submit" class="btn btn-primary">
 				<?= view('icons/save') ?>
-				<?= MoreI18N::xlate('Sign in with Joomla') ?>
+				<?= MoreI18N::xlate('Submit') ?>
 			</button>
-			<div class="form-text">
-				<?= I18N::translate('Single sign on with Joomla account.')?>
-			</div>			
 		</div>		
 	</div>		
 </form>	
