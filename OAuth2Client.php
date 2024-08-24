@@ -440,7 +440,7 @@ class OAuth2Client extends AbstractModule implements
                 return $this->viewResponse(
                     $this->name() . '::alert',
                     [
-                        'alert_tpye'   => self::ALERT_DANGER,
+                        'alert_type'   => self::ALERT_DANGER,
                         'module_name'  => $this->name(),
                         'text'         => $e->getMessage(),
                     ]
