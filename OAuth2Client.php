@@ -355,7 +355,7 @@ class OAuth2Client extends AbstractModule implements
             'redirectUri'             => 'http://nas-synology220/webtrees/index.php?route=/webtrees' . self::REDIRECT_ROUTE,
             'urlAuthorize'            => 'http://nas-synology220/joomla/index.php',
             'urlAccessToken'          => 'http://nas-synology220/joomla/index.php',
-            'urlResourceOwnerDetails' => 'http://nas-synology220/joomla/plugins/system/mooauthserver/miniorangeoauthserver.php'
+            'urlResourceOwnerDetails' => 'http://nas-synology220/joomla/index.php'
         ]);
         
         // If we don't have an authorization code then get one
