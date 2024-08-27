@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
+use Cissee\WebtreesExt\MoreI18N;
 use Fig\Http\Message\RequestMethodInterface;
 use Fig\Http\Message\StatusCodeInterface;
 use Fisharebest\Localization\Translation;
@@ -46,24 +47,22 @@ use Fisharebest\Webtrees\Module\ModuleConfigTrait;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
 use Fisharebest\Webtrees\Module\ModuleCustomTrait;
 use Fisharebest\Webtrees\Registry;
-use Fisharebest\Webtrees\Session;
+use Fisharebest\Webtrees\Services\ModuleService;
 use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\View;
 use GuzzleHttp\Client;
-use League\OAuth2\Client\Provider\GenericProvider;
-use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
+use Illuminate\Support\Collection;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
+use RuntimeException;
 
 use function substr;
 
 
 class OAuth2Client extends AbstractModule implements
 	ModuleCustomInterface, 
-	ModuleConfigInterface,
-    RequestHandlerInterface
+	ModuleConfigInterface
 {
     use ModuleCustomTrait;
     use ModuleConfigTrait;
@@ -71,11 +70,14 @@ class OAuth2Client extends AbstractModule implements
     //State of the OAuth2 session
     private $oauth2state;
 
+    //A list of custom views, which are registered by the module
+    private Collection $custom_view_list;
+
 	//Custom module version
 	public const CUSTOM_VERSION = '0.0.1';
 
     //Routes
-	protected const REDIRECT_ROUTE = '/OAuth2Client';
+	public const REDIRECT_ROUTE = '/OAuth2Client';
 
 	//Github repository
 	public const GITHUB_REPO = 'Jefferson49/OAuth2-Client';
@@ -112,14 +114,21 @@ class OAuth2Client extends AbstractModule implements
         //Check update of module version
         $this->checkModuleVersionUpdate();
 
-		// Register a namespace for the views.
-		View::registerNamespace($this->name(), $this->resourcesFolder() . 'views/');
+        //Initialize custom view list
+        $this->custom_view_list = new Collection;
 
-        //Register a route for remote requests
+		// Register a namespace for the views.
+		View::registerNamespace(self::viewsNamespace(), $this->resourcesFolder() . 'views/');
+
+        //Register a custom view for the login page
+        View::registerCustomView('::login-page', $this->name() . '::login-page');
+        $this->custom_view_list->add($this->name() . '::login-page');
+
+        //Register a route for the communication with the authorization provider
         $router = Registry::routeFactory()->routeMap();                 
         $router
-        ->get(static::class, self::REDIRECT_ROUTE, $this)
-        ->allows(RequestMethodInterface::METHOD_POST);     
+        ->get(LoginWithAuthorizationProviderAction::class, self::REDIRECT_ROUTE)
+        ->allows(RequestMethodInterface::METHOD_POST);
     }
 	
     /**
@@ -277,6 +286,16 @@ class OAuth2Client extends AbstractModule implements
     }
 
     /**
+     * Get the namespace for the views
+     *
+     * @return string
+     */
+    public static function viewsNamespace(): string
+    {
+        return '_' . basename(__DIR__) . '_';
+    }    
+
+    /**
      * View module settings in control panel
      *
      * @param ServerRequestInterface $request
@@ -338,114 +357,68 @@ class OAuth2Client extends AbstractModule implements
     }
 
     /**
-     * Handle OAuth2 access with generic provider
+     * Check availability of the registered custom views and show flash messages with warnings if any errors occur 
      *
-     * @param ServerRequestInterface $request
-     *
-     * @return ResponseInterface
-     */	
-    public function handle(ServerRequestInterface $request): ResponseInterface
-    {
-        $code  = Validator::queryParams($request)->string('code', '');
-        $state = Validator::queryParams($request)->string('state', '');
+     * @return void
+     */
+    private function checkCustomViewAvailability() : void {
 
-        $provider = new GenericProvider([
-            'clientId'                => 'EyOiaMTefADMiqQMUGzbbwdQYeIxSH',    // The client ID assigned to you by the provider
-            'clientSecret'            => 'EYSittQRplBhuzbsCfxCOIxwJZrbwJ',    // The client password assigned to you by the provider
-            'redirectUri'             => 'http://nas-synology220/webtrees/index.php?route=/webtrees' . self::REDIRECT_ROUTE,
-            'urlAuthorize'            => 'http://nas-synology220/joomla/index.php',
-            'urlAccessToken'          => 'http://nas-synology220/joomla/index.php',
-            'urlResourceOwnerDetails' => 'http://nas-synology220/joomla/index.php'
-        ]);
-        
-        // If we don't have an authorization code then get one
-        if ($code === '') {
-        
-            // Fetch the authorization URL from the provider; this returns the
-            // urlAuthorize option and generates and applies any necessary parameters
-            // (e.g. state).
-            $authorizationUrl = $provider->getAuthorizationUrl();
+        $module_service = new ModuleService();
+        $custom_modules = $module_service->findByInterface(ModuleCustomInterface::class);
+        $alternative_view_found = false;
 
-            // Get the state generated for you and store it to the session.
-            Session::put($this->name() . 'oauth2state', $provider->getState());
-        
-            // Redirect the user to the authorization URL.
-            return redirect($authorizationUrl);
-        
-        // Check given state against previously stored one to mitigate CSRF attack
-        } elseif ($state === '' ||  !Session::has($this->name() . 'oauth2state') || $state !== Session::get($this->name() . 'oauth2state', '')) {
-        
-            if (Session::get($this->name() . 'oauth2state', '') !== '') {
-                Session::forget($this->name() . 'oauth2state');
+        foreach($this->custom_view_list as $custom_view) {
+
+            [[$namespace], $view_name] = explode(View::NAMESPACE_SEPARATOR, $custom_view, 2);
+
+            foreach($custom_modules->forget($this->activeModuleName()) as $custom_module) {
+
+                $view = new View('test');
+
+                try {
+                    $file_name = $view->getFilenameForView($custom_module->name() . View::NAMESPACE_SEPARATOR . $view_name);
+                    $alternative_view_found = true;
+    
+                    //If a view of one of the custom modules is found, which are known to use the same view
+                    if (in_array($custom_module->name(), ['_jc-simple-media-display_', '_webtrees-simple-media-display_'])) {
+                        
+                        $message =  '<b>' . MoreI18N::xlate('Warning') . ':</b><br>' .
+                                    I18N::translate('The custom module "%s" is activated in parallel to the %s custom module. This can lead to unintended behavior. If using the %s module, it is strongly recommended to deactivate the "%s" module, because the identical functionality is also integrated in the %s module.', 
+                                    '<b>' . $custom_module->title() . '</b>', $this->title(), $this->title(), $custom_module->title(), $this->title());
+                    }
+                    else {
+                        $message =  '<b>' . MoreI18N::xlate('Warning') . ':</b><br>' . 
+                                    I18N::translate('The custom module "%s" is activated in parallel to the %s custom module. This can lead to unintended behavior, because both of the modules have registered the same custom view "%s". It is strongly recommended to deactivate one of the modules.', 
+                                    '<b>' . $custom_module->title() . '</b>', $this->title(),  '<b>' . $view_name . '</b>');
+                    }
+                    FlashMessages::addMessage($message, 'danger');
+                }    
+                catch (RuntimeException $e) {
+                    //If no file name (i.e. view) was found, do nothing
+                }
             }
-        
-            return $this->viewResponse(
-                $this->name() . '::alert',
-                [
-                    'alert_tpye'   => self::ALERT_DANGER,
-                    'module_name'  => $this->name(),
-                    'text'         => 'Invalid state',
-                ]
-            );
+            if (!$alternative_view_found) {
 
-        } else {
-        
-            try {
-                // Try to get an access token using the authorization code grant.
-                $accessToken = $provider->getAccessToken('authorization_code', [
-                    'code' => $code
-                ]);
-        
-                // We have an access token, which we may use in authenticated
-                // requests against the service provider's API.
-                /*
-                echo 'Access Token: ' . $accessToken->getToken() . "<br>";
-                echo 'Refresh Token: ' . $accessToken->getRefreshToken() . "<br>";
-                echo 'Expired in: ' . $accessToken->getExpires() . "<br>";
-                echo 'Already expired? ' . ($accessToken->hasExpired() ? 'expired' : 'not expired') . "<br>";
-                */
-        
-                // Using the access token, we may look up details about the
-                // resource owner.
-                $resourceOwner = $provider->getResourceOwner($accessToken);
-        
-                $user_data = $resourceOwner->toArray();
+                $view = new View('test');
 
-                $this->layout = 'layouts/administration';
-                return $this->viewResponse(
-                    $this->name() . '::user_data',
-                    [
-                        'title'    => 'User Data',
-                        'id'       => $user_data['id'] ?? '',
-                        'name'     => $user_data['name'] ?? '',
-                        'username' => $user_data['username'] ?? '',
-                        'email'    => $user_data['email'] ?? '',
-                    ]
-                );                
-        
-                // The provider provides a way to get an authenticated API request for
-                // the service, using the access token; it returns an object conforming
-                // to Psr\Http\Message\RequestInterface.
-                /*
-                $request = $provider->getAuthenticatedRequest(
-                    'GET',
-                    'https://service.example.com/resource',
-                    $accessToken
-                );
-                */
-        
-            } catch (IdentityProviderException $e) {
-        
-                // Failed to get the access token or user details.
-                return $this->viewResponse(
-                    $this->name() . '::alert',
-                    [
-                        'alert_type'   => self::ALERT_DANGER,
-                        'module_name'  => $this->name(),
-                        'text'         => $e->getMessage(),
-                    ]
-                );
+                try {
+                    $file_name = $view->getFilenameForView($view_name);
+
+                    //Check if the view is registered with a file path other than the current module; e.g. another moduleS probably registered it with an unknown views namespace
+                    if (mb_strpos($file_name, $this->resourcesFolder()) === false) {
+                        throw new RuntimeException;
+                    }
+                }
+                catch (RuntimeException $e) {
+                    $message =  '<b>' . I18N::translate('Error') . ':</b><br>' .
+                                I18N::translate(
+                                    'The custom module view "%s" is not registered as replacement for the standard webtrees view. There might be another module installed, which registered the same custom view. This can lead to unintended behavior. It is strongly recommended to deactivate one of the modules. The path of the parallel view is: %s',
+                                    '<b>' . $custom_view . '</b>', '<b>' . $file_name  . '</b>');
+                    FlashMessages::addMessage($message, 'danger');
+                }
             }
         }
-    }
+        
+        return;
+    }   
 }

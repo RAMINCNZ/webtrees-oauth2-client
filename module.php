@@ -36,7 +36,11 @@ declare(strict_types=1);
 
 namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
+use Composer\Autoload\ClassLoader;
+
 require __DIR__ . '/OAuth2Client.php';
+require __DIR__ . '/LoginWithAuthorizationProviderAction.php';
+
 
 //league/oauth2-client
 require __DIR__ . '/vendor/league/oauth2-client/src/Tool/ArrayAccessorTrait.php';
@@ -72,5 +76,8 @@ require __DIR__ . '/vendor/league/oauth2-client/src/Token/AccessTokenInterface.p
 require __DIR__ . '/vendor/league/oauth2-client/src/Token/ResourceOwnerAccessTokenInterface.php';
 require __DIR__ . '/vendor/league/oauth2-client/src/Token/AccessToken.php';
 
+$loader = new ClassLoader();
+$loader->addPsr4('Cissee\\WebtreesExt\\', __DIR__ . "/vendor/cissee/vesta-webtrees-2-custom-modules/vesta_common/patchedWebtrees");
+$loader->register();
 
 return new OAuth2Client();

@@ -2,7 +2,6 @@
 
 namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
-use Cissee\WebtreesExt\MoreI18N;
 use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\View;
@@ -27,19 +26,7 @@ use function e;
 
 	<div class="h4">
 		<?= I18N::translate('Settings') ?>	
-	</div>
-
-	<div class="row mb-3">
-		<div class="col">
-			<button type="submit" class="btn btn-primary">
-				<?= view('icons/save') ?>
-				<?= MoreI18N::xlate('Sign in with Joomla') ?>
-			</button>
-			<div class="form-text">
-				<?= I18N::translate('Single sign on with Joomla account.')?>
-			</div>			
-		</div>		
-	</div>		
+	</div>	
 </form>	
 
 <?php View::push('javascript') ?>
