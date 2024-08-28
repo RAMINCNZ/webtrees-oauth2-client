@@ -2,26 +2,27 @@
 
 declare(strict_types=1);
 
+namespace Jefferson49\Webtrees\Module\OAuth2Client;
+
 use Fisharebest\Webtrees\Http\RequestHandlers\LoginAction;
 use Fisharebest\Webtrees\Http\RequestHandlers\PasswordRequestPage;
 use Fisharebest\Webtrees\Http\RequestHandlers\RegisterPage;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Services\CaptchaService;
 use Fisharebest\Webtrees\Tree;
-use Jefferson49\Webtrees\Module\OAuth2Client\LoginWithAuthorizationProviderAction;
 
 /**
- * @var bool      $can_register
- * @var string    $error
- * @var Tree|null $tree
- * @var string    $url
- * @var string    $username
- * @var string    $warning
- * @var string    $welcome
+ * @var bool          $can_register
+ * @var string        $error
+ * @var Tree|null     $tree
+ * @var string        $url
+ * @var string        $username
+ * @var string        $warning
+ * @var string        $welcome
+ * @var array<string> $provider_names
  */
 
-$captcha_service = new CaptchaService();
-$captcha = $captcha_service->createCaptcha();
+$authorization_provider = isset($provider_names) ? true : false;
 
 ?>
 
@@ -78,19 +79,6 @@ $captcha = $captcha_service->createCaptcha();
     <?= csrf_field() ?>
 </form>
 
-<form method="post" action="<?= e(route(LoginWithAuthorizationProviderAction::class, ['tree' => $tree instanceof Tree ? $tree->name() : null])) ?>" class="wt-page-options wt-page-options-login">
-    <?= $captcha ?>
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label wt-page-options-label" for="login_in_with_authorization_providers">
-            <?= I18N::translate('Login with authorization provider') ?>
-        </label>
-        <div class="col-sm-9 wt-page-options-value">
-            <button class="btn btn-secondary" type="submit">
-                <?= I18N::translate('Sign in with Joomla') ?>
-            </button>
-        </div>
-    </div>
-    
-    <?= csrf_field() ?>
-</form>
+<?= view(OAuth2Client::viewsNamespace() . '::login-with-provider', ['tree' => $tree,]) ?>
+
 

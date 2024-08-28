@@ -124,6 +124,10 @@ class OAuth2Client extends AbstractModule implements
         View::registerCustomView('::login-page', $this->name() . '::login-page');
         $this->custom_view_list->add($this->name() . '::login-page');
 
+        //Register a custom view for the registration page
+        View::registerCustomView('::register-page', $this->name() . '::register-page');
+        $this->custom_view_list->add($this->name() . '::register-page');
+
         //Register a route for the communication with the authorization provider
         $router = Registry::routeFactory()->routeMap();                 
         $router

@@ -61,7 +61,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * View a modal to change XML export settings.
+ * Perform a login with an authorization provider
  */
 class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
 {
@@ -96,11 +96,11 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $code  = Validator::queryParams($request)->string('code', '');
-        $state = Validator::queryParams($request)->string('state', '');
+        $code     = Validator::queryParams($request)->string('code', '');
+        $state    = Validator::queryParams($request)->string('state', '');
 
         $oauth2_client = $this->module_service->findByName(OAuth2Client::activeModuleName());
-        $webtrees_user_data = null;
+        $webtrees_user = null;
 
         $provider_name = 'Joomla';
         $provider = new GenericProvider([
@@ -149,10 +149,10 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         
                 $user_data = $resourceOwner->toArray();
 
-                $webtrees_user_data = new User(
+                $webtrees_user = new User(
                     $user_data['id'] ?? '',
-                    $user_data['name'] ?? '',
                     $user_data['username'] ?? '',
+                    $user_data['name'] ?? '',
                     $user_data['email'] ?? ''
                 );
 
@@ -167,32 +167,38 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
             }
         }
 
-        //If no user name was retrieved from authorization, redirect to login page
-        if (($webtrees_user_data->userName() ?? '') === '') {
+        //If no user name was or email was retrieved from authorization provider, redirect to login page
+        if ($webtrees_user->userName() === '' OR $webtrees_user->email() === '') {
+            FlashMessages::addMessage(I18N::translate('No valid user account data received from authorizaton provider. User name or email missing.'), 'danger');
             return redirect(route(LoginPage::class));
         }
 
         $tree         = Validator::attributes($request)->treeOptional();
         $default_url  = route(HomePage::class);
-        $username     = $webtrees_user_data->userName() ?? '';
         $url          = Validator::parsedBody($request)->isLocalUrl()->string('url', $default_url);
         $title        = MoreI18N::xlate('Request a new user account');
         $show_caution = Site::getPreference('SHOW_REGISTER_CAUTION') === '1';
 
-        $user = $this->user_service->findByIdentifier($username);
+        //We add the provider name as a postfix to the user name. This might be helpful to separate namespaces
+        //and for future use cases, where we might want to know how users are related to an authorization providers.
+        $username     = $webtrees_user->userName() . '(' . $provider_name .')';
 
-        //If user does not exist already, redirect to registration page based on the remote authorization user data
-        if ($user === null) { 
-            return $this->viewResponse('::register-page', [
-                'captcha'      => $this->captcha_service->createCaptcha(),
-                'comments'     => 'Automatic user registration after sign in with authorization provider',
-                'email'        => $webtrees_user_data->email(),
-                'realname'     => $webtrees_user_data->realName() . ' (' . $provider_name .')',
-                'show_caution' => $show_caution,
-                'title'        => $title,
-                'tree'         => $tree instanceof Tree ? $tree->name() : null,
-                'username'     => $webtrees_user_data->userName(),
-                'password'     => $accessToken->getToken(),
+        //If no real name was received from authorization provider, the user name is chosen as default
+        $realname     = $username;
+
+        //If user does not exist already, redirect to registration page based on the authorization provider user data
+        if ($this->user_service->findByIdentifier($username) === null) { 
+            return $this->viewResponse(OAuth2Client::viewsNamespace() . '::register-page', [
+                'captcha'       => $this->captcha_service->createCaptcha(),
+                'comments'      => 'Automatic user registration after sign in with authorization provider',
+                'email'         => $webtrees_user->email(),
+                'realname'      => $realname,
+                'show_caution'  => $show_caution,
+                'title'         => $title,
+                'tree'          => $tree instanceof Tree ? $tree->name() : null,
+                'username'      => $username,
+                'password'      => $accessToken->getToken(),
+                'provider_name' => $provider_name,
             ]);
         }            
 
@@ -213,7 +219,6 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
 
             return redirect(route(LoginPage::class, [
                 'tree'     => $tree instanceof Tree ? $tree->name() : null,
-                'username' => $username,
                 'url'      => $url,
             ]));
         }        
