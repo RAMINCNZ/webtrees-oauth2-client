@@ -12,27 +12,29 @@ use Jefferson49\Webtrees\Module\OAuth2Client\LoginWithAuthorizationProviderActio
  * @var Tree|null $tree
  */
 
-//ToDo: Search for all available providers 
-$provider_names = ['Joomla'];
+$provider_names = AuthorizationProviderFactory::getAuthorizatonProviderNames();
 
 ?>
 
 <?php if (sizeof($provider_names) > 0) : ?>
-    <form method="post" action="<?= e(route(LoginWithAuthorizationProviderAction::class, ['tree' => $tree instanceof Tree ? $tree->name() : null])) ?>" class="wt-page-options wt-page-options-login">
-        <div class="row mb-3">
-            <label class="col-sm-3 col-form-label wt-page-options-label" for="login_in_with_authorization_providers">
-                <?= I18N::translate('Sign in with authorization provider') ?>
-            </label>
-            <div class="col-sm-9 wt-page-options-value">
-                <?php foreach ($provider_names as $provider_name) : ?>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label wt-page-options-label">
+            <?= I18N::translate('Sign in with authorization provider') ?>
+        </label>
+        <div class="col-sm-9 wt-page-options-value">
+            <?php foreach ($provider_names as $provider_name) : ?>
+                <form method="post" class="wt-page-options wt-page-options-login" action="<?= e(route(LoginWithAuthorizationProviderAction::class, [
+                        'tree'          => $tree instanceof Tree ? $tree->name() : null,
+                        "provider_name" =>  $provider_name,
+                    ])) ?>" >
                     <button class="btn btn-secondary" type="submit">
                         <?= $provider_name ?>
                     </button>
-                <?php endforeach ?>
-            </div>
-        </div>
-        
-        <?= csrf_field() ?>
-    </form>
-<?php endif ?>
+                    <?= view('icons/spacer') ?>
 
+                    <?= csrf_field() ?>
+                </form>
+            <?php endforeach ?>
+        </div>
+    </div>        
+<?php endif ?>

@@ -39,7 +39,13 @@ namespace Jefferson49\Webtrees\Module\OAuth2Client;
 use Composer\Autoload\ClassLoader;
 
 require __DIR__ . '/OAuth2Client.php';
+require __DIR__ . '/AuthorizationProviderFactory.php';
+require __DIR__ . '/AuthorizationProviderInterface.php';
 require __DIR__ . '/LoginWithAuthorizationProviderAction.php';
+
+//Providers
+require __DIR__ . '/Provider/JoomlaAuthoriationProvider.php';
+
 
 
 //league/oauth2-client

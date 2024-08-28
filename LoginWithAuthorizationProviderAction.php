@@ -96,21 +96,22 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $code     = Validator::queryParams($request)->string('code', '');
-        $state    = Validator::queryParams($request)->string('state', '');
+        $code          = Validator::queryParams($request)->string('code', '');
+        $state         = Validator::queryParams($request)->string('state', '');
+        $provider_name = Validator::queryParams($request)->string('provider_name', '');
+
+        //Save or load the provider name to the session
+        if ($provider_name !== '') {
+            Session::put(OAuth2Client::activeModuleName() . 'provider_name', $provider_name);
+        }
+        else {
+            $provider_name = Session::get(OAuth2Client::activeModuleName() . 'provider_name');
+        }
 
         $oauth2_client = $this->module_service->findByName(OAuth2Client::activeModuleName());
-        $webtrees_user = null;
+        $user = null;
 
-        $provider_name = 'Joomla';
-        $provider = new GenericProvider([
-            'clientId'                => 'EyOiaMTefADMiqQMUGzbbwdQYeIxSH',    // The client ID assigned to you by the provider
-            'clientSecret'            => 'EYSittQRplBhuzbsCfxCOIxwJZrbwJ',    // The client password assigned to you by the provider
-            'redirectUri'             => 'http://nas-synology220/webtrees/index.php?route=/webtrees' . OAuth2Client::REDIRECT_ROUTE,
-            'urlAuthorize'            => 'http://nas-synology220/joomla/index.php',
-            'urlAccessToken'          => 'http://nas-synology220/joomla/index.php',
-            'urlResourceOwnerDetails' => 'http://nas-synology220/joomla/index.php'
-        ]);
+        $provider = (new AuthorizationProviderFactory())->make($provider_name);
         
         // If we don't have an authorization code then get one
         if ($code === '') {
@@ -144,17 +145,8 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
                     'code' => $code
                 ]);
         
-                // Using the access token, we can look up details about the resource owner.
-                $resourceOwner = $provider->getResourceOwner($accessToken);
-        
-                $user_data = $resourceOwner->toArray();
-
-                $webtrees_user = new User(
-                    $user_data['id'] ?? '',
-                    $user_data['username'] ?? '',
-                    $user_data['name'] ?? '',
-                    $user_data['email'] ?? ''
-                );
+                // Using the access token, we can get the user data of the resource owner        
+                $user = $provider->getUserData($accessToken);
 
             } catch (IdentityProviderException $e) {
 
@@ -168,7 +160,7 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         }
 
         //If no user name was or email was retrieved from authorization provider, redirect to login page
-        if ($webtrees_user->userName() === '' OR $webtrees_user->email() === '') {
+        if ($user->userName() === '' OR $user->email() === '') {
             FlashMessages::addMessage(I18N::translate('No valid user account data received from authorizaton provider. User name or email missing.'), 'danger');
             return redirect(route(LoginPage::class));
         }
@@ -181,17 +173,17 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
 
         //We add the provider name as a postfix to the user name. This might be helpful to separate namespaces
         //and for future use cases, where we might want to know how users are related to an authorization providers.
-        $username     = $webtrees_user->userName() . '(' . $provider_name .')';
+        $username     = $user->userName() . '(' . $provider_name .')';
 
         //If no real name was received from authorization provider, the user name is chosen as default
-        $realname     = $username;
+        $realname     = $user->realName() !== '' ? $user->realName() : $username;
 
         //If user does not exist already, redirect to registration page based on the authorization provider user data
         if ($this->user_service->findByIdentifier($username) === null) { 
             return $this->viewResponse(OAuth2Client::viewsNamespace() . '::register-page', [
                 'captcha'       => $this->captcha_service->createCaptcha(),
                 'comments'      => 'Automatic user registration after sign in with authorization provider',
-                'email'         => $webtrees_user->email(),
+                'email'         => $user->email(),
                 'realname'      => $realname,
                 'show_caution'  => $show_caution,
                 'title'         => $title,
