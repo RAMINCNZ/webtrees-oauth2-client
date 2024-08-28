@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-08-22 18:15+0200\n"
-"PO-Revision-Date: 2024-08-22 18:16+0200\n"
+"POT-Creation-Date: 2024-08-28 19:39+0200\n"
+"PO-Revision-Date: 2024-08-28 19:41+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -15,22 +15,44 @@ msgstr ""
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: OAuth2Client.php:112
+#: LoginWithAuthorizationProviderAction.php:157
+msgid ""
+"Failed to get the access token or the user details from the authorization "
+"provider."
+msgstr ""
+"Fehler beim Empfang des Zugriffs-Tokens oder der Benutzer-Daten vom "
+"Authorisierungsanbieter."
+
+#: LoginWithAuthorizationProviderAction.php:164
+msgid ""
+"No valid user account data received from authorizaton provider. User name or "
+"email missing."
+msgstr ""
+"Vom Authorisierungsanbieter wurden keine validen Daten empfangen. Benutzer-"
+"Name oder Email fehlt."
+
+#: LoginWithAuthorizationProviderAction.php:185
+msgid "Automatic user registration after sign in with authorization provider"
+msgstr ""
+"Automatische Benutzer-Registrierung nach Einloggen mit "
+"Authorisierungsanbieter"
+
+#: OAuth2Client.php:147
 msgid "OAuth2 Client"
 msgstr "OAuth2 Client"
 
-#: OAuth2Client.php:125
+#: OAuth2Client.php:160
 msgid "A custom module to implement a OAuth2 client for webtrees."
 msgstr ""
 "Ein benutzerspezifisches Modul, welches einen OAuth2 Client für webtrees zur "
 "Verfügung stellt."
 
-#: OAuth2Client.php:290
+#: OAuth2Client.php:335
 #, php-format
 msgid "The preferences for the module \"%s\" were updated."
 msgstr "Die Einstellungen für das Modul \"%s\" wurden aktualisiert."
 
-#: OAuth2Client.php:313
+#: OAuth2Client.php:358
 #, php-format
 msgid ""
 "The preferences for the custom module \"%s\" were sucessfully updated to the "
@@ -39,13 +61,91 @@ msgstr ""
 "Die Einstellungen für das benutzerdefinierte Modul \"%s\" wurden für die "
 "neue Modul-Version %s aktualisiert."
 
-#: resources/views/settings.phtml:18
+#: OAuth2Client.php:390
+#, php-format
+msgid ""
+"The custom module \"%s\" is activated in parallel to the %s custom module. "
+"This can lead to unintended behavior. If using the %s module, it is strongly "
+"recommended to deactivate the \"%s\" module, because the identical "
+"functionality is also integrated in the %s module."
+msgstr ""
+"Das benutzerspezifische Modul \"%s\" ist parallel zum benutzerspezifische "
+"Modul %s aktiviert. Dies kann zu unbeabsichtigtem Verhalten führen. Bei "
+"Verwendung des Moduls %s wird dringend empfohlen, das Modul \"%s\" zu "
+"deaktivieren, weil die identische Funktion ebenfalls im Modul %s integriert "
+"ist."
+
+#: OAuth2Client.php:395
+#, php-format
+msgid ""
+"The custom module \"%s\" is activated in parallel to the %s custom module. "
+"This can lead to unintended behavior, because both of the modules have "
+"registered the same custom view \"%s\". It is strongly recommended to "
+"deactivate one of the modules."
+msgstr ""
+"Das benutzerspezifische Modul \"%s\" ist parallel zum benutzerspezifische "
+"Modul %s aktiviert. Dies kann zu unbeabsichtigtem Verhalten führen, weil "
+"beide Module die gleiche Custom View \"%s\" registriert haben. Es wird "
+"dringend empfohlen eines der beiden Module zu deaktivieren."
+
+#: OAuth2Client.php:419
+#, php-format
+msgid ""
+"The custom module view \"%s\" is not registered as replacement for the "
+"standard webtrees view. There might be another module installed, which "
+"registered the same custom view. This can lead to unintended behavior. It is "
+"strongly recommended to deactivate one of the modules. The path of the "
+"parallel view is: %s"
+msgstr ""
+"Der Custom View \"%s\" ist nicht als Ersatz für den Standard Custom View von "
+"webtrees registriert. Es könnte ein anderes Modul installiert sein, welches "
+"den gleiche Custom View registriert hat. Dies kann zu unerwartetem Verhalten "
+"führen. Es wird dringend empfohlen, eines der Module zu deaktivieren. Der "
+"Pfad für den Custom View ist: %s"
+
+#: resources/views/alert.phtml:24
+msgid "Custom module"
+msgstr "Benutzerdefiniertes Modul"
+
+#: resources/views/login-with-provider.phtml:22
+msgid "Sign in with authorization provider"
+msgstr "Mit Authorisierungsanbieter einloggen"
+
+#: resources/views/register-page.phtml:46
+msgid "Register with"
+msgstr "Registrierung mit"
+
+#: resources/views/register-page.phtml:46
+msgid "User account data from authorization provider cannot be changed"
+msgstr ""
+"Benutzer-Daten vom Authorisierungsanbieter können nicht geändert werden"
+
+#: resources/views/register-page.phtml:93
+msgid "Further registration data - Please complete and continue"
+msgstr "Weitere Registrierungsdaten - Bitte vervollständigen und fortsetzen"
+
+#: resources/views/settings.phtml:19
 msgid "Control panel"
 msgstr "Verwaltung"
 
-#: resources/views/settings.phtml:29
+#: resources/views/settings.phtml:30
 msgid "Settings"
 msgstr "Einstellungen"
+
+#, fuzzy
+#~| msgid "Folder name"
+#~ msgid "Username"
+#~ msgstr "Ordnername"
+
+#, fuzzy, php-format
+#~| msgid "Save on the webtrees server"
+#~ msgid "Upgrade to webtrees %s."
+#~ msgstr "Auf dem webtrees Server speichern"
+
+#, fuzzy
+#~| msgid "Default file name"
+#~ msgid "Real name"
+#~ msgstr "Voreinstellung Dateiname"
 
 #, php-format
 #~ msgid ""
@@ -430,9 +530,6 @@ msgstr "Einstellungen"
 #~ msgid "Remove webtrees user data (i.e. _WT_USER tags)"
 #~ msgstr "Daten zu webtrees Benutzern (d.h. _WT_USER Tags) entfernen"
 
-#~ msgid "Custom module"
-#~ msgstr "Benutzerdefiniertes Modul"
-
 #~ msgid "Select a GEDCOM file"
 #~ msgstr "Wählen Sie eine GEDCOM-Datei"
 
@@ -488,9 +585,6 @@ msgstr "Einstellungen"
 
 #~ msgid "Action"
 #~ msgstr "Aktion"
-
-#~ msgid "Save on the webtrees server"
-#~ msgstr "Auf dem webtrees Server speichern"
 
 #~ msgid "Both, i.e. download and save in parallel"
 #~ msgstr "Beides, d.h. Herunterladen und gleichzeitig Speichern"
@@ -647,9 +741,6 @@ msgstr "Einstellungen"
 #~ "Durch Auswahl dieser Option, ist es möglich, Remote-Aufrufe mittels URL "
 #~ "zur Konvertierung von GEDCOM-Dateien auf dem Server zu aktivieren."
 
-#~ msgid "Settings for the Authorization Key"
-#~ msgstr "Einstellungen für den Autorisierungs-Schlüssel"
-
 #~ msgid ""
 #~ "An authorization key is needed if remote requests via URL shall be used."
 #~ msgstr ""
@@ -710,9 +801,6 @@ msgstr "Einstellungen"
 
 #~ msgid "Setting for the Import/Export Folder on the webtrees Server"
 #~ msgstr "Einstellung für den Import-/Export-Ordner auf dem webtrees Server"
-
-#~ msgid "Folder name"
-#~ msgstr "Ordnername"
 
 #~ msgid ""
 #~ "Currently, the folder to save is not a sub-directory of the webtrees data "
@@ -924,9 +1012,6 @@ msgstr "Einstellungen"
 #~ msgstr ""
 #~ "Geben Sie die Voreinstellung für den Stammbaum an. Dieser Stammbaum wird "
 #~ "genutzt, wenn kein spezifischer Stammbaum in der URL angegeben wird."
-
-#~ msgid "Default file name"
-#~ msgstr "Voreinstellung Dateiname"
 
 #~ msgid ""
 #~ "Specifiy the default file name. This file name will be chosen if no "

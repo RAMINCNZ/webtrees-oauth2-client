@@ -414,7 +414,7 @@ class OAuth2Client extends AbstractModule implements
                     }
                 }
                 catch (RuntimeException $e) {
-                    $message =  '<b>' . I18N::translate('Error') . ':</b><br>' .
+                    $message =  '<b>' . MoreI18N::xlate('Error') . ':</b><br>' .
                                 I18N::translate(
                                     'The custom module view "%s" is not registered as replacement for the standard webtrees view. There might be another module installed, which registered the same custom view. This can lead to unintended behavior. It is strongly recommended to deactivate one of the modules. The path of the parallel view is: %s',
                                     '<b>' . $custom_view . '</b>', '<b>' . $file_name  . '</b>');

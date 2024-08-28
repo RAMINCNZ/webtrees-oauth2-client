@@ -182,7 +182,7 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         if ($this->user_service->findByIdentifier($username) === null) { 
             return $this->viewResponse(OAuth2Client::viewsNamespace() . '::register-page', [
                 'captcha'       => $this->captcha_service->createCaptcha(),
-                'comments'      => 'Automatic user registration after sign in with authorization provider',
+                'comments'      => I18N::translate('Automatic user registration after sign in with authorization provider'),
                 'email'         => $user->email(),
                 'realname'      => $realname,
                 'show_caution'  => $show_caution,
@@ -200,7 +200,7 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
             $this->doLogin($username);
 
             if (Auth::isAdmin() && $this->upgrade_service->isUpgradeAvailable()) {
-                FlashMessages::addMessage(I18N::translate('A new version of webtrees is available.') . ' <a class="alert-link" href="' . e(route(UpgradeWizardPage::class)) . '">' . I18N::translate('Upgrade to webtrees %s.', '<span dir="ltr">' . $this->upgrade_service->latestVersion() . '</span>') . '</a>');
+                FlashMessages::addMessage(MoreI18N::xlate('A new version of webtrees is available.') . ' <a class="alert-link" href="' . e(route(UpgradeWizardPage::class)) . '">' . MoreI18N::xlate('Upgrade to webtrees %s.', '<span dir="ltr">' . $this->upgrade_service->latestVersion() . '</span>') . '</a>');
             }
 
             // Redirect to the target URL
@@ -228,24 +228,24 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
     {
         if ($_COOKIE === []) {
             Log::addAuthenticationLog('Login failed (no session cookies): ' . $username);
-            throw new Exception(I18N::translate('You cannot sign in because your browser does not accept cookies.'));
+            throw new Exception(MoreI18N::xlate('You cannot sign in because your browser does not accept cookies.'));
         }
 
         $user = $this->user_service->findByIdentifier($username);
 
         if ($user === null) {
             Log::addAuthenticationLog('Login failed (no such user/email): ' . $username);
-            throw new Exception(I18N::translate('The username or password is incorrect.'));
+            throw new Exception(MoreI18N::xlate('The username or password is incorrect.'));
         }
 
         if ($user->getPreference(UserInterface::PREF_IS_EMAIL_VERIFIED) !== '1') {
             Log::addAuthenticationLog('Login failed (not verified by user): ' . $username);
-            throw new Exception(I18N::translate('This account has not been verified. Please check your email for a verification message.'));
+            throw new Exception(MoreI18N::xlate('This account has not been verified. Please check your email for a verification message.'));
         }
 
         if ($user->getPreference(UserInterface::PREF_IS_ACCOUNT_APPROVED) !== '1') {
             Log::addAuthenticationLog('Login failed (not approved by admin): ' . $username);
-            throw new Exception(I18N::translate('This account has not been approved. Please wait for an administrator to approve it.'));
+            throw new Exception(MoreI18N::xlate('This account has not been approved. Please wait for an administrator to approve it.'));
         }
 
         Auth::login($user);
