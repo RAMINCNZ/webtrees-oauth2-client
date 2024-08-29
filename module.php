@@ -38,51 +38,21 @@ namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
 use Composer\Autoload\ClassLoader;
 
+//This webtrees custom module
 require __DIR__ . '/OAuth2Client.php';
 require __DIR__ . '/AuthorizationProviderFactory.php';
 require __DIR__ . '/AuthorizationProviderInterface.php';
 require __DIR__ . '/LoginWithAuthorizationProviderAction.php';
 
-//Providers
+//Provider wrappers within the custom module, which implement a webtrees interface to OAuth2 providers
 require __DIR__ . '/Provider/JoomlaAuthoriationProvider.php';
 
-
-
-//league/oauth2-client
-require __DIR__ . '/vendor/league/oauth2-client/src/Tool/ArrayAccessorTrait.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Tool/BearerAuthorizationTrait.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Tool/GuardedPropertyTrait.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Tool/MacAuthorizationTrait.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Tool/ProviderRedirectTrait.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Tool/QueryBuilderTrait.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Tool/RequestFactory.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Tool/RequiredParameterTrait.php';
-
-require __DIR__ . '/vendor/league/oauth2-client/src/Grant/Exception/InvalidGrantException.php';
-
-require __DIR__ . '/vendor/league/oauth2-client/src/Grant/AbstractGrant.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Grant/AuthorizationCode.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Grant/ClientCredentials.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Grant/GrantFactory.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Grant/Password.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Grant/RefreshToken.php';
-
-require __DIR__ . '/vendor/league/oauth2-client/src/OptionProvider/OptionProviderInterface.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/OptionProvider/PostAuthOptionProvider.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/OptionProvider/HttpBasicAuthOptionProvider.php';
-
-require __DIR__ . '/vendor/league/oauth2-client/src/Provider/Exception/IdentityProviderException.php';
-
-require __DIR__ . '/vendor/league/oauth2-client/src/Provider/ResourceOwnerInterface.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Provider/AbstractProvider.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Provider/GenericProvider.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Provider/GenericResourceOwner.php';
-
-require __DIR__ . '/vendor/league/oauth2-client/src/Token/AccessTokenInterface.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Token/ResourceOwnerAccessTokenInterface.php';
-require __DIR__ . '/vendor/league/oauth2-client/src/Token/AccessToken.php';
-
 $loader = new ClassLoader();
+
+//league/oauth2-client (generic OAuth2 authorization provider, used for Joomla)
+$loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-client/src');
+
+//More18N translation
 $loader->addPsr4('Cissee\\WebtreesExt\\', __DIR__ . "/vendor/cissee/vesta-webtrees-2-custom-modules/vesta_common/patchedWebtrees");
 $loader->register();
 
