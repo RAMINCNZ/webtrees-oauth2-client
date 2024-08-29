@@ -35,7 +35,12 @@ declare(strict_types=1);
 
 namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
+use Fisharebest\Webtrees\Webtrees;
+
 use ReflectionMethod;
+
+use function file_exists;
+use function parse_ini_file;
 
 
 /**
@@ -48,46 +53,101 @@ class AuthorizationProviderFactory
      * 
      * @param string                    $name
      * 
-     * @return AuthorizationProviderInterface
+     * @return AuthorizationProviderInterface   A configured authorization provider. Null, if error 
      */
     public function make(string $name) : ?AuthorizationProviderInterface
     {
-        if ($name === 'Joomla') {
-            return new JoomlaAuthoriationProvider([
-                'clientId'                => 'EyOiaMTefADMiqQMUGzbbwdQYeIxSH',    // The client ID assigned to you by the provider
-                'clientSecret'            => 'EYSittQRplBhuzbsCfxCOIxwJZrbwJ',    // The client password assigned to you by the provider
-                'redirectUri'             => 'http://nas-synology220/webtrees/index.php?route=/webtrees' . OAuth2Client::REDIRECT_ROUTE,
-                'urlAuthorize'            => 'http://nas-synology220/joomla/index.php',
-                'urlAccessToken'          => 'http://nas-synology220/joomla/index.php',
-                'urlResourceOwnerDetails' => 'http://nas-synology220/joomla/index.php'
-            ]);
+        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ ) .'\\';
+        $options = self::readProviderOptionsFromConfigFile($name);
+
+        //If no options found
+        if (sizeof($options) === 0) {
+            return null;
         }
 
+        $provider_names = self::getAuthorizatonProviderNames();
+
+        foreach($provider_names as $class_name => $provider_name) {
+            if ($provider_name === $name) {
+                $class_name = $name_space . $class_name;
+                return new $class_name($options);
+            }
+        }
+
+        //If no provider oder no options found, retu
         return null;
     }
 
 	/**
      * Return the names of all available authorization providers
      *
-     * @return array<string>
+     * @return array<class_name => name>
      */ 
 
     public static function getAuthorizatonProviderNames(): array {
 
         $provider_names = [];
+        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ ) .'\\';
 
-        foreach (get_declared_classes() as $class_name) {
-
-            $name_space = str_replace('\\\\', '\\',__NAMESPACE__ ) .'\\';
-
+        foreach (get_declared_classes() as $class_name) { 
             if (strpos($class_name, $name_space) !==  false) {
                 if (in_array($name_space . 'AuthorizationProviderInterface', class_implements($class_name))) {
                     $reflectionMethod = new ReflectionMethod($class_name, 'getName');
-                    $provider_names[] = $reflectionMethod->invoke(null);
+                    $class_name = str_replace($name_space, '', $class_name, );
+                    $provider_names[$class_name] = $reflectionMethod->invoke(null);
                 }
             }
         }
 
         return $provider_names;
+    }
+
+	/**
+     * Reads the options of the provider from the webtrees config.ini.php file
+     * 
+     * @param string $name  Authorization provider name
+     * @return array        An array with the options. Empty if options could not be read completely.
+     */ 
+
+    public static function readProviderOptionsFromConfigFile(string $name): array {
+
+        $options = [];
+        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ ) .'\\';
+        $provider_names = self::getAuthorizatonProviderNames();
+
+        foreach ($provider_names as $class_name => $name) {
+            $reflectionMethod = new ReflectionMethod($name_space . $class_name, 'getName');
+            if ($reflectionMethod->invoke(null) === $name) {
+                $reflectionMethod = new ReflectionMethod($name_space . $class_name, 'getOptionNames');
+                $option_names = $reflectionMethod->invoke(null);
+                break;
+            }
+        }
+
+        // Read the configuration settings
+        if (file_exists(Webtrees::CONFIG_FILE)) {
+            $config = parse_ini_file(Webtrees::CONFIG_FILE);
+
+            foreach ($config as $key => $value) {
+
+                $key = str_replace($name . '_', '', $key);
+
+                if (in_array($key, $option_names)) {
+                    $options[$key] = $value;
+                }
+            }
+        }
+        else {
+            return [];
+        }
+
+        //Check, if complete configuration was found
+        foreach ($option_names as $option_name) {
+            if (!key_exists($option_name, $options)) {
+                return [];
+            }
+        }
+
+        return $options;
     }
 }

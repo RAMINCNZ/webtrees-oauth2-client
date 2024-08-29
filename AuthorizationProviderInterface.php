@@ -105,4 +105,11 @@ interface AuthorizationProviderInterface
      */
     public function getUserData(AccessToken $token) : User;    
 
+    /**
+     * Returns a list with options that can be passed to the provider
+     *
+     * @return array   An array of option names, which can be set for this provider.
+     *                 Options include `clientId`, `clientSecret`, `redirectUri`, etc.
+     */
+    public static function getOptionNames() : array;
 }

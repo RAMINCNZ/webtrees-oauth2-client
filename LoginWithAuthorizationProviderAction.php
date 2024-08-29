@@ -112,6 +112,12 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         $user = null;
 
         $provider = (new AuthorizationProviderFactory())->make($provider_name);
+
+        if ($provider === null) return $this->viewResponse(OAuth2Client::viewsNamespace() . '::alert', [
+            'alert_type'   => OAuth2Client::ALERT_DANGER, 
+            'module_name'  => $oauth2_client->title(),
+            'text'         => I18N::translate('The requested authorization provider could not be found') . ': ' . $provider_name,
+        ]);
         
         // If we don't have an authorization code then get one
         if ($code === '') {
@@ -134,9 +140,9 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
             }
         
             return $this->viewResponse(OAuth2Client::viewsNamespace() . '::alert', [
-                'alert_tpye'   => OAuth2Client::ALERT_DANGER, 
+                'alert_type'   => OAuth2Client::ALERT_DANGER, 
                 'module_name'  => $oauth2_client->title(),
-                'text'         => 'Invalid state in communication with authorization provider.-',
+                'text'         => I18N::translate('Invalid state in communication with authorization provider.'),
             ]);
         } else {        
             try {

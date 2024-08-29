@@ -138,4 +138,21 @@ class JoomlaAuthoriationProvider implements AuthorizationProviderInterface
 
         return $webtrees_user;
     }
+
+    /**
+     * Returns a list with options that can be passed to the provider
+     *
+     * @return array   An array of option names, which can be set for this provider.
+     *                 Options include `clientId`, `clientSecret`, `redirectUri`, etc.
+     */
+    public static function getOptionNames() : array {
+        return [
+            'clientId',
+            'clientSecret',
+            'redirectUri',
+            'urlAuthorize',
+            'urlAccessToken',
+            'urlResourceOwnerDetails',
+        ];
+    }    
 }

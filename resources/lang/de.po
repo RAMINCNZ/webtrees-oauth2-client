@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-08-28 19:39+0200\n"
-"PO-Revision-Date: 2024-08-28 19:41+0200\n"
+"POT-Creation-Date: 2024-08-29 06:33+0200\n"
+"PO-Revision-Date: 2024-08-29 06:34+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -15,7 +15,16 @@ msgstr ""
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: LoginWithAuthorizationProviderAction.php:157
+#: LoginWithAuthorizationProviderAction.php:119
+msgid "The requested authorization provider could not be found"
+msgstr "Der angeforderte Authorisierungsanbieter konnte nicht gefunden werden"
+
+#: LoginWithAuthorizationProviderAction.php:145
+msgid "Invalid state in communication with authorization provider."
+msgstr ""
+"Ungültiger Zustand in der Kommunikation mit dem Authorisierungsanbieter."
+
+#: LoginWithAuthorizationProviderAction.php:163
 msgid ""
 "Failed to get the access token or the user details from the authorization "
 "provider."
@@ -23,7 +32,7 @@ msgstr ""
 "Fehler beim Empfang des Zugriffs-Tokens oder der Benutzer-Daten vom "
 "Authorisierungsanbieter."
 
-#: LoginWithAuthorizationProviderAction.php:164
+#: LoginWithAuthorizationProviderAction.php:170
 msgid ""
 "No valid user account data received from authorizaton provider. User name or "
 "email missing."
@@ -31,7 +40,7 @@ msgstr ""
 "Vom Authorisierungsanbieter wurden keine validen Daten empfangen. Benutzer-"
 "Name oder Email fehlt."
 
-#: LoginWithAuthorizationProviderAction.php:185
+#: LoginWithAuthorizationProviderAction.php:191
 msgid "Automatic user registration after sign in with authorization provider"
 msgstr ""
 "Automatische Benutzer-Registrierung nach Einloggen mit "
