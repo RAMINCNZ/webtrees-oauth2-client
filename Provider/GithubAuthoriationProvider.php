@@ -35,15 +35,16 @@ declare(strict_types=1);
 
 namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
+use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\User;
 use League\OAuth2\Client\Provider\AbstractProvider;
-use League\OAuth2\Client\Provider\GenericProvider;
+use League\OAuth2\Client\Provider\Github;
 use League\OAuth2\Client\Token\AccessToken;
 
 /**
- * An OAuth2 authorization client for Joomla
+ * An OAuth2 authorization client for Github
  */
-class JoomlaAuthoriationProvider extends AbstractAuthoriationProvider implements AuthorizationProviderInterface
+class GithubAuthoriationProvider extends AbstractAuthoriationProvider implements AuthorizationProviderInterface
 {
     //The authorization provider
     protected AbstractProvider $provider;
@@ -55,7 +56,7 @@ class JoomlaAuthoriationProvider extends AbstractAuthoriationProvider implements
      */
     public function __construct(array $options = [], array $collaborators = [])    
     {
-        $this->provider = new GenericProvider($options, $collaborators);
+        $this->provider = new Github($options, $collaborators);
     }
 
     /**
@@ -64,27 +65,7 @@ class JoomlaAuthoriationProvider extends AbstractAuthoriationProvider implements
      * @return string
      */
     public static function getName() : string {
-        return 'Joomla';
-    }
-
-    /**
-     * Use access token to get user data from provider and return it as a webtrees User object
-     * 
-     * @param AccessToken $token
-     * 
-     * @return User
-     */
-    public function getUserData(AccessToken $token) : User {
-
-        $resourceOwner = $this->provider->getResourceOwner($token);
-        $user_data = $resourceOwner->toArray();
-
-        return new User(
-            $user_data['id'] ?? '',
-            $user_data['username'] ?? '',
-            $user_data['name'] ?? '',
-            $user_data['email'] ?? ''
-        );
+        return 'Github';
     }
 
     /**
@@ -98,9 +79,6 @@ class JoomlaAuthoriationProvider extends AbstractAuthoriationProvider implements
             'clientId',
             'clientSecret',
             'redirectUri',
-            'urlAuthorize',
-            'urlAccessToken',
-            'urlResourceOwnerDetails',
         ];
     }    
 }

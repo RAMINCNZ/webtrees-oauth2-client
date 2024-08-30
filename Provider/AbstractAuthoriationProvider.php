@@ -35,36 +35,68 @@ declare(strict_types=1);
 
 namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
+use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\User;
 use League\OAuth2\Client\Provider\AbstractProvider;
-use League\OAuth2\Client\Provider\GenericProvider;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
+use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
+use League\OAuth2\Client\Token\AccessTokenInterface;
 
 /**
- * An OAuth2 authorization client for Joomla
+ * An abstract OAuth2 authorization client, which provides basic methods
  */
-class JoomlaAuthoriationProvider extends AbstractAuthoriationProvider implements AuthorizationProviderInterface
+abstract class AbstractAuthoriationProvider
 {
     //The authorization provider
     protected AbstractProvider $provider;
 
 
     /**
-     * @param array $options
-     * @param array $collaborators
+     * Get the authorization URL
+     *
+     * @param  array $options
+     * @return string Authorization URL
      */
-    public function __construct(array $options = [], array $collaborators = [])    
+    public function getAuthorizationUrl(array $options = [])
     {
-        $this->provider = new GenericProvider($options, $collaborators);
+        return $this->provider->getAuthorizationUrl($options);
     }
 
     /**
-     * Get the name of the authorization client
-     * 
+     * Get the current value of the state parameter
+     *
+     * This can be accessed by the redirect handler during authorization.
+     *
      * @return string
      */
-    public static function getName() : string {
-        return 'Joomla';
+    public function getState()
+    {
+        return $this->provider->getState();
+    }    
+
+    /**
+     * Get an access token from the provider using a specified grant and option set.
+     *
+     * @param  mixed                $grant
+     * @param  array<string, mixed> $options
+     * @throws IdentityProviderException
+     * @return AccessTokenInterface
+     */
+    public function getAccessToken($grant, array $options = [])
+    {
+        return $this->provider->getAccessToken($grant, $options);
+    }
+
+    /**
+     * Requests and returns the resource owner of given access token.
+     *
+     * @param  AccessToken $token
+     * @return ResourceOwnerInterface
+     */
+    public function getResourceOwner(AccessToken $token) : ResourceOwnerInterface
+    {
+        return $this->provider->getResourceOwner($token);
     }
 
     /**
@@ -80,13 +112,12 @@ class JoomlaAuthoriationProvider extends AbstractAuthoriationProvider implements
         $user_data = $resourceOwner->toArray();
 
         return new User(
-            $user_data['id'] ?? '',
-            $user_data['username'] ?? '',
-            $user_data['name'] ?? '',
-            $user_data['email'] ?? ''
+            $user_data['id']       ?? I18N::translate('%s not received from authoriuation provider', 'ìd'),
+            $user_data['username'] ?? I18N::translate('%s not received from authoriuation provider', 'username'),
+            $user_data['name']     ?? I18N::translate('%s not received from authoriuation provider', 'name'),
+            $user_data['email']    ?? I18N::translate('%s not received from authoriuation provider', 'email'),
         );
-    }
-
+    }    
     /**
      * Returns a list with options that can be passed to the provider
      *
@@ -98,9 +129,6 @@ class JoomlaAuthoriationProvider extends AbstractAuthoriationProvider implements
             'clientId',
             'clientSecret',
             'redirectUri',
-            'urlAuthorize',
-            'urlAccessToken',
-            'urlResourceOwnerDetails',
         ];
     }    
 }

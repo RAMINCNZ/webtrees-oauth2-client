@@ -22,19 +22,17 @@ $provider_names = AuthorizationProviderFactory::getAuthorizatonProviderNames();
             <?= I18N::translate('Sign in with authorization provider') ?>
         </label>
         <div class="col-sm-9 wt-page-options-value">
-            <?php foreach ($provider_names as $provider_name) : ?>
-                <form method="post" class="wt-page-options wt-page-options-login" action="<?= e(route(LoginWithAuthorizationProviderAction::class, [
-                        'tree'          => $tree instanceof Tree ? $tree->name() : null,
-                        "provider_name" =>  $provider_name,
-                    ])) ?>" >
-                    <button class="btn btn-secondary" type="submit">
+            <form method="post">
+                <?php foreach ($provider_names as $provider_name) : ?>
+                    <a href="<?= e(route(LoginWithAuthorizationProviderAction::class, [
+                            'tree'          => $tree instanceof Tree ? $tree->name() : null,
+                            'provider_name' => $provider_name,
+                        ])) ?>" type="submit" class="btn btn-secondary">
                         <?= $provider_name ?>
-                    </button>
-                    <?= view('icons/spacer') ?>
-
-                    <?= csrf_field() ?>
-                </form>
-            <?php endforeach ?>
+                    </a>
+                <?php endforeach ?>
+                <?= csrf_field() ?>
+            </form>
         </div>
     </div>        
 <?php endif ?>

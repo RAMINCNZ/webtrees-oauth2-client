@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
 use Cissee\WebtreesExt\MoreI18N;
+use Fisharebest\Webtrees\Http\RequestHandlers\HomePage;
 use Fisharebest\Webtrees\Http\RequestHandlers\LoginAction;
 use Fisharebest\Webtrees\Http\RequestHandlers\PasswordRequestPage;
 use Fisharebest\Webtrees\Http\RequestHandlers\RegisterPage;
-use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Tree;
 
 /**
@@ -23,6 +23,10 @@ use Fisharebest\Webtrees\Tree;
  */
 
 $authorization_provider = isset($provider_names) ? true : false;
+
+if (strpos($url, OAuth2Client::REDIRECT_ROUTE) !== false) {
+    $url = route(HomePage::class);
+}
 
 ?>
 

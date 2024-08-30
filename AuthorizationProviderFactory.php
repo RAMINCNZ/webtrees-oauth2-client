@@ -115,9 +115,8 @@ class AuthorizationProviderFactory
         $name_space = str_replace('\\\\', '\\',__NAMESPACE__ ) .'\\';
         $provider_names = self::getAuthorizatonProviderNames();
 
-        foreach ($provider_names as $class_name => $name) {
-            $reflectionMethod = new ReflectionMethod($name_space . $class_name, 'getName');
-            if ($reflectionMethod->invoke(null) === $name) {
+        foreach ($provider_names as $class_name => $provider_name) {
+            if ($provider_name === $name) {
                 $reflectionMethod = new ReflectionMethod($name_space . $class_name, 'getOptionNames');
                 $option_names = $reflectionMethod->invoke(null);
                 break;
