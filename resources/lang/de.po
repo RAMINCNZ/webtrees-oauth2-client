@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-08-29 06:33+0200\n"
-"PO-Revision-Date: 2024-08-29 06:34+0200\n"
+"POT-Creation-Date: 2024-08-30 06:40+0200\n"
+"PO-Revision-Date: 2024-08-30 06:40+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -27,10 +27,10 @@ msgstr ""
 #: LoginWithAuthorizationProviderAction.php:163
 msgid ""
 "Failed to get the access token or the user details from the authorization "
-"provider."
+"provider"
 msgstr ""
 "Fehler beim Empfang des Zugriffs-Tokens oder der Benutzer-Daten vom "
-"Authorisierungsanbieter."
+"Authorisierungsanbieter"
 
 #: LoginWithAuthorizationProviderAction.php:170
 msgid ""
@@ -112,11 +112,20 @@ msgstr ""
 "führen. Es wird dringend empfohlen, eines der Module zu deaktivieren. Der "
 "Pfad für den Custom View ist: %s"
 
+#: Provider/AbstractAuthoriationProvider.php:115
+#: Provider/AbstractAuthoriationProvider.php:116
+#: Provider/AbstractAuthoriationProvider.php:117
+#: Provider/AbstractAuthoriationProvider.php:118
+#, fuzzy, php-format
+#| msgid "Sign in with authorization provider"
+msgid "%s not received from authoriuation provider"
+msgstr "Mit Authorisierungsanbieter einloggen"
+
 #: resources/views/alert.phtml:24
 msgid "Custom module"
 msgstr "Benutzerdefiniertes Modul"
 
-#: resources/views/login-with-provider.phtml:22
+#: resources/views/login-with-provider.phtml:29
 msgid "Sign in with authorization provider"
 msgstr "Mit Authorisierungsanbieter einloggen"
 

@@ -160,7 +160,7 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
                 return $this->viewResponse(OAuth2Client::viewsNamespace() . '::alert', [
                     'alert_type'   => OAuth2Client::ALERT_DANGER,
                     'module_name'  => $oauth2_client->title(),
-                    'text'         => I18N::translate('Failed to get the access token or the user details from the authorization provider.') . ': ' . $e->getMessage(),
+                    'text'         => I18N::translate('Failed to get the access token or the user details from the authorization provider') . ': ' . $e->getMessage(),
             ]);
             }
         }
