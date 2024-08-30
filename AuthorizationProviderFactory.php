@@ -74,14 +74,14 @@ class AuthorizationProviderFactory
             }
         }
 
-        //If no provider oder no options found, retu
+        //If no provider found
         return null;
     }
 
 	/**
      * Return the names of all available authorization providers
      *
-     * @return array<class_name => name>
+     * @return array array<class_name => provider_name>
      */ 
 
     public static function getAuthorizatonProviderNames(): array {
