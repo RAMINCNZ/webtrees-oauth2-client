@@ -113,11 +113,12 @@ abstract class AbstractAuthoriationProvider
 
         return new User(
             $user_data['id']       ?? I18N::translate('%s not received from authoriuation provider', 'ìd'),
-            $user_data['username'] ?? I18N::translate('%s not received from authoriuation provider', 'username'),
+            $user_data['username'] ?? '', //Default has to be empty, because empty username needs to be detected as error
             $user_data['name']     ?? I18N::translate('%s not received from authoriuation provider', 'name'),
-            $user_data['email']    ?? I18N::translate('%s not received from authoriuation provider', 'email'),
+            $user_data['email']    ?? '', //Default has to be empty, because empty email needs to be detected as error
         );
     }    
+
     /**
      * Returns a list with options that can be passed to the provider
      *

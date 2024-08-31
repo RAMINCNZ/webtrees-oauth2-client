@@ -69,6 +69,26 @@ class GithubAuthoriationProvider extends AbstractAuthoriationProvider implements
     }
 
     /**
+     * Use access token to get user data from provider and return it as a webtrees User object
+     * 
+     * @param AccessToken $token
+     * 
+     * @return User
+     */
+    public function getUserData(AccessToken $token) : User {
+
+        $resourceOwner = $this->provider->getResourceOwner($token);
+        $user_data = $resourceOwner->toArray();
+
+        return new User(
+            $user_data['id']       ?? I18N::translate('%s not received from authoriuation provider', 'ìd'),
+            $user_data['login']    ?? '', //Default has to be empty, because empty username needs to be detected as error
+            $user_data['name']     ?? I18N::translate('%s not received from authoriuation provider', 'name'),
+            $user_data['email']    ?? '', //Default has to be empty, because empty email needs to be detected as error
+        );
+    }      
+
+    /**
      * Returns a list with options that can be passed to the provider
      *
      * @return array   An array of option names, which can be set for this provider.
