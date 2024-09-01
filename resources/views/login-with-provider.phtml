@@ -14,6 +14,10 @@ use Jefferson49\Webtrees\Module\OAuth2Client\LoginWithAuthorizationProviderActio
 
 $provider_names = AuthorizationProviderFactory::getAuthorizatonProviderNames();
 
+uasort($provider_names, function (string $a, string $b) {
+    return strcmp($a, $b);
+});
+
 //Remove any provider from list, for which no config is available
 foreach($provider_names as $class_name => $provider_name) {
     if(AuthorizationProviderFactory::readProviderOptionsFromConfigFile($provider_name) === []) {

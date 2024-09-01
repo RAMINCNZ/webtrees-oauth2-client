@@ -48,12 +48,14 @@ require __DIR__ . '/LoginWithAuthorizationProviderAction.php';
 require __DIR__ . '/Provider/AbstractAuthoriationProvider.php';
 require __DIR__ . '/Provider/JoomlaAuthoriationProvider.php';
 require __DIR__ . '/Provider/GithubAuthoriationProvider.php';
+require __DIR__ . '/Provider/GoogleAuthoriationProvider.php';
 
 $loader = new ClassLoader();
 
 //league/oauth2-client (generic OAuth2 authorization provider is used for Joomla)
 $loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-client/src');
 $loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-github/src');
+$loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-google/src');
 
 //More18N translation
 $loader->addPsr4('Cissee\\WebtreesExt\\', __DIR__ . "/vendor/cissee/vesta-webtrees-2-custom-modules/vesta_common/patchedWebtrees");

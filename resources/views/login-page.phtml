@@ -19,10 +19,8 @@ use Fisharebest\Webtrees\Tree;
  * @var string        $username
  * @var string        $warning
  * @var string        $welcome
- * @var array<string> $provider_names
  */
 
-$authorization_provider = isset($provider_names) ? true : false;
 
 if (strpos($url, OAuth2Client::REDIRECT_ROUTE) !== false) {
     $url = route(HomePage::class);
