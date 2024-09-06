@@ -122,12 +122,12 @@ class OAuth2Client extends AbstractModule implements
 		View::registerNamespace(self::viewsNamespace(), $this->resourcesFolder() . 'views/');
 
         //Register a custom view for the login page
-        View::registerCustomView('::login-page', $this->name() . '::login-page');
-        $this->custom_view_list->add($this->name() . '::login-page');
+        View::registerCustomView('::login-page', self::viewsNamespace() . '::login-page');
+        $this->custom_view_list->add(self::viewsNamespace() . '::login-page');
 
         //Register a custom view for the registration page
-        View::registerCustomView('::register-page', $this->name() . '::register-page');
-        $this->custom_view_list->add($this->name() . '::register-page');
+        View::registerCustomView('::register-page', self::viewsNamespace() . '::register-page');
+        $this->custom_view_list->add(self::viewsNamespace() . '::register-page');
 
         //Register a route for the communication with the authorization provider
         $router = Registry::routeFactory()->routeMap();                 
@@ -170,7 +170,7 @@ class OAuth2Client extends AbstractModule implements
      */
     public function resourcesFolder(): string
     {
-        return __DIR__ . '/resources/';
+        return str_replace('src', '', __DIR__) . 'resources/';
     }
 
     /**

@@ -31,7 +31,6 @@
  * 
  */
  
-
 declare(strict_types=1);
 
 namespace Jefferson49\Webtrees\Module\OAuth2Client;
@@ -39,30 +38,27 @@ namespace Jefferson49\Webtrees\Module\OAuth2Client;
 use Composer\Autoload\ClassLoader;
 
 //This webtrees custom module
-require __DIR__ . '/OAuth2Client.php';
-require __DIR__ . '/AuthorizationProviderFactory.php';
-require __DIR__ . '/AuthorizationProviderInterface.php';
-require __DIR__ . '/LoginWithAuthorizationProviderAction.php';
+require __DIR__ . '/src/OAuth2Client.php';
+require __DIR__ . '/src/AuthorizationProviderFactory.php';
+require __DIR__ . '/src/AuthorizationProviderInterface.php';
+require __DIR__ . '/src/LoginWithAuthorizationProviderAction.php';
 
 //Provider wrappers within the custom module, which implement a webtrees interface to OAuth2 providers
-require __DIR__ . '/Provider/AbstractAuthoriationProvider.php';
-require __DIR__ . '/Provider/FacebookAuthoriationProvider.php';
-require __DIR__ . '/Provider/GithubAuthoriationProvider.php';
-require __DIR__ . '/Provider/GoogleAuthoriationProvider.php';
-require __DIR__ . '/Provider/InstagramAuthoriationProvider.php';
-require __DIR__ . '/Provider/JoomlaAuthoriationProvider.php';
+require __DIR__ . '/src/Provider/AbstractAuthoriationProvider.php';
+require __DIR__ . '/src/Provider/FacebookAuthoriationProvider.php';
+require __DIR__ . '/src/Provider/GithubAuthoriationProvider.php';
+require __DIR__ . '/src/Provider/GoogleAuthoriationProvider.php';
+require __DIR__ . '/src/Provider/InstagramAuthoriationProvider.php';
+require __DIR__ . '/src/Provider/JoomlaAuthoriationProvider.php';
 
 $loader = new ClassLoader();
 
-//league/oauth2-client (generic OAuth2 authorization provider is used for Joomla)
-$loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-client/src');
-$loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-facebook/src');
-$loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-github/src');
-$loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-google/src');
-$loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-instagram/src');
+//league/oauth2-clients
+$loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league');
 
 //More18N translation
 $loader->addPsr4('Cissee\\WebtreesExt\\', __DIR__ . "/vendor/cissee/vesta-webtrees-2-custom-modules/vesta_common/patchedWebtrees");
+
 $loader->register();
 
 return new OAuth2Client();
