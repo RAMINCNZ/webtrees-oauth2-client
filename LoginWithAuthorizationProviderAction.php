@@ -54,11 +54,12 @@ use Fisharebest\Webtrees\Session;
 use Fisharebest\Webtrees\Site;
 use Fisharebest\Webtrees\User;
 use Fisharebest\Webtrees\Validator;
-use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+
+use function substr;
 
 /**
  * Perform a login with an authorization provider
@@ -166,7 +167,7 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
             }
         }
 
-        //If no user name was or email was retrieved from authorization provider, redirect to login page
+        //If no user name or email was retrieved from authorization provider, redirect to login page
         if ($user->userName() === '' OR $user->email() === '') {
             FlashMessages::addMessage(I18N::translate('No valid user account data received from authorizaton provider. User name or email missing.'), 'danger');
             return redirect(route(LoginPage::class));
@@ -178,25 +179,29 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         $title        = MoreI18N::xlate('Request a new user account');
         $show_caution = Site::getPreference('SHOW_REGISTER_CAUTION') === '1';
 
-        //We add the provider name as a postfix to the user name. This might be helpful to separate namespaces
-        //and for future use cases, where we might want to know how users are related to an authorization providers.
-        $username     = $user->userName() . '(' . $provider_name .')';
+        $username = $user->userName();
 
         //If no real name was received from authorization provider, the user name is chosen as default
-        $realname     = $user->realName() !== '' ? $user->realName() : $username;
+        $realname = $user->realName() !== '' ? $user->realName() : $username;
+
+        //Cut user data to max sizes allowed in the webtrees database
+        $username = substr($username, 0, 32);
+        $realname = substr($realname, 0, 64);
+        $email    = substr($user->email(), 0, 64);
+        $password = substr($accessToken->getToken(), 0, 128);
 
         //If user does not exist already, redirect to registration page based on the authorization provider user data
         if ($this->user_service->findByIdentifier($username) === null) { 
             return $this->viewResponse(OAuth2Client::viewsNamespace() . '::register-page', [
                 'captcha'       => $this->captcha_service->createCaptcha(),
                 'comments'      => I18N::translate('Automatic user registration after sign in with authorization provider'),
-                'email'         => $user->email(),
+                'email'         => $email,
                 'realname'      => $realname,
                 'show_caution'  => $show_caution,
                 'title'         => $title,
                 'tree'          => $tree instanceof Tree ? $tree->name() : null,
                 'username'      => $username,
-                'password'      => $accessToken->getToken(),
+                'password'      => $password,
                 'provider_name' => $provider_name,
             ]);
         }            
