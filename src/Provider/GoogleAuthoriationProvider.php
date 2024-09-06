@@ -37,6 +37,7 @@ namespace Jefferson49\Webtrees\Module\OAuth2Client\Provider;
 
 use Fisharebest\Webtrees\User;
 use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
+use Jefferson49\Webtrees\Module\OAuth2Client\Contracts\AuthorizationProviderInterface;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\Google;
 use League\OAuth2\Client\Token\AccessToken;

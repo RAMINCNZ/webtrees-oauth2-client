@@ -33,10 +33,10 @@
 
 declare(strict_types=1);
 
-namespace Jefferson49\Webtrees\Module\OAuth2Client;
+namespace Jefferson49\Webtrees\Module\OAuth2Client\Factories;
 
 use Fisharebest\Webtrees\Webtrees;
-use Jefferson49\Webtrees\Module\OAuth2Client\Provider\AuthorizationProviderInterface;
+use Jefferson49\Webtrees\Module\OAuth2Client\Contracts\AuthorizationProviderInterface;
 
 use ReflectionMethod;
 
@@ -59,7 +59,8 @@ class AuthorizationProviderFactory
      */
     public function make(string $name, string $base_url) : ?AuthorizationProviderInterface
     {
-        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ ) .'\\Provider\\';
+        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ );
+        $name_space = str_replace('Factories', 'Provider\\', $name_space);
         $options = self::readProviderOptionsFromConfigFile($name);
 
         //If no options found
@@ -89,13 +90,15 @@ class AuthorizationProviderFactory
     public static function getAuthorizatonProviderNames(): array {
 
         $provider_names = [];
-        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ ) .'\\Provider\\';
+        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ );
+        $name_space_provider = str_replace('Factories', 'Provider\\', $name_space);
+        $name_space_contracts = str_replace('Factories', 'Contracts\\', $name_space);
 
         foreach (get_declared_classes() as $class_name) { 
-            if (strpos($class_name, $name_space) !==  false) {
-                if (in_array($name_space . 'AuthorizationProviderInterface', class_implements($class_name))) {
+            if (strpos($class_name, $name_space_provider) !==  false) {
+                if (in_array($name_space_contracts . 'AuthorizationProviderInterface', class_implements($class_name))) {
                     $reflectionMethod = new ReflectionMethod($class_name, 'getName');
-                    $class_name = str_replace($name_space, '', $class_name, );
+                    $class_name = str_replace($name_space_provider, '', $class_name, );
                     $provider_names[$class_name] = $reflectionMethod->invoke(null);
                 }
             }
@@ -114,12 +117,13 @@ class AuthorizationProviderFactory
     public static function readProviderOptionsFromConfigFile(string $name): array {
 
         $options = [];
-        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ ) .'\\Provider\\';
+        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ );
+        $name_space_provider = str_replace('Factories', 'Provider\\', $name_space);
         $provider_names = self::getAuthorizatonProviderNames();
 
         foreach ($provider_names as $class_name => $provider_name) {
             if ($provider_name === $name) {
-                $reflectionMethod = new ReflectionMethod($name_space . $class_name, 'getOptionNames');
+                $reflectionMethod = new ReflectionMethod($name_space_provider . $class_name, 'getOptionNames');
                 $option_names = $reflectionMethod->invoke(null);
                 break;
             }

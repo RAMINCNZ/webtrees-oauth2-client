@@ -54,6 +54,7 @@ use Fisharebest\Webtrees\Session;
 use Fisharebest\Webtrees\Site;
 use Fisharebest\Webtrees\User;
 use Fisharebest\Webtrees\Validator;
+use Jefferson49\Webtrees\Module\OAuth2Client\Factories\AuthorizationProviderFactory;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
