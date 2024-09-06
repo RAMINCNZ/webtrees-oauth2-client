@@ -34,7 +34,7 @@
 
 declare(strict_types=1);
 
-namespace Jefferson49\Webtrees\Module\OAuth2Client;
+namespace Jefferson49\Webtrees\Module\OAuth2Client\Provider;
 
 use Fisharebest\Webtrees\User;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;

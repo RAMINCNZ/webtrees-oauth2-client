@@ -36,6 +36,7 @@ declare(strict_types=1);
 namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
 use Fisharebest\Webtrees\Webtrees;
+use Jefferson49\Webtrees\Module\OAuth2Client\Provider\AuthorizationProviderInterface;
 
 use ReflectionMethod;
 
@@ -58,7 +59,7 @@ class AuthorizationProviderFactory
      */
     public function make(string $name, string $base_url) : ?AuthorizationProviderInterface
     {
-        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ ) .'\\';
+        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ ) .'\\Provider\\';
         $options = self::readProviderOptionsFromConfigFile($name);
 
         //If no options found
@@ -88,7 +89,7 @@ class AuthorizationProviderFactory
     public static function getAuthorizatonProviderNames(): array {
 
         $provider_names = [];
-        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ ) .'\\';
+        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ ) .'\\Provider\\';
 
         foreach (get_declared_classes() as $class_name) { 
             if (strpos($class_name, $name_space) !==  false) {
@@ -113,7 +114,7 @@ class AuthorizationProviderFactory
     public static function readProviderOptionsFromConfigFile(string $name): array {
 
         $options = [];
-        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ ) .'\\';
+        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ ) .'\\Provider\\';
         $provider_names = self::getAuthorizatonProviderNames();
 
         foreach ($provider_names as $class_name => $provider_name) {

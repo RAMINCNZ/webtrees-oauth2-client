@@ -180,7 +180,7 @@ class OAuth2Client extends AbstractModule implements
      */
     public static function activeModuleName(): string
     {
-        return '_' . basename(__DIR__) . '_';
+        return '_' . str_replace('src', '', __DIR__) . '_';
     }
     
     /**
