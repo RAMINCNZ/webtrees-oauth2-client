@@ -33,16 +33,15 @@
  
 declare(strict_types=1);
 
-namespace Jefferson49\Webtrees\Module\OAuth2Client;
-
 use Composer\Autoload\ClassLoader;
+use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
+
+$loader = new ClassLoader();
 
 //This webtrees custom module
-require __DIR__ . '/src/OAuth2Client.php';
-require __DIR__ . '/src/AuthorizationProviderFactory.php';
-require __DIR__ . '/src/LoginWithAuthorizationProviderAction.php';
+$loader->addPsr4('Jefferson49\\Webtrees\\Module\\OAuth2Client\\', __DIR__ . '/src');
 
-//Provider wrappers within the custom module, which implement a webtrees interface to OAuth2 providers
+//Provider wrappers are directly required, because they shall be detected by "get_declared_classes"
 require __DIR__ . '/src/Provider/AuthorizationProviderInterface.php';
 require __DIR__ . '/src/Provider/AbstractAuthoriationProvider.php';
 require __DIR__ . '/src/Provider/FacebookAuthoriationProvider.php';
@@ -50,8 +49,6 @@ require __DIR__ . '/src/Provider/GithubAuthoriationProvider.php';
 require __DIR__ . '/src/Provider/GoogleAuthoriationProvider.php';
 require __DIR__ . '/src/Provider/InstagramAuthoriationProvider.php';
 require __DIR__ . '/src/Provider/JoomlaAuthoriationProvider.php';
-
-$loader = new ClassLoader();
 
 //league/oauth2-clients
 $loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-client/src');
