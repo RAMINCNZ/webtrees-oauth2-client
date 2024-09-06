@@ -9,7 +9,7 @@
  * Copyright (C) 2022 Carmen Just
  *                    <https://justcarmen.nl>
  *
- * ExtendedImportExport (webtrees custom module):
+ * OAuth2Client (webtrees custom module):
  * Copyright (C) 2024 Markus Hemprich
  *                    <http://www.familienforschung-hemprich.de>
  *

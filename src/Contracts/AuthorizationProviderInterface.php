@@ -5,11 +5,7 @@
  * Copyright (C) 2024 webtrees development team
  *                    <http://webtrees.net>
  *
- * Fancy Research Links (webtrees custom module):
- * Copyright (C) 2022 Carmen Just
- *                    <https://justcarmen.nl>
- *
- * ExtendedImportExport (webtrees custom module):
+ * OAuth2Client (webtrees custom module):
  * Copyright (C) 2024 Markus Hemprich
  *                    <http://www.familienforschung-hemprich.de>
  *
@@ -25,7 +21,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * 
- * ExtendedImportExport
+ * OAuth2Client
  *
  * A weebtrees(https://webtrees.net) 2.1 custom module for advanced GEDCOM import, export
  * and filter operations. The module also supports remote downloads/uploads via URL requests.
