@@ -86,9 +86,9 @@ class InstagramAuthoriationProvider extends AbstractAuthoriationProvider impleme
         $user_data = $resourceOwner->toArray();
 
         return new User(            
-            (int) $resourceOwner->getId()  ?? I18N::translate('%s not received from authoriuation provider', 'ìd'),
+            (int) $resourceOwner->getId()  ?? '',
             $resourceOwner->getNickname()  ?? '', //Default has to be empty, because empty username needs to be detected as error
-            $user_data['name']             ?? I18N::translate('%s not received from authoriuation provider', 'name'),
+            $user_data['name']             ?? '',
             $user_data['email']            ?? '', //Default has to be empty, because empty email needs to be detected as error
         );
     }      

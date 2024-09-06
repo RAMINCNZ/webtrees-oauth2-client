@@ -87,10 +87,10 @@ class GithubAuthoriationProvider extends AbstractAuthoriationProvider implements
         $user_data = $resourceOwner->toArray();
 
         return new User(
-            $user_data['id']       ?? I18N::translate('%s not received from authoriuation provider', 'ìd'),
-            $user_data['login']    ?? '', //Default has to be empty, because empty username needs to be detected as error
-            $user_data['name']     ?? I18N::translate('%s not received from authoriuation provider', 'name'),
-            $user_data['email']    ?? '', //Default has to be empty, because empty email needs to be detected as error
+            (int) $resourceOwner->getId() ?? '',
+            $user_data['login']           ?? '', //Default has to be empty, because empty username needs to be detected as error
+            $resourceOwner->getName()     ?? $user_data['login'] ?? '',
+            $resourceOwner->getEmail()    ?? '', //Default has to be empty, because empty email needs to be detected as error
         );
     }      
 

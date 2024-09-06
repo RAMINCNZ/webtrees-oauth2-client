@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-08-30 06:40+0200\n"
-"PO-Revision-Date: 2024-08-30 06:40+0200\n"
+"POT-Creation-Date: 2024-09-06 07:33+0200\n"
+"PO-Revision-Date: 2024-09-06 07:34+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -10,21 +10,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ../..\n"
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: LoginWithAuthorizationProviderAction.php:119
+#: LoginWithAuthorizationProviderAction.php:121
 msgid "The requested authorization provider could not be found"
 msgstr "Der angeforderte Authorisierungsanbieter konnte nicht gefunden werden"
 
-#: LoginWithAuthorizationProviderAction.php:145
+#: LoginWithAuthorizationProviderAction.php:147
 msgid "Invalid state in communication with authorization provider."
 msgstr ""
 "Ungültiger Zustand in der Kommunikation mit dem Authorisierungsanbieter."
 
-#: LoginWithAuthorizationProviderAction.php:163
+#: LoginWithAuthorizationProviderAction.php:165
 msgid ""
 "Failed to get the access token or the user details from the authorization "
 "provider"
@@ -32,7 +32,7 @@ msgstr ""
 "Fehler beim Empfang des Zugriffs-Tokens oder der Benutzer-Daten vom "
 "Authorisierungsanbieter"
 
-#: LoginWithAuthorizationProviderAction.php:170
+#: LoginWithAuthorizationProviderAction.php:172
 msgid ""
 "No valid user account data received from authorizaton provider. User name or "
 "email missing."
@@ -40,28 +40,28 @@ msgstr ""
 "Vom Authorisierungsanbieter wurden keine validen Daten empfangen. Benutzer-"
 "Name oder Email fehlt."
 
-#: LoginWithAuthorizationProviderAction.php:191
+#: LoginWithAuthorizationProviderAction.php:197
 msgid "Automatic user registration after sign in with authorization provider"
 msgstr ""
 "Automatische Benutzer-Registrierung nach Einloggen mit "
 "Authorisierungsanbieter"
 
-#: OAuth2Client.php:147
+#: OAuth2Client.php:148
 msgid "OAuth2 Client"
 msgstr "OAuth2 Client"
 
-#: OAuth2Client.php:160
+#: OAuth2Client.php:161
 msgid "A custom module to implement a OAuth2 client for webtrees."
 msgstr ""
 "Ein benutzerspezifisches Modul, welches einen OAuth2 Client für webtrees zur "
 "Verfügung stellt."
 
-#: OAuth2Client.php:335
+#: OAuth2Client.php:336
 #, php-format
 msgid "The preferences for the module \"%s\" were updated."
 msgstr "Die Einstellungen für das Modul \"%s\" wurden aktualisiert."
 
-#: OAuth2Client.php:358
+#: OAuth2Client.php:359
 #, php-format
 msgid ""
 "The preferences for the custom module \"%s\" were sucessfully updated to the "
@@ -70,7 +70,7 @@ msgstr ""
 "Die Einstellungen für das benutzerdefinierte Modul \"%s\" wurden für die "
 "neue Modul-Version %s aktualisiert."
 
-#: OAuth2Client.php:390
+#: OAuth2Client.php:391
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -84,7 +84,7 @@ msgstr ""
 "deaktivieren, weil die identische Funktion ebenfalls im Modul %s integriert "
 "ist."
 
-#: OAuth2Client.php:395
+#: OAuth2Client.php:396
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -97,7 +97,7 @@ msgstr ""
 "beide Module die gleiche Custom View \"%s\" registriert haben. Es wird "
 "dringend empfohlen eines der beiden Module zu deaktivieren."
 
-#: OAuth2Client.php:419
+#: OAuth2Client.php:420
 #, php-format
 msgid ""
 "The custom module view \"%s\" is not registered as replacement for the "
@@ -112,20 +112,11 @@ msgstr ""
 "führen. Es wird dringend empfohlen, eines der Module zu deaktivieren. Der "
 "Pfad für den Custom View ist: %s"
 
-#: Provider/AbstractAuthoriationProvider.php:115
-#: Provider/AbstractAuthoriationProvider.php:116
-#: Provider/AbstractAuthoriationProvider.php:117
-#: Provider/AbstractAuthoriationProvider.php:118
-#, fuzzy, php-format
-#| msgid "Sign in with authorization provider"
-msgid "%s not received from authoriuation provider"
-msgstr "Mit Authorisierungsanbieter einloggen"
-
 #: resources/views/alert.phtml:24
 msgid "Custom module"
 msgstr "Benutzerdefiniertes Modul"
 
-#: resources/views/login-with-provider.phtml:29
+#: resources/views/login-with-provider.phtml:33
 msgid "Sign in with authorization provider"
 msgstr "Mit Authorisierungsanbieter einloggen"
 
@@ -149,6 +140,11 @@ msgstr "Verwaltung"
 #: resources/views/settings.phtml:30
 msgid "Settings"
 msgstr "Einstellungen"
+
+#, fuzzy, php-format
+#~| msgid "Sign in with authorization provider"
+#~ msgid "%s not received from authoriuation provider"
+#~ msgstr "Mit Authorisierungsanbieter einloggen"
 
 #, fuzzy
 #~| msgid "Folder name"

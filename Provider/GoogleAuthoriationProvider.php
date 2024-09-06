@@ -83,15 +83,14 @@ class GoogleAuthoriationProvider extends AbstractAuthoriationProvider implements
     public function getUserData(AccessToken $token) : User {
 
         $resourceOwner = $this->provider->getResourceOwner($token);
-        $user_data = $resourceOwner->toArray();
 
         return new User(            
-            (int) $resourceOwner->getId()  ?? I18N::translate('%s not received from authoriuation provider', 'ìd'),
+            (int) $resourceOwner->getId() ?? '',
 
             //We take email as user name, because user name is not defined for Google
-            $resourceOwner->getEmail()     ?? '', //Default has to be empty, because empty username needs to be detected as error
-            $resourceOwner->getName()      ?? I18N::translate('%s not received from authoriuation provider', 'name'),
-            $resourceOwner->getEmail()     ?? '', //Default has to be empty, because empty email needs to be detected as error
+            $resourceOwner->getEmail()    ?? '', //Default has to be empty, because empty username needs to be detected as error
+            $resourceOwner->getName()     ?? '',
+            $resourceOwner->getEmail()    ?? '', //Default has to be empty, because empty email needs to be detected as error
         );
     }      
 

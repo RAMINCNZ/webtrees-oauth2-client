@@ -89,10 +89,10 @@ class JoomlaAuthoriationProvider extends AbstractAuthoriationProvider implements
         $user_data = $resourceOwner->toArray();
 
         return new User(
-            $user_data['id'] ?? '',
-            $user_data['username'] ?? '',
-            $user_data['name'] ?? '',
-            $user_data['email'] ?? ''
+            (int) $resourceOwner->getId() ?? '',
+            $user_data['username']        ?? '', //Default has to be empty, because empty username needs to be detected as error
+            $user_data['name']            ?? $user_data['username'] ?? '',
+            $user_data['email']           ?? '', //Default has to be empty, because empty email needs to be detected as error
         );
     }
 
