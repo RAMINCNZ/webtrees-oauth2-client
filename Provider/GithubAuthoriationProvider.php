@@ -51,11 +51,17 @@ class GithubAuthoriationProvider extends AbstractAuthoriationProvider implements
 
 
     /**
-     * @param array $options
-     * @param array $collaborators
+     * @param string $base_url
+     * @param array  $options
+     * @param array  $collaborators
      */
-    public function __construct(array $options = [], array $collaborators = [])    
+    public function __construct(string $base_url, array $options = [], array $collaborators = [])
     {
+        $options = array_merge($options, [
+            'redirectUri'             => OAuth2Client::getRedirectUrl($base_url),
+            'urlResourceOwnerDetails' => 'https://api.github.com/user'
+        ]);
+
         $this->provider = new Github($options, $collaborators);
     }
 
@@ -89,7 +95,7 @@ class GithubAuthoriationProvider extends AbstractAuthoriationProvider implements
     }      
 
     /**
-     * Returns a list with options that can be passed to the provider
+     * Returns a list with options that need to be passed to the provider
      *
      * @return array   An array of option names, which can be set for this provider.
      *                 Options include `clientId`, `clientSecret`, `redirectUri`, etc.
@@ -98,7 +104,6 @@ class GithubAuthoriationProvider extends AbstractAuthoriationProvider implements
         return [
             'clientId',
             'clientSecret',
-            'redirectUri',
         ];
     }    
 }

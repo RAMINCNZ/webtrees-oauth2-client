@@ -51,11 +51,12 @@ class AuthorizationProviderFactory
     /**
      * Create an OAuth2 authorization provider
      * 
-     * @param string                    $name
+     * @param string $name       name of the authorization provider
+     * @param string $base_url   webtrees base URL
      * 
      * @return AuthorizationProviderInterface   A configured authorization provider. Null, if error 
      */
-    public function make(string $name) : ?AuthorizationProviderInterface
+    public function make(string $name, string $base_url) : ?AuthorizationProviderInterface
     {
         $name_space = str_replace('\\\\', '\\',__NAMESPACE__ ) .'\\';
         $options = self::readProviderOptionsFromConfigFile($name);
@@ -70,7 +71,7 @@ class AuthorizationProviderFactory
         foreach($provider_names as $class_name => $provider_name) {
             if ($provider_name === $name) {
                 $class_name = $name_space . $class_name;
-                return new $class_name($options);
+                return new $class_name($base_url, $options);
             }
         }
 

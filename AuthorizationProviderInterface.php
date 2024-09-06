@@ -49,10 +49,11 @@ use League\OAuth2\Client\Token\AccessTokenInterface;
 interface AuthorizationProviderInterface
 {
     /**
-     * @param array $options
-     * @param array $collaborators
+     * @param string $base_url
+     * @param array  $options
+     * @param array  $collaborators
      */
-    public function __construct(array $options = [], array $collaborators = []);
+    public function __construct(string $base_url, array $options = [], array $collaborators = []);
 
     /**
      * Get the name of the authorization client

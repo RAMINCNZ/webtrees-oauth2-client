@@ -99,6 +99,7 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         $code          = Validator::queryParams($request)->string('code', '');
         $state         = Validator::queryParams($request)->string('state', '');
         $provider_name = Validator::queryParams($request)->string('provider_name', '');
+        $base_url      = Validator::attributes($request)->string('base_url');
 
         //Save or load the provider name to the session
         if ($provider_name !== '') {
@@ -111,7 +112,7 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         $oauth2_client = $this->module_service->findByName(OAuth2Client::activeModuleName());
         $user = null;
 
-        $provider = (new AuthorizationProviderFactory())->make($provider_name);
+        $provider = (new AuthorizationProviderFactory())->make($provider_name, $base_url);
 
         if ($provider === null) return $this->viewResponse(OAuth2Client::viewsNamespace() . '::alert', [
             'alert_type'   => OAuth2Client::ALERT_DANGER, 

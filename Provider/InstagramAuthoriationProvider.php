@@ -51,11 +51,16 @@ class InstagramAuthoriationProvider extends AbstractAuthoriationProvider impleme
 
 
     /**
-     * @param array $options
-     * @param array $collaborators
+     * @param string $base_url
+     * @param array  $options
+     * @param array  $collaborators
      */
-    public function __construct(array $options = [], array $collaborators = [])    
+    public function __construct(string $base_url, array $options = [], array $collaborators = [])
     {
+        $options = array_merge($options, [
+            'redirectUri'             => OAuth2Client::getRedirectUrl($base_url),
+        ]);
+
         $this->provider = new Instagram($options, $collaborators);
     }
 
@@ -98,7 +103,6 @@ class InstagramAuthoriationProvider extends AbstractAuthoriationProvider impleme
         return [
             'clientId',
             'clientSecret',
-            'redirectUri',
         ];
     }    
 }
