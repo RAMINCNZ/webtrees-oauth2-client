@@ -170,7 +170,7 @@ class OAuth2Client extends AbstractModule implements
      */
     public function resourcesFolder(): string
     {
-        return str_replace('src', '', __DIR__) . 'resources/';
+        return dirname(__DIR__, 1) . '/resources/';
     }
 
     /**
@@ -180,7 +180,7 @@ class OAuth2Client extends AbstractModule implements
      */
     public static function activeModuleName(): string
     {
-        return '_' . str_replace('src', '', __DIR__) . '_';
+        return '_' . basename(dirname(__DIR__, 1)) . '_';
     }
     
     /**
@@ -297,7 +297,7 @@ class OAuth2Client extends AbstractModule implements
      */
     public static function viewsNamespace(): string
     {
-        return '_' . basename(__DIR__) . '_';
+        return self::activeModuleName();
     }    
 
     /**
@@ -309,12 +309,15 @@ class OAuth2Client extends AbstractModule implements
      */
     public function getAdminAction(ServerRequestInterface $request): ResponseInterface
     {
+        $base_url = Validator::attributes($request)->string('base_url');
+
         $this->layout = 'layouts/administration';       
 
         return $this->viewResponse(
-            $this->name() . '::settings',
+            self::viewsNamespace() . '::settings',
             [
-                'title'                               => $this->title(),
+                'title'    => $this->title(),
+                'base_url' => $base_url,
             ]
         );
     }
@@ -328,7 +331,7 @@ class OAuth2Client extends AbstractModule implements
      */
     public function postAdminAction(ServerRequestInterface $request): ResponseInterface
     {
-        $save                       = Validator::parsedBody($request)->string('save', '');
+        $save = Validator::parsedBody($request)->string('save', '');
 
         //Save settings
 

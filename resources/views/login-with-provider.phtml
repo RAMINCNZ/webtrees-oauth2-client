@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Jefferson49\Webtrees\Module\OAuth2Client;
-
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Tree;
 use Jefferson49\Webtrees\Module\OAuth2Client\Factories\AuthorizationProviderFactory;
@@ -47,5 +45,5 @@ foreach($provider_names as $class_name => $provider_name) {
                 <?= csrf_field() ?>
             </form>
         </div>
-    </div>        
+    </div>
 <?php endif ?>
