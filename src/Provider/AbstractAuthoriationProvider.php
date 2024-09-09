@@ -47,10 +47,10 @@ abstract class AbstractAuthoriationProvider
     //The authorization provider
     protected AbstractProvider $provider;
 
-    protected const USER_DATA_PRIMARY_KEY   = 'primary_key';
-    protected const USER_DATA_MANDATORY_KEY = 'mandatory_key';
-    protected const USER_DATA_OPTIONAL_KEY  = 'optional_key';
-    protected const USER_DATA_UNUSED_KEY    = 'unused_key';
+    public const USER_DATA_PRIMARY_KEY   = 'primary_key';
+    public const USER_DATA_MANDATORY_KEY = 'mandatory_key';
+    public const USER_DATA_OPTIONAL_KEY  = 'optional_key';
+    public const USER_DATA_UNUSED_KEY    = 'unused_key';
 
     /**
      * Get the authorization URL
