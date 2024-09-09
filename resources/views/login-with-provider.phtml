@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Fisharebest\Webtrees\Http\RequestHandlers\HomePage;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Tree;
 use Jefferson49\Webtrees\Module\OAuth2Client\Factories\AuthorizationProviderFactory;
@@ -10,7 +11,11 @@ use Jefferson49\Webtrees\Module\OAuth2Client\LoginWithAuthorizationProviderActio
 
 /**
  * @var Tree|null $tree
+ * @var string    $url
  */
+
+
+$url = $url ?? route(HomePage::class);
 
 $provider_names = AuthorizationProviderFactory::getAuthorizatonProviderNames();
 
@@ -37,6 +42,7 @@ foreach($provider_names as $class_name => $provider_name) {
                 <?php foreach ($provider_names as $provider_name) : ?>
                     <a href="<?= e(route(LoginWithAuthorizationProviderAction::class, [
                             'tree'          => $tree instanceof Tree ? $tree->name() : null,
+                            'url'           => $url,
                             'provider_name' => $provider_name,
                         ])) ?>" type="submit" class="btn btn-secondary">
                         <?= $provider_name ?>

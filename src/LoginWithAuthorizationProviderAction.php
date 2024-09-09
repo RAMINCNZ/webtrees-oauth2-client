@@ -98,10 +98,14 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         $state         = Validator::queryParams($request)->string('state', '');
         $provider_name = Validator::queryParams($request)->string('provider_name', '');
         $base_url      = Validator::attributes($request)->string('base_url');
+        $tree          = Validator::attributes($request)->treeOptional();
+        $url           = Validator::queryParams($request)->isLocalUrl()->string('url', route(HomePage::class));
 
         //Save or load the provider name to the session
         if ($provider_name !== '') {
             Session::put(OAuth2Client::activeModuleName() . 'provider_name', $provider_name);
+            Session::put(OAuth2Client::activeModuleName() . 'url', $url);
+            Session::put(OAuth2Client::activeModuleName() . 'tree', $tree);
         }
         else {
             $provider_name = Session::get(OAuth2Client::activeModuleName() . 'provider_name');
@@ -164,17 +168,14 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
             }
         }
 
+        $tree = Session::get(OAuth2Client::activeModuleName() . 'tree', null);
+        $url  = Session::get(OAuth2Client::activeModuleName() . 'url', route(HomePage::class));
+        
         //If no user name or email was retrieved from authorization provider, redirect to login page
         if ($user->userName() === '' OR $user->email() === '') {
             FlashMessages::addMessage(I18N::translate('No valid user account data received from authorizaton provider. User name or email missing.'), 'danger');
-            return redirect(route(LoginPage::class));
+            return redirect(route(LoginPage::class, ['tree' => $tree, 'url' => $url]));
         }
-
-        $tree         = Validator::attributes($request)->treeOptional();
-        $default_url  = route(HomePage::class);
-        $url          = Validator::parsedBody($request)->isLocalUrl()->string('url', $default_url);
-        $title        = MoreI18N::xlate('Request a new user account');
-        $show_caution = Site::getPreference('SHOW_REGISTER_CAUTION') === '1';
 
         $username = $user->userName();
 
@@ -189,6 +190,9 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
 
         //If user does not exist already, redirect to registration page based on the authorization provider user data
         if ($this->user_service->findByIdentifier($username) === null) { 
+            $title        = MoreI18N::xlate('Request a new user account');
+            $show_caution = Site::getPreference('SHOW_REGISTER_CAUTION') === '1';
+    
             return $this->viewResponse(OAuth2Client::viewsNamespace() . '::register-page', [
                 'captcha'       => $this->captcha_service->createCaptcha(),
                 'comments'      => I18N::translate('Automatic user registration after sign in with authorization provider'),

@@ -20,8 +20,10 @@ use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
  * @var string        $welcome
  */
 
-
-if (strpos($url, OAuth2Client::REDIRECT_ROUTE) !== false) {
+if (!isset($url) OR 
+    strpos($url, str_replace('/', '', OAuth2Client::REDIRECT_ROUTE)) !== false OR 
+    strpos($url,'register') !== false) {
+        
     $url = route(HomePage::class);
 }
 
@@ -80,6 +82,4 @@ if (strpos($url, OAuth2Client::REDIRECT_ROUTE) !== false) {
     <?= csrf_field() ?>
 </form>
 
-<?= view(OAuth2Client::viewsNamespace() . '::login-with-provider', ['tree' => $tree,]) ?>
-
-
+<?= view(OAuth2Client::viewsNamespace() . '::login-with-provider', ['tree' => $tree, 'url' => $url]) ?>

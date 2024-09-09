@@ -183,7 +183,7 @@ $provider_authorization = isset($provider_name) ? true : false;
 </form>
 
 <?php if (!$provider_authorization) : ?>
-    <?= view(OAuth2Client::viewsNamespace() . '::login-with-provider', ['tree' => $tree,]) ?>
+    <?= view(OAuth2Client::viewsNamespace() . '::login-with-provider', ['tree' => $tree]) ?>
 
     <?php View::push('javascript') ?>
     <script>
