@@ -33,6 +33,7 @@ namespace Jefferson49\Webtrees\Module\OAuth2Client\Factories;
 
 use Fisharebest\Webtrees\Webtrees;
 use Jefferson49\Webtrees\Module\OAuth2Client\Contracts\AuthorizationProviderInterface;
+use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
 
 use ReflectionMethod;
 
@@ -48,12 +49,12 @@ class AuthorizationProviderFactory
     /**
      * Create an OAuth2 authorization provider
      * 
-     * @param string $name       name of the authorization provider
-     * @param string $base_url   webtrees base URL
+     * @param string $name          name of the authorization provider
+     * @param string $redirectUri   redirection URL from authorization provider to webtrees OAuth2 client
      * 
      * @return AuthorizationProviderInterface   A configured authorization provider. Null, if error 
      */
-    public function make(string $name, string $base_url) : ?AuthorizationProviderInterface
+    public function make(string $name, string $redirectUri) : ?AuthorizationProviderInterface
     {
         $name_space = str_replace('\\\\', '\\',__NAMESPACE__ );
         $name_space = str_replace('Factories', 'Provider\\', $name_space);
@@ -69,7 +70,7 @@ class AuthorizationProviderFactory
         foreach($provider_names as $class_name => $provider_name) {
             if ($provider_name === $name) {
                 $class_name = $name_space . $class_name;
-                return new $class_name($base_url, $options);
+                return new $class_name($redirectUri, $options);
             }
         }
 

@@ -114,7 +114,7 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         $oauth2_client = $this->module_service->findByName(OAuth2Client::activeModuleName());
         $user = null;
 
-        $provider = (new AuthorizationProviderFactory())->make($provider_name, $base_url);
+        $provider = (new AuthorizationProviderFactory())->make($provider_name, OAuth2Client::getRedirectUrl($base_url));
 
         if ($provider === null) return $this->viewResponse(OAuth2Client::viewsNamespace() . '::alert', [
             'alert_type'   => OAuth2Client::ALERT_DANGER, 

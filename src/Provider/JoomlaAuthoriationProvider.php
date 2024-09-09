@@ -32,7 +32,6 @@ declare(strict_types=1);
 namespace Jefferson49\Webtrees\Module\OAuth2Client\Provider;
 
 use Fisharebest\Webtrees\User;
-use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
 use Jefferson49\Webtrees\Module\OAuth2Client\Contracts\AuthorizationProviderInterface;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\GenericProvider;
@@ -48,14 +47,14 @@ class JoomlaAuthoriationProvider extends AbstractAuthoriationProvider implements
 
 
     /**
-     * @param string $base_url
+     * @param string $redirectUri
      * @param array  $options
      * @param array  $collaborators
      */
-    public function __construct(string $base_url, array $options = [], array $collaborators = [])
+    public function __construct(string $redirectUri, array $options = [], array $collaborators = [])
     {
         $options = array_merge($options, [
-            'redirectUri'             => OAuth2Client::getRedirectUrl($base_url),
+            'redirectUri'             => $redirectUri,
 
             //The URLs for access token and ressource owner detail are identical to the authorize URL
             'urlAccessToken'          => $options['urlAuthorize'] ?? '',

@@ -431,7 +431,7 @@ class OAuth2Client extends AbstractModule implements
     }   
 
     /**
-     * Get the redirection URL of the OAuth2 client
+     * Get the redirection URL for OAuth2 clients
      * 
      * @param string base_url  The webtrees base ULR (from config.ini.php)
      * 
