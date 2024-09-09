@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace Jefferson49\Webtrees\Module\OAuth2Client\Provider;
 
+use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\User;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
@@ -46,6 +47,10 @@ abstract class AbstractAuthoriationProvider
     //The authorization provider
     protected AbstractProvider $provider;
 
+    protected const USER_DATA_PRIMARY_KEY   = 'primary_key';
+    protected const USER_DATA_MANDATORY_KEY = 'mandatory_key';
+    protected const USER_DATA_OPTIONAL_KEY  = 'optional_key';
+    protected const USER_DATA_UNUSED_KEY    = 'unused_key';
 
     /**
      * Get the authorization URL
@@ -126,5 +131,35 @@ abstract class AbstractAuthoriationProvider
             'clientSecret',
             'redirectUri',
         ];
+    }
+
+    /**
+     * Returns an array with the webtrees user data keys, which defines if they are primary or mandatory
+     * See class: Fisharebest\Webtrees\User
+     *
+     * @return array   An array with the webtrees user data keys. The value for a key defines if it is primary, mandatory, or optional
+     */
+    public static function getUserKeyInformation() : array {
+        return [
+                'user_name' => static::USER_DATA_PRIMARY_KEY,
+                'real_name' => static::USER_DATA_OPTIONAL_KEY,
+                'email'     => static::USER_DATA_MANDATORY_KEY,
+        ];
+    } 
+
+    /**
+     * Validate the provider
+     *
+     * @return string   Validation error; empty string if no error
+     */
+    public function validate() : string
+    {
+        if (    self::getUserKeyInformation()['user_name'] !== AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY
+            &&  self::getUserKeyInformation()['email']     !== AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY) {
+
+            return I18N::translate('Cannot use the login data of the authorization provider. Neither username nor email is a primary key.');
+        }
+
+        return '';
     }    
 }

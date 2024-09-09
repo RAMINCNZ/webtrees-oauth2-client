@@ -51,6 +51,7 @@ use Fisharebest\Webtrees\Site;
 use Fisharebest\Webtrees\User;
 use Fisharebest\Webtrees\Validator;
 use Jefferson49\Webtrees\Module\OAuth2Client\Factories\AuthorizationProviderFactory;
+use Jefferson49\Webtrees\Module\OAuth2Client\Provider\AbstractAuthoriationProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -116,12 +117,19 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
 
         $provider = (new AuthorizationProviderFactory())->make($provider_name, OAuth2Client::getRedirectUrl($base_url));
 
-        if ($provider === null) return $this->viewResponse(OAuth2Client::viewsNamespace() . '::alert', [
-            'alert_type'   => OAuth2Client::ALERT_DANGER, 
-            'module_name'  => $oauth2_client->title(),
-            'text'         => I18N::translate('The requested authorization provider could not be found') . ': ' . $provider_name,
-        ]);
-        
+        //Check if requested provider is available
+        if ($provider === null) {
+            FlashMessages::addMessage(I18N::translate('The requested authorization provider could not be found') . ': ' . $provider_name, 'danger');
+            return redirect(route(LoginPage::class, ['tree' => $tree, 'url' => $url]));            
+        }
+
+        //Validate the requested provider
+        $validation_result = $provider->validate();
+        if ($validation_result !== '') {
+            FlashMessages::addMessage($validation_result, 'danger');
+            return redirect(route(LoginPage::class, ['tree' => $tree, 'url' => $url]));            
+        }
+
         // If we don't have an authorization code then get one
         if ($code === '') {
 
@@ -173,23 +181,23 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         
         //If no user name or email was retrieved from authorization provider, redirect to login page
         if ($user->userName() === '' OR $user->email() === '') {
-            FlashMessages::addMessage(I18N::translate('No valid user account data received from authorizaton provider. User name or email missing.'), 'danger');
+            FlashMessages::addMessage(I18N::translate('No valid user account data received from authorizaton provider. Username or email missing.'), 'danger');
             return redirect(route(LoginPage::class, ['tree' => $tree, 'url' => $url]));
         }
 
-        $username = $user->userName();
+        $user_name = $user->userName();
 
         //If no real name was received from authorization provider, the user name is chosen as default
-        $realname = $user->realName() !== '' ? $user->realName() : $username;
+        $real_name = $user->realName() !== '' ? $user->realName() : $user_name;
 
-        //Cut user data to max sizes allowed in the webtrees database
-        $username = substr($username, 0, 32);
-        $realname = substr($realname, 0, 64);
-        $email    = substr($user->email(), 0, 64);
-        $password = substr($accessToken->getToken(), 0, 128);
+        //Reduce user data to max length allowed in the webtrees database
+        $user_name = $this->resizeUserData('Username', $user_name, true);
+        $real_name = $this->resizeUserData('Real name', $real_name, true);
+        $email     = $this->resizeUserData('Email address', $user->email(), true);
+        $password  = $this->resizeUserData('Password', $accessToken->getToken(), false);
 
         //If user does not exist already, redirect to registration page based on the authorization provider user data
-        if ($this->user_service->findByIdentifier($username) === null) { 
+        if ($this->user_service->findByIdentifier($user_name) === null) { 
             $title        = MoreI18N::xlate('Request a new user account');
             $show_caution = Site::getPreference('SHOW_REGISTER_CAUTION') === '1';
     
@@ -197,20 +205,27 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
                 'captcha'       => $this->captcha_service->createCaptcha(),
                 'comments'      => I18N::translate('Automatic user registration after sign in with authorization provider'),
                 'email'         => $email,
-                'realname'      => $realname,
+                'realname'      => $real_name,
                 'show_caution'  => $show_caution,
                 'title'         => $title,
                 'tree'          => $tree instanceof Tree ? $tree->name() : null,
-                'username'      => $username,
+                'username'      => $user_name,
                 'password'      => $password,
                 'provider_name' => $provider_name,
             ]);
         }            
 
         //Login
-        //Code from webtrees LoginAction.php
+        //Code from Fisharebest\Webtrees\Http\RequestHandlers\LoginAction
         try {
-            $this->doLogin($username);
+            if ($provider->getUserKeyInformation()['user_name'] === AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY) {
+                $identifyer = $user_name;
+            }
+            else {
+                $identifyer = $email;
+            }
+
+            $this->doLogin($identifyer);
 
             if (Auth::isAdmin() && $this->upgrade_service->isUpgradeAvailable()) {
                 FlashMessages::addMessage(MoreI18N::xlate('A new version of webtrees is available.') . ' <a class="alert-link" href="' . e(route(UpgradeWizardPage::class)) . '">' . MoreI18N::xlate('Upgrade to webtrees %s.', '<span dir="ltr">' . $this->upgrade_service->latestVersion() . '</span>') . '</a>');
@@ -230,34 +245,35 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
     }	
 
     /**
-     * Log in, if we can.  Throw an exception, if we can't.
+     * Log in, if we can. Throw an exception, if we can't.
+     * Code from Fisharebest\Webtrees\Http\RequestHandlers\LoginAction
      *
-     * @param string $username
+     * @param string $identifyer
      *
      * @return void
      * @throws Exception
      */
-    private function doLogin(string $username): void
+    private function doLogin(string $identifyer): void
     {
         if ($_COOKIE === []) {
-            Log::addAuthenticationLog('Login failed (no session cookies): ' . $username);
+            Log::addAuthenticationLog('Login failed (no session cookies): ' . $identifyer);
             throw new Exception(MoreI18N::xlate('You cannot sign in because your browser does not accept cookies.'));
         }
 
-        $user = $this->user_service->findByIdentifier($username);
+        $user = $this->user_service->findByIdentifier($identifyer);
 
         if ($user === null) {
-            Log::addAuthenticationLog('Login failed (no such user/email): ' . $username);
+            Log::addAuthenticationLog('Login failed (no such user/email): ' . $identifyer);
             throw new Exception(MoreI18N::xlate('The username or password is incorrect.'));
         }
 
         if ($user->getPreference(UserInterface::PREF_IS_EMAIL_VERIFIED) !== '1') {
-            Log::addAuthenticationLog('Login failed (not verified by user): ' . $username);
+            Log::addAuthenticationLog('Login failed (not verified by user): ' . $identifyer);
             throw new Exception(MoreI18N::xlate('This account has not been verified. Please check your email for a verification message.'));
         }
 
         if ($user->getPreference(UserInterface::PREF_IS_ACCOUNT_APPROVED) !== '1') {
-            Log::addAuthenticationLog('Login failed (not approved by admin): ' . $username);
+            Log::addAuthenticationLog('Login failed (not approved by admin): ' . $identifyer);
             throw new Exception(MoreI18N::xlate('This account has not been approved. Please wait for an administrator to approve it.'));
         }
 
@@ -268,5 +284,33 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         Session::put('language', Auth::user()->getPreference(UserInterface::PREF_LANGUAGE));
         Session::put('theme', Auth::user()->getPreference(UserInterface::PREF_THEME));
         I18N::init(Auth::user()->getPreference(UserInterface::PREF_LANGUAGE));
+    }
+
+    /**
+     * Reduce user data to the max size allowed in the webtrees database
+     *
+     * @param string $name                Name of the user data, e.g. user_name, email, ...
+     * @param string $value               Value of the user data
+     * @param bool   $add_flash_message   Whether to add a flash message
+     *
+     * @return string
+     */
+    private function resizeUserData(string $name, string $value, bool $add_flash_message = false): string
+    {
+        if ($name === 'Username') {
+            $length = 32;
+        }
+        elseif ($name === 'Password') {
+            $length = 128;
+        }
+        else {
+            $length = 64;
+        }
+
+        if ($add_flash_message && Strlen($value) > $length) {
+            FlashMessages::addMessage(I18N::translate('The length of the "%s" exceeded the maximum length of %s and was reduced to %s characters.', MoreI18N::xlate($name), $length, $length));
+        }
+
+        return substr($value, 0, $length);
     }
 }
