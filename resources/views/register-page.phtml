@@ -40,109 +40,48 @@ $provider_authorization = isset($provider_name) ? true : false;
     <?= $captcha ?>
 
     <?php if ($provider_authorization) : ?>
-        <div class="row mb-3"><?= view('icons/spacer') ?></div>
         <div class="h4">
             <?= I18N::translate('Register with') .  ' ' . $provider_name . ' - ' . I18N::translate('User account data from authorization provider cannot be changed') ?>	
         </div>
-        <?php if ($realname !== '') : ?>
-            <div class="row">
-                <label class="col-sm-3 col-form-label wt-page-options-label" for="realname">
-                    <?= MoreI18N::xlate('Real name') ?>
-                </label>
-                <div class="col-sm-9 wt-page-options-value">
-                    <input type="hidden" name="realname" id="realname" value="<?= e($realname) ?>">
-                    <div class="form-control">
-                        <?= e($realname) ?>
-                    </div>
-                </div>
-            </div>
-        <?php endif ?>              
+    <?php endif ?>
 
-        <div class="row">
-            <label class="col-sm-3 col-form-label wt-page-options-label" for="email">
-                <?= MoreI18N::xlate('Email address') ?>
-            </label>
-            <div class="col-sm-9 wt-page-options-value">
-                <input type="hidden" name="email" id="email" value="<?= e($email) ?>">
-                <div class="form-control">
-                    <?= e($email) ?>
-                </div>
-                <div class="form-text">
-                    <?= MoreI18N::xlate('This email address will be used to send password reminders, website notifications, and messages from other family members who are registered on the website.') ?>
-                </div>
+    <div class="row">
+        <label class="col-sm-3 col-form-label wt-page-options-label" for="realname">
+            <?= MoreI18N::xlate('Real name') ?>
+        </label>
+        <div class="col-sm-9 wt-page-options-value">
+            <input class="form-control" type="text" id="realname" name="realname" required="required" maxlength="64" value="<?= e($realname) ?>" autocomplete="name" <?= $provider_authorization ? 'disabled' : '' ?>>
+            <div class="form-text">
+                <?= MoreI18N::xlate('This is your real name, as you would like it displayed on screen.') ?>
             </div>
         </div>
+    </div>
 
-        <div class="row">
-            <label class="col-sm-3 col-form-label wt-page-options-label" for="username">
-                <?= MoreI18N::xlate('Username') ?>
-            </label>
-            <div class="col-sm-9 wt-page-options-value">
-                <input type="hidden" name="username" id="username" value="<?= e($username) ?>">
-                <div class="form-control">
-                    <?= e($username) ?>
-                </div>
-            </div>
-        </div>        
-
-        <input type="hidden" name="password" id="password" value="<?= e($password) ?>">
-
-        <div class="row mb-3"><?= view('icons/spacer') ?></div>        
-        <div class="h4">
-           <?= I18N::translate('Further registration data - Please complete and continue') ?>
-        </div>
-        
-        <?php if ($realname === '') : ?>
-            <div class="row">
-                <label class="col-sm-3 col-form-label wt-page-options-label" for="realname">
-                    <?= MoreI18N::xlate('Real name') ?>
-                </label>
-                <div class="col-sm-9 wt-page-options-value">
-                    <input class="form-control" type="text" id="realname" name="realname" required="required" maxlength="64" value="<?= e($realname) ?>" autocomplete="name">
-                    <div class="form-text">
-                        <?= MoreI18N::xlate('This is your real name, as you would like it displayed on screen.') ?>
-                    </div>
-                </div>
-            </div>   
-        <?php endif ?>
-
-    <?php else : ?>
-        <div class="row">
-            <label class="col-sm-3 col-form-label wt-page-options-label" for="realname">
-                <?= MoreI18N::xlate('Real name') ?>
-            </label>
-            <div class="col-sm-9 wt-page-options-value">
-                <input class="form-control" type="text" id="realname" name="realname" required="required" maxlength="64" value="<?= e($realname) ?>" autocomplete="name">
-                <div class="form-text">
-                    <?= MoreI18N::xlate('This is your real name, as you would like it displayed on screen.') ?>
-                </div>
+    <div class="row">
+        <label class="col-sm-3 col-form-label wt-page-options-label" for="email">
+            <?= MoreI18N::xlate('Email address') ?>
+        </label>
+        <div class="col-sm-9 wt-page-options-value">
+            <input class="form-control" type="email" id="email" name="email" required="required" maxlength="64" value="<?= e($email) ?>" autocomplete="email" <?= $provider_authorization ? 'disabled' : '' ?>>
+            <div class="form-text">
+                <?= MoreI18N::xlate('This email address will be used to send password reminders, website notifications, and messages from other family members who are registered on the website.') ?>
             </div>
         </div>
+    </div>
 
-        <div class="row">
-            <label class="col-sm-3 col-form-label wt-page-options-label" for="email">
-                <?= MoreI18N::xlate('Email address') ?>
-            </label>
-            <div class="col-sm-9 wt-page-options-value">
-                <input class="form-control" type="email" id="email" name="email" required="required" maxlength="64" value="<?= e($email) ?>" autocomplete="email">
-                <div class="form-text">
-                    <?= MoreI18N::xlate('This email address will be used to send password reminders, website notifications, and messages from other family members who are registered on the website.') ?>
-                </div>
+    <div class="row">
+        <label class="col-sm-3 col-form-label wt-page-options-label" for="username">
+            <?= MoreI18N::xlate('Username') ?>
+        </label>
+        <div class="col-sm-9 wt-page-options-value">
+            <input class="form-control" type="text" id="username" name="username" required="required" maxlength="32" value="<?= e($username) ?>" autocomplete="username" <?= $provider_authorization ? 'disabled' : '' ?>>
+            <div class="form-text">
+                <?= MoreI18N::xlate('Usernames are case-insensitive and ignore accented letters, so that “chloe”, “chloë”, and “Chloe” are considered to be the same.') ?>
             </div>
         </div>
+    </div>
 
-        <div class="row">
-            <label class="col-sm-3 col-form-label wt-page-options-label" for="username">
-                <?= MoreI18N::xlate('Username') ?>
-            </label>
-            <div class="col-sm-9 wt-page-options-value">
-                <input class="form-control" type="text" id="username" name="username" required="required" maxlength="32" value="<?= e($username) ?>" autocomplete="username">
-                <div class="form-text">
-                    <?= MoreI18N::xlate('Usernames are case-insensitive and ignore accented letters, so that “chloe”, “chloë”, and “Chloe” are considered to be the same.') ?>
-                </div>
-            </div>
-        </div>
-
+    <?php if (!$provider_authorization) : ?>
         <div class="row">
             <label class="col-sm-3 col-form-label wt-page-options-label" for="password">
                 <?= MoreI18N::xlate('Password') ?>
@@ -155,6 +94,13 @@ $provider_authorization = isset($provider_name) ? true : false;
             </div>
         </div>
     <?php endif ?>
+
+    <?php if ($provider_authorization) : ?>
+        <div class="row mb-3"><?= view('icons/spacer') ?></div>
+        <div class="h4">
+            <?= I18N::translate('Further registration data - Please complete and continue') ?>
+        </div>
+    <?php endif ?>        
 
     <div class="row">
         <label class="col-sm-3 col-form-label wt-page-options-label" for="comment">
@@ -191,5 +137,3 @@ $provider_authorization = isset($provider_name) ? true : false;
     </script>
     <?php View::endpush() ?>
 <?php endif ?>
-
-

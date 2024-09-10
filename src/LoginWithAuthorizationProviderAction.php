@@ -36,6 +36,7 @@ use Cissee\WebtreesExt\MoreI18N;
 use Fisharebest\Webtrees\Auth;
 use Fisharebest\Webtrees\Contracts\UserInterface;
 use Fisharebest\Webtrees\FlashMessages;
+use Fisharebest\Webtrees\Http\Exceptions\HttpNotFoundException;
 use Fisharebest\Webtrees\Http\RequestHandlers\HomePage;
 use Fisharebest\Webtrees\Http\RequestHandlers\LoginPage;
 use Fisharebest\Webtrees\Http\ViewResponseTrait;
@@ -198,9 +199,15 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
 
         //If user does not exist already, redirect to registration page based on the authorization provider user data
         if ($this->user_service->findByIdentifier($user_name) === null) { 
+
             $title        = MoreI18N::xlate('Request a new user account');
             $show_caution = Site::getPreference('SHOW_REGISTER_CAUTION') === '1';
-    
+
+            //Check if registration is allowed
+            if (Site::getPreference('USE_REGISTRATION_MODULE') !== '1') {
+                throw new HttpNotFoundException();
+            }
+                
             return $this->viewResponse(OAuth2Client::viewsNamespace() . '::register-page', [
                 'captcha'       => $this->captcha_service->createCaptcha(),
                 'comments'      => I18N::translate('Automatic user registration after sign in with authorization provider'),
