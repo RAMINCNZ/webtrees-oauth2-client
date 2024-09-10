@@ -84,9 +84,15 @@ class GithubAuthoriationProvider extends AbstractAuthoriationProvider implements
 
         return new User(
             (int) $resourceOwner->getId() ?? '',
-            $user_data['login']           ?? '', //Default has to be empty, because empty username needs to be detected as error
-            $resourceOwner->getName()     ?? $user_data['login'] ?? '',
-            $resourceOwner->getEmail()    ?? '', //Default has to be empty, because empty email needs to be detected as error
+
+            //User name: Default has to be empty, because empty username needs to be detected as error
+            $user_data['login']           ?? '',
+
+            //Real name: We take user name as default for real name                         
+            $resourceOwner->getName()     ?? ($user_data['login'] ?? ''),
+
+            //Email: Default has to be empty, because empty email needs to be detected as error
+            $resourceOwner->getEmail()    ?? '',                    
         );
     }      
 
@@ -111,9 +117,9 @@ class GithubAuthoriationProvider extends AbstractAuthoriationProvider implements
      */
     public static function getUserKeyInformation() : array {
         return [
-            'user_name' => static::USER_DATA_PRIMARY_KEY,
-            'real_name' => static::USER_DATA_OPTIONAL_KEY,
-            'email'     => static::USER_DATA_MANDATORY_KEY,
+            'user_name' => self::USER_DATA_PRIMARY_KEY,
+            'real_name' => self::USER_DATA_OPTIONAL_KEY,
+            'email'     => self::USER_DATA_MANDATORY_KEY,
         ];
     }
 }

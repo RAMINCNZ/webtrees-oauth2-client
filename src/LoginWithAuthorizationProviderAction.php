@@ -164,7 +164,7 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
                 ]);
         
                 // Using the access token, we can get the user data of the resource owner        
-                $user = $provider->getUserData($accessToken);
+                $user_data_from_provider = $provider->getUserData($accessToken);
 
             } catch (IdentityProviderException $e) {
 
@@ -181,20 +181,20 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         $url  = Session::get(OAuth2Client::activeModuleName() . 'url', route(HomePage::class));
         
         //If no user name or email was retrieved from authorization provider, redirect to login page
-        if ($user->userName() === '' OR $user->email() === '') {
+        if ($user_data_from_provider->userName() === '' OR $user_data_from_provider->email() === '') {
             FlashMessages::addMessage(I18N::translate('No valid user account data received from authorizaton provider. Username or email missing.'), 'danger');
             return redirect(route(LoginPage::class, ['tree' => $tree, 'url' => $url]));
         }
 
-        $user_name = $user->userName();
+        $user_name = $user_data_from_provider->userName();
 
         //If no real name was received from authorization provider, the user name is chosen as default
-        $real_name = $user->realName() !== '' ? $user->realName() : $user_name;
+        $real_name = $user_data_from_provider->realName() !== '' ? $user_data_from_provider->realName() : $user_name;
 
         //Reduce user data to max length allowed in the webtrees database
         $user_name = $this->resizeUserData('Username', $user_name, true);
         $real_name = $this->resizeUserData('Real name', $real_name, true);
-        $email     = $this->resizeUserData('Email address', $user->email(), true);
+        $email     = $this->resizeUserData('Email address', $user_data_from_provider->email(), true);
         $password  = $this->resizeUserData('Password', $accessToken->getToken(), false);
 
         //If user does not exist already, redirect to registration page based on the authorization provider user data
@@ -232,7 +232,10 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
                 $identifyer = $email;
             }
 
-            $this->doLogin($identifyer);
+            $user = $this->doLogin($identifyer);
+
+            //Update the user with the data received from the provider
+            $provider->updateUserData($user, $user_data_from_provider);
 
             if (Auth::isAdmin() && $this->upgrade_service->isUpgradeAvailable()) {
                 FlashMessages::addMessage(MoreI18N::xlate('A new version of webtrees is available.') . ' <a class="alert-link" href="' . e(route(UpgradeWizardPage::class)) . '">' . MoreI18N::xlate('Upgrade to webtrees %s.', '<span dir="ltr">' . $this->upgrade_service->latestVersion() . '</span>') . '</a>');
@@ -255,12 +258,14 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
      * Log in, if we can. Throw an exception, if we can't.
      * Code from Fisharebest\Webtrees\Http\RequestHandlers\LoginAction
      *
-     * @param string $identifyer
+     * @param string $identifyer   An identifier for the user; either user_name or email
      *
      * @return void
      * @throws Exception
+     * 
+     * @return User                The logged in user
      */
-    private function doLogin(string $identifyer): void
+    private function doLogin(string $identifyer): User
     {
         if ($_COOKIE === []) {
             Log::addAuthenticationLog('Login failed (no session cookies): ' . $identifyer);
@@ -295,6 +300,8 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         Session::put('theme', Auth::user()->getPreference(UserInterface::PREF_THEME));
 
         I18N::init(Auth::user()->getPreference(UserInterface::PREF_LANGUAGE));
+
+        return $user;
     }
 
     /**
@@ -323,5 +330,5 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         }
 
         return substr($value, 0, $length);
-    }
+    }   
 }

@@ -141,9 +141,9 @@ abstract class AbstractAuthoriationProvider
      */
     public static function getUserKeyInformation() : array {
         return [
-                'user_name' => static::USER_DATA_PRIMARY_KEY,
-                'real_name' => static::USER_DATA_OPTIONAL_KEY,
-                'email'     => static::USER_DATA_MANDATORY_KEY,
+                'user_name' => self::USER_DATA_PRIMARY_KEY,
+                'real_name' => self::USER_DATA_OPTIONAL_KEY,
+                'email'     => self::USER_DATA_MANDATORY_KEY,
         ];
     } 
 
@@ -154,6 +154,7 @@ abstract class AbstractAuthoriationProvider
      */
     public function validate() : string
     {
+        //Validate the user data definition of the provider
         if (!in_array(AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY, static::getUserKeyInformation())) {
             return I18N::translate('Cannot use the login data of the authorization provider. No primary key defined for the user data.');
         }
@@ -168,4 +169,32 @@ abstract class AbstractAuthoriationProvider
  
         return '';
     }    
+
+    /**
+     * Update a webtrees user according to the user data received from the authorization provider
+     *
+     * @param User                           $user                     the user to be updated
+     * @param User                           $user_data_from_provider  user data received from an authorization provider
+     *
+     * @return void
+     */
+    public static function updateUserData(User $user, User $user_data_from_provider): void {
+
+        foreach(static::getUserKeyInformation() as $key => $usage) {
+
+            //Update any user data if not primary key
+            if ($usage !== AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY) {
+
+                if ($key === 'user_name' && $user->userName() !== $user_data_from_provider->userName()) {
+                    $user->setUserName($user_data_from_provider->userName());
+                }
+                if ($key === 'email' && $user->email() !== $user_data_from_provider->email()) {
+                    $user->setEmail($user_data_from_provider->email());
+                }
+                if ($key === 'real_name' && $user->realName() !== $user_data_from_provider->realName()) {
+                    $user->setRealName($user_data_from_provider->realName());
+                }
+            }
+        }
+    }     
 }

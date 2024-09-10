@@ -84,10 +84,15 @@ class GoogleAuthoriationProvider extends AbstractAuthoriationProvider implements
         return new User(            
             (int) $resourceOwner->getId() ?? '',
 
-            //We take email as user name, because user name is not defined for Google
-            $resourceOwner->getEmail()    ?? '', //Default has to be empty, because empty username needs to be detected as error
-            $resourceOwner->getName()     ?? '',
-            $resourceOwner->getEmail()    ?? '', //Default has to be empty, because empty email needs to be detected as error
+            //User name: We take email as user name, because user name is not defined for Google
+            //           Default has to be empty, because empty username needs to be detected as error
+            $resourceOwner->getEmail()    ?? '', 
+            
+            //Real name: If no name is provided, we take email as default
+            $resourceOwner->getName()     ?? $resourceOwner->getEmail(), 
+            
+            //Email: Default has to be empty, because empty email needs to be detected as error
+            $resourceOwner->getEmail()    ?? '',                         
         );
     }      
 
@@ -112,9 +117,9 @@ class GoogleAuthoriationProvider extends AbstractAuthoriationProvider implements
      */
     public static function getUserKeyInformation() : array {
         return [
-                'user_name' => static::USER_DATA_OPTIONAL_KEY,
-                'real_name' => static::USER_DATA_OPTIONAL_KEY,
-                'email'     => static::USER_DATA_PRIMARY_KEY,
+                'user_name' => self::USER_DATA_OPTIONAL_KEY,
+                'real_name' => self::USER_DATA_OPTIONAL_KEY,
+                'email'     => self::USER_DATA_PRIMARY_KEY,
         ];
     }    
 }
