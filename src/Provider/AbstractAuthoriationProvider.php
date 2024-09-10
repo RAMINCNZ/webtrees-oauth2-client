@@ -154,12 +154,18 @@ abstract class AbstractAuthoriationProvider
      */
     public function validate() : string
     {
-        if (    self::getUserKeyInformation()['user_name'] !== AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY
-            &&  self::getUserKeyInformation()['email']     !== AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY) {
+        if (!in_array(AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY, static::getUserKeyInformation())) {
+            return I18N::translate('Cannot use the login data of the authorization provider. No primary key defined for the user data.');
+        }
+        elseif (Array_count_values(static::getUserKeyInformation())[AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY] > 1) {
+            return I18N::translate('Cannot use the login data of the authorization provider. More than one primary key defined for the user data.');
+        }
+        elseif (static::getUserKeyInformation()['user_name'] !== AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY
+            &&  static::getUserKeyInformation()['email']     !== AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY) {
 
             return I18N::translate('Cannot use the login data of the authorization provider. Neither username nor email is a primary key.');
         }
-
+ 
         return '';
     }    
 }
