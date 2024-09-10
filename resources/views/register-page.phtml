@@ -43,6 +43,11 @@ $provider_authorization = isset($provider_name) ? true : false;
         <div class="h4">
             <?= I18N::translate('Register with') .  ' ' . $provider_name . ' - ' . I18N::translate('User account data from authorization provider cannot be changed') ?>	
         </div>
+
+        <input type="hidden" name="username" value="<?= e($username) ?>">
+        <input type="hidden" name="realname" value="<?= e($realname) ?>">
+        <input type="hidden" name="email"    value="<?= e($email)    ?>">
+        <input type="hidden" name="password" value="<?= e($password) ?>">
     <?php endif ?>
 
     <div class="row">
