@@ -97,6 +97,9 @@ class OAuth2Client extends AbstractModule implements
 	public const ALERT_DANGER = 'alert_danger';
 	public const ALERT_SUCCESS = 'alert_success';
 
+    //User preferences
+    public const USER_PREF_LOGIN_WITH_OAUTH2_PROVIDER = 'login_with_oauth2_provider';
+
 
    /**
      * OAuth2Client constructor.
@@ -128,6 +131,10 @@ class OAuth2Client extends AbstractModule implements
         //Register a custom view for the registration page
         View::registerCustomView('::register-page', self::viewsNamespace() . '::register-page');
         $this->custom_view_list->add(self::viewsNamespace() . '::register-page');
+
+        //Register a custom view for the edit account page
+        View::registerCustomView('::edit-account-page', self::viewsNamespace() . '::edit-account-page');
+        $this->custom_view_list->add(self::viewsNamespace() . '::edit-account-page');
 
         //Register a route for the communication with the authorization provider
         $router = Registry::routeFactory()->routeMap();                 

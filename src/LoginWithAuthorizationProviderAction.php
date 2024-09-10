@@ -288,8 +288,12 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         Log::addAuthenticationLog('Login: ' . Auth::user()->userName() . '/' . Auth::user()->realName());
         Auth::user()->setPreference(UserInterface::PREF_TIMESTAMP_ACTIVE, (string) time());
 
+        //Save OAuth2 login status to user preferences
+        $user->setPreference(OAuth2Client::USER_PREF_LOGIN_WITH_OAUTH2_PROVIDER, '1');
+
         Session::put('language', Auth::user()->getPreference(UserInterface::PREF_LANGUAGE));
         Session::put('theme', Auth::user()->getPreference(UserInterface::PREF_THEME));
+
         I18N::init(Auth::user()->getPreference(UserInterface::PREF_LANGUAGE));
     }
 
