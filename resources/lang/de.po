@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-09-09 15:13+0200\n"
-"PO-Revision-Date: 2024-09-09 15:13+0200\n"
+"POT-Creation-Date: 2024-09-10 17:13+0200\n"
+"PO-Revision-Date: 2024-09-10 17:14+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -15,42 +15,37 @@ msgstr ""
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: src/LoginWithAuthorizationProviderAction.php:122
+#: src/LoginWithAuthorizationProviderAction.php:123
 msgid "The requested authorization provider could not be found"
-msgstr "Der angeforderte Authorisierungsanbieter konnte nicht gefunden werden"
+msgstr "Der angeforderte Autorisierungsanbieter konnte nicht gefunden werden"
 
-#: src/LoginWithAuthorizationProviderAction.php:156
+#: src/LoginWithAuthorizationProviderAction.php:157
 msgid "Invalid state in communication with authorization provider."
 msgstr ""
-"Ungültiger Zustand in der Kommunikation mit dem Authorisierungsanbieter."
+"Ungültiger Zustand in der Kommunikation mit dem Autorisierungsanbieter."
 
-#: src/LoginWithAuthorizationProviderAction.php:174
+#: src/LoginWithAuthorizationProviderAction.php:175
 msgid ""
 "Failed to get the access token or the user details from the authorization "
 "provider"
 msgstr ""
 "Fehler beim Empfang des Zugriffs-Tokens oder der Benutzer-Daten vom "
-"Authorisierungsanbieter"
+"Autorisierungsanbieter"
 
-#: src/LoginWithAuthorizationProviderAction.php:184
-#, fuzzy
-#| msgid ""
-#| "No valid user account data received from authorizaton provider. User name "
-#| "or email missing."
+#: src/LoginWithAuthorizationProviderAction.php:185
 msgid ""
 "No valid user account data received from authorizaton provider. Username or "
 "email missing."
 msgstr ""
-"Vom Authorisierungsanbieter wurden keine validen Daten empfangen. Benutzer-"
+"Vom Autorisierungsanbieter wurden keine validen Daten empfangen. Benutzer-"
 "Name oder Email fehlt."
 
-#: src/LoginWithAuthorizationProviderAction.php:206
+#: src/LoginWithAuthorizationProviderAction.php:213
 msgid "Automatic user registration after sign in with authorization provider"
 msgstr ""
-"Automatische Benutzer-Registrierung nach Einloggen mit "
-"Authorisierungsanbieter"
+"Automatische Benutzer-Registrierung nach Einloggen mit Autorisierungsanbieter"
 
-#: src/LoginWithAuthorizationProviderAction.php:311
+#: src/LoginWithAuthorizationProviderAction.php:322
 #, php-format
 msgid ""
 "The length of the \"%s\" exceeded the maximum length of %s and was reduced "
@@ -59,22 +54,22 @@ msgstr ""
 "Die Länge der/des \"%s\" überschreitet die maximale Länge von %s und wurde "
 "daher auf %s Zeichen gekürzt."
 
-#: src/OAuth2Client.php:148
+#: src/OAuth2Client.php:163
 msgid "OAuth2 Client"
 msgstr "OAuth2 Client"
 
-#: src/OAuth2Client.php:161
+#: src/OAuth2Client.php:176
 msgid "A custom module to implement a OAuth2 client for webtrees."
 msgstr ""
 "Ein benutzerspezifisches Modul, welches einen OAuth2 Client für webtrees zur "
 "Verfügung stellt."
 
-#: src/OAuth2Client.php:339
+#: src/OAuth2Client.php:354
 #, php-format
 msgid "The preferences for the module \"%s\" were updated."
 msgstr "Die Einstellungen für das Modul \"%s\" wurden aktualisiert."
 
-#: src/OAuth2Client.php:362
+#: src/OAuth2Client.php:377
 #, php-format
 msgid ""
 "The preferences for the custom module \"%s\" were sucessfully updated to the "
@@ -83,7 +78,7 @@ msgstr ""
 "Die Einstellungen für das benutzerdefinierte Modul \"%s\" wurden für die "
 "neue Modul-Version %s aktualisiert."
 
-#: src/OAuth2Client.php:394
+#: src/OAuth2Client.php:409
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -97,7 +92,7 @@ msgstr ""
 "deaktivieren, weil die identische Funktion ebenfalls im Modul %s integriert "
 "ist."
 
-#: src/OAuth2Client.php:399
+#: src/OAuth2Client.php:414
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -110,7 +105,7 @@ msgstr ""
 "beide Module die gleiche Custom View \"%s\" registriert haben. Es wird "
 "dringend empfohlen eines der beiden Module zu deaktivieren."
 
-#: src/OAuth2Client.php:423
+#: src/OAuth2Client.php:438
 #, php-format
 msgid ""
 "The custom module view \"%s\" is not registered as replacement for the "
@@ -130,7 +125,7 @@ msgid ""
 "Cannot use the login data of the authorization provider. Neither username "
 "nor email is a primary key."
 msgstr ""
-"Die Login-Daten vom Authorisierungs-Anbieter können nicht genutzt werden. "
+"Die Login-Daten vom Autorisierungsanbieter können nicht genutzt werden. "
 "Weder Benutzername noch Email sind als verbindliche Primärschlüssel "
 "vorgesehen."
 
@@ -138,20 +133,48 @@ msgstr ""
 msgid "Custom module"
 msgstr "Benutzerdefiniertes Modul"
 
-#: resources/views/login-with-provider.phtml:38
-msgid "Sign in with authorization provider"
-msgstr "Mit Authorisierungsanbieter einloggen"
+#: resources/views/edit-account-page.phtml:38
+msgid "Signed in in with"
+msgstr "Anmelden mit"
 
-#: resources/views/register-page.phtml:45
+#: resources/views/edit-account-page.phtml:38
+#: resources/views/register-page.phtml:44
+msgid "User account data from authorization provider cannot be changed"
+msgstr "Benutzer-Daten vom Autorisierungsanbieter können nicht geändert werden"
+
+#: resources/views/login-with-provider.phtml:38
+#: resources/views/password-request-page.phtml:49
+msgid "Sign in with authorization provider"
+msgstr "Mit Autorisierungsanbieter anmelden"
+
+#: resources/views/password-request-page.phtml:52
+msgid ""
+"If you sign in with an authorization provider, your password cannot be "
+"changed within webtrees. If you request a new password from webtrees, you "
+"will receive an email. However, the included link to create a new passwort "
+"will not work."
+msgstr ""
+"Wenn Sie sich mit einem Autorisierungsanbieter anmelden, kann Ihr Passwort "
+"nicht innerhalb von webtrees geändert werden. Wenn Sie ein neues Passwort "
+"von webtrees anfordern, erhalten Sie zwar ein Email. Allerdings wird der "
+"enthaltene Link zur Erzeugung eines neuen Passworts nicht funktionieren."
+
+#: resources/views/password-reset-page.phtml:32
+#, php-format
+msgid ""
+"The request to reset the passwort belongs to a user, who signs in with %s. "
+"The password is managed by the authorization provider (%s) and cannot be "
+"changed within webtrees."
+msgstr ""
+"Die Anfrage zum Rücksetzen des Passworts betrifft einen Benutzer, welcher "
+"sich mit %s anmeldet. Das Passwort wird vom Autorisierungsanbieter (%s) "
+"verwaltet und kann nicht innerhalb von webtrees geändert werden."
+
+#: resources/views/register-page.phtml:44
 msgid "Register with"
 msgstr "Registrierung mit"
 
-#: resources/views/register-page.phtml:45
-msgid "User account data from authorization provider cannot be changed"
-msgstr ""
-"Benutzer-Daten vom Authorisierungsanbieter können nicht geändert werden"
-
-#: resources/views/register-page.phtml:92
+#: resources/views/register-page.phtml:101
 msgid "Further registration data - Please complete and continue"
 msgstr "Weitere Registrierungsdaten - Bitte vervollständigen und fortsetzen"
 
@@ -173,8 +196,8 @@ msgid ""
 "with \"https://\"."
 msgstr ""
 "Webtrees unterstützt aktuell kein HTTPS-Protokoll. Beim Einloggen mit "
-"Authorisierungs-Anbietern wird dringend empfohlen, HTTPS zu nutzen, um die "
-"Kommunikation mit dem Authorisierungs-Anbieter zu verschlüsseln. Wenn Ihr "
+"Autorisierungsanbietern wird dringend empfohlen, HTTPS zu nutzen, um die "
+"Kommunikation mit dem Autorisierungsanbieter zu verschlüsseln. Wenn Ihr "
 "Server das Protokoll unterstützt, kann HTTPS durch Ändern von \"base_url\" "
 "in der webtrees-Datei \"config.ini.php\" aktiviert werden. Aktuell startet "
 "\"base_url\" nicht mit \"https://\"."
@@ -187,25 +210,30 @@ msgstr ""
 "Um geänderte Einstellungen beim Herunterladen/Hochladen zu nutzen, müssen "
 "die Einstellungen zunächst gespeichert werden."
 
-#, fuzzy, php-format
-#~| msgid "Sign in with authorization provider"
-#~ msgid "%s not received from authoriuation provider"
-#~ msgstr "Mit Authorisierungsanbieter einloggen"
-
 #, fuzzy
 #~| msgid "Folder name"
 #~ msgid "Username"
 #~ msgstr "Ordnername"
 
-#, fuzzy, php-format
-#~| msgid "Save on the webtrees server"
-#~ msgid "Upgrade to webtrees %s."
-#~ msgstr "Auf dem webtrees Server speichern"
-
 #, fuzzy
 #~| msgid "Default file name"
 #~ msgid "Real name"
 #~ msgstr "Voreinstellung Dateiname"
+
+#, fuzzy
+#~| msgid "Default ending"
+#~ msgid "Default individual"
+#~ msgstr "Voreinstellung Zeilenenden"
+
+#, fuzzy, php-format
+#~| msgid "Sign in with authorization provider"
+#~ msgid "%s not received from authoriuation provider"
+#~ msgstr "Mit Authorisierungsanbieter einloggen"
+
+#, fuzzy, php-format
+#~| msgid "Save on the webtrees server"
+#~ msgid "Upgrade to webtrees %s."
+#~ msgstr "Auf dem webtrees Server speichern"
 
 #, php-format
 #~ msgid ""
@@ -954,9 +982,6 @@ msgstr ""
 
 #~ msgid "Default encoding"
 #~ msgstr "Voreinstellung Zeichencodierung"
-
-#~ msgid "Default ending"
-#~ msgstr "Voreinstellung Zeilenenden"
 
 #~ msgid ""
 #~ "Select the default ending. This ending will be chosen if no specific "

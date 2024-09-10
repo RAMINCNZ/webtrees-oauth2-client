@@ -136,6 +136,14 @@ class OAuth2Client extends AbstractModule implements
         View::registerCustomView('::edit-account-page', self::viewsNamespace() . '::edit-account-page');
         $this->custom_view_list->add(self::viewsNamespace() . '::edit-account-page');
 
+        //Register a custom view for the password request page
+        View::registerCustomView('::password-request-page', self::viewsNamespace() . '::password-request-page');
+        $this->custom_view_list->add(self::viewsNamespace() . '::password-request-page');
+
+        //Register a custom view for the password reset page
+        View::registerCustomView('::password-reset-page', self::viewsNamespace() . '::password-reset-page');
+        $this->custom_view_list->add(self::viewsNamespace() . '::password-reset-page');
+
         //Register a route for the communication with the authorization provider
         $router = Registry::routeFactory()->routeMap();                 
         $router
