@@ -88,8 +88,8 @@ class GithubAuthoriationProvider extends AbstractAuthoriationProvider implements
             //User name: Default has to be empty, because empty username needs to be detected as error
             $user_data['login']           ?? '',
 
-            //Real name: We take user name as default for real name                         
-            $resourceOwner->getName()     ?? ($user_data['login'] ?? ''),
+            //Real name:                         
+            $resourceOwner->getName()     ?? '',
 
             //Email: Default has to be empty, because empty email needs to be detected as error
             $resourceOwner->getEmail()    ?? '',                    

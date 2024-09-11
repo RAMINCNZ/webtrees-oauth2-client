@@ -179,26 +179,32 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
 
         $tree = Session::get(OAuth2Client::activeModuleName() . 'tree', null);
         $url  = Session::get(OAuth2Client::activeModuleName() . 'url', route(HomePage::class));
+
+        //Reduce user data from provider to max length allowed in the webtrees database
+        $user_name = $this->resizeUserData('Username', $user_data_from_provider->userName(), true);
+        $real_name = $this->resizeUserData('Real name', $user_data_from_provider->realName(), true);
+        $email     = $this->resizeUserData('Email address', $user_data_from_provider->email(), true);
+        $password  = $this->resizeUserData('Password', $accessToken->getToken(), false);
         
-        //If no user name or email was retrieved from authorization provider, redirect to login page
-        if ($user_data_from_provider->userName() === '' OR $user_data_from_provider->email() === '') {
+        //Determine identifier (user_name or email), which is used for login
+        if ($provider->getUserKeyInformation()['user_name'] === AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY) {
+            $identifyer = $user_name;
+        }
+        elseif ($provider->getUserKeyInformation()['email'] === AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY) {
+            $identifyer = $email;
+        }
+        else {
+            $identifyer = '';
+        }        
+
+        //If neither user name nor email was retrieved from authorization provider, redirect to login page
+        if ($identifyer === '') {
             FlashMessages::addMessage(I18N::translate('No valid user account data received from authorizaton provider. Username or email missing.'), 'danger');
             return redirect(route(LoginPage::class, ['tree' => $tree, 'url' => $url]));
         }
 
-        $user_name = $user_data_from_provider->userName();
-
-        //If no real name was received from authorization provider, the user name is chosen as default
-        $real_name = $user_data_from_provider->realName() !== '' ? $user_data_from_provider->realName() : $user_name;
-
-        //Reduce user data to max length allowed in the webtrees database
-        $user_name = $this->resizeUserData('Username', $user_name, true);
-        $real_name = $this->resizeUserData('Real name', $real_name, true);
-        $email     = $this->resizeUserData('Email address', $user_data_from_provider->email(), true);
-        $password  = $this->resizeUserData('Password', $accessToken->getToken(), false);
-
         //If user does not exist already, redirect to registration page based on the authorization provider user data
-        if ($this->user_service->findByIdentifier($user_name) === null) { 
+        if ($this->user_service->findByIdentifier($identifyer) === null) { 
 
             $title        = MoreI18N::xlate('Request a new user account');
             $show_caution = Site::getPreference('SHOW_REGISTER_CAUTION') === '1';
@@ -225,13 +231,6 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         //Login
         //Code from Fisharebest\Webtrees\Http\RequestHandlers\LoginAction
         try {
-            if ($provider->getUserKeyInformation()['user_name'] === AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY) {
-                $identifyer = $user_name;
-            }
-            else {
-                $identifyer = $email;
-            }
-
             $user = $this->doLogin($identifyer);
 
             //Update the user with the data received from the provider

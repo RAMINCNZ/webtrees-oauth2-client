@@ -84,12 +84,11 @@ class GoogleAuthoriationProvider extends AbstractAuthoriationProvider implements
         return new User(            
             (int) $resourceOwner->getId() ?? '',
 
-            //User name: We take email as user name, because user name is not defined for Google
-            //           Default has to be empty, because empty username needs to be detected as error
-            $resourceOwner->getEmail()    ?? '', 
+            //User name: Empty, because not provided by Google
+            '', 
             
-            //Real name: If no name is provided, we take email as default
-            $resourceOwner->getName()     ?? $resourceOwner->getEmail(), 
+            //Real name:
+            $resourceOwner->getName()     ?? '', 
             
             //Email: Default has to be empty, because empty email needs to be detected as error
             $resourceOwner->getEmail()    ?? '',                         

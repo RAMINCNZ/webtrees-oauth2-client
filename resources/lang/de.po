@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-09-10 17:13+0200\n"
-"PO-Revision-Date: 2024-09-10 17:14+0200\n"
+"POT-Creation-Date: 2024-09-11 06:09+0200\n"
+"PO-Revision-Date: 2024-09-11 06:12+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -45,7 +45,7 @@ msgid "Automatic user registration after sign in with authorization provider"
 msgstr ""
 "Automatische Benutzer-Registrierung nach Einloggen mit Autorisierungsanbieter"
 
-#: src/LoginWithAuthorizationProviderAction.php:322
+#: src/LoginWithAuthorizationProviderAction.php:329
 #, php-format
 msgid ""
 "The length of the \"%s\" exceeded the maximum length of %s and was reduced "
@@ -120,7 +120,23 @@ msgstr ""
 "führen. Es wird dringend empfohlen, eines der Module zu deaktivieren. Der "
 "Pfad für den Custom View ist: %s"
 
-#: src/Provider/AbstractAuthoriationProvider.php:160
+#: src/Provider/AbstractAuthoriationProvider.php:159
+msgid ""
+"Cannot use the login data of the authorization provider. No primary key "
+"defined for the user data."
+msgstr ""
+"Die Login-Daten vom Autorisierungsanbieter können nicht genutzt werden. Es "
+"ist kein verbindlicher Primärschlüssel definiert."
+
+#: src/Provider/AbstractAuthoriationProvider.php:162
+msgid ""
+"Cannot use the login data of the authorization provider. More than one "
+"primary key defined for the user data."
+msgstr ""
+"Die Login-Daten vom Autorisierungsanbieter können nicht genutzt werden. Es "
+"ist mehr als ein Primärschlüssel definiert."
+
+#: src/Provider/AbstractAuthoriationProvider.php:167
 msgid ""
 "Cannot use the login data of the authorization provider. Neither username "
 "nor email is a primary key."
@@ -133,14 +149,16 @@ msgstr ""
 msgid "Custom module"
 msgstr "Benutzerdefiniertes Modul"
 
-#: resources/views/edit-account-page.phtml:38
+#: resources/views/edit-account-page.phtml:51
 msgid "Signed in in with"
 msgstr "Anmelden mit"
 
-#: resources/views/edit-account-page.phtml:38
-#: resources/views/register-page.phtml:44
-msgid "User account data from authorization provider cannot be changed"
-msgstr "Benutzer-Daten vom Autorisierungsanbieter können nicht geändert werden"
+#: resources/views/edit-account-page.phtml:51
+msgid ""
+"Mandatory user account data from the authorization provider cannot be changed"
+msgstr ""
+"Obligatorische Benutzer-Daten vom Autorisierungsanbieter können nicht "
+"geändert werden"
 
 #: resources/views/login-with-provider.phtml:38
 #: resources/views/password-request-page.phtml:49
@@ -174,7 +192,11 @@ msgstr ""
 msgid "Register with"
 msgstr "Registrierung mit"
 
-#: resources/views/register-page.phtml:101
+#: resources/views/register-page.phtml:44
+msgid "User account data from authorization provider cannot be changed"
+msgstr "Benutzer-Daten vom Autorisierungsanbieter können nicht geändert werden"
+
+#: resources/views/register-page.phtml:106
 msgid "Further registration data - Please complete and continue"
 msgstr "Weitere Registrierungsdaten - Bitte vervollständigen und fortsetzen"
 

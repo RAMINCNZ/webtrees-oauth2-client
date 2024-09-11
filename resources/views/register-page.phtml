@@ -5,9 +5,12 @@ declare(strict_types=1);
 use Cissee\WebtreesExt\MoreI18N;
 use Fisharebest\Webtrees\Http\RequestHandlers\RegisterAction;
 use Fisharebest\Webtrees\I18N;
+use Fisharebest\Webtrees\Session;
 use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
+use Jefferson49\Webtrees\Module\OAuth2Client\Factories\AuthorizationProviderFactory;
 use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
+use Jefferson49\Webtrees\Module\OAuth2Client\Provider\AbstractAuthoriationProvider;
 
 /**
  * @var string    $captcha
@@ -22,7 +25,22 @@ use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
  * @var string    $password
  */
 
+$edit_user_name = true;
+$edit_real_name = true;
+$edit_email     = true; 
+
 $provider_authorization = isset($provider_name) ? true : false;
+
+if ($provider_authorization) {
+    $provider_name = $provider_authorization ? Session::get(OAuth2Client::activeModuleName() . 'provider_name') : '';
+    $provider = (new AuthorizationProviderFactory())->make($provider_name, '');
+    $user_key_info = $provider->getUserKeyInformation();
+
+    //Determine, whether parts of the user data can be edited
+    $edit_user_name = $user_key_info['user_name'] === AbstractAuthoriationProvider::USER_DATA_OPTIONAL_KEY;    
+    $edit_real_name = $user_key_info['real_name'] === AbstractAuthoriationProvider::USER_DATA_OPTIONAL_KEY;    
+    $edit_email     = $user_key_info['email']     === AbstractAuthoriationProvider::USER_DATA_OPTIONAL_KEY;    
+}
 
 ?>
 
@@ -44,10 +62,17 @@ $provider_authorization = isset($provider_name) ? true : false;
             <?= I18N::translate('Register with') .  ' ' . $provider_name . ' - ' . I18N::translate('User account data from authorization provider cannot be changed') ?>	
         </div>
 
-        <input type="hidden" name="username" value="<?= e($username) ?>">
-        <input type="hidden" name="realname" value="<?= e($realname) ?>">
-        <input type="hidden" name="email"    value="<?= e($email)    ?>">
-        <input type="hidden" name="password" value="<?= e($password) ?>">
+        <?php if (!$edit_user_name) : ?>    
+            <input type="hidden" name="username" value="<?= $username ?>">
+        <?php endif ?>
+        <?php if (!$edit_real_name) : ?>    
+            <input type="hidden" name="realname" value="<?= $realname ?>">
+        <?php endif ?>
+        <?php if (!$edit_email) : ?>        
+            <input type="hidden" name="email" value="<?= $email ?>">
+        <?php endif ?>
+
+        <input type="hidden" name="password" value="<?= $password ?>">
     <?php endif ?>
 
     <div class="row">
@@ -55,7 +80,7 @@ $provider_authorization = isset($provider_name) ? true : false;
             <?= MoreI18N::xlate('Real name') ?>
         </label>
         <div class="col-sm-9 wt-page-options-value">
-            <input class="form-control" type="text" id="realname" name="realname" required="required" maxlength="64" value="<?= e($realname) ?>" autocomplete="name" <?= $provider_authorization ? 'disabled' : '' ?>>
+            <input class="form-control" type="text" id="realname" name="realname<?= !$edit_real_name ? '_disabled' : '' ?>" required="required" maxlength="64" value="<?= e($realname) ?>" autocomplete="name" <?= !$edit_real_name ? 'disabled' : '' ?>>
             <div class="form-text">
                 <?= MoreI18N::xlate('This is your real name, as you would like it displayed on screen.') ?>
             </div>
@@ -67,7 +92,7 @@ $provider_authorization = isset($provider_name) ? true : false;
             <?= MoreI18N::xlate('Email address') ?>
         </label>
         <div class="col-sm-9 wt-page-options-value">
-            <input class="form-control" type="email" id="email" name="email" required="required" maxlength="64" value="<?= e($email) ?>" autocomplete="email" <?= $provider_authorization ? 'disabled' : '' ?>>
+            <input class="form-control" type="email" id="email" name="email<?= !$edit_email ? '_disabled' : '' ?>" required="required" maxlength="64" value="<?= e($email) ?>" autocomplete="email" <?= !$edit_email ? 'disabled' : '' ?>>
             <div class="form-text">
                 <?= MoreI18N::xlate('This email address will be used to send password reminders, website notifications, and messages from other family members who are registered on the website.') ?>
             </div>
@@ -79,7 +104,7 @@ $provider_authorization = isset($provider_name) ? true : false;
             <?= MoreI18N::xlate('Username') ?>
         </label>
         <div class="col-sm-9 wt-page-options-value">
-            <input class="form-control" type="text" id="username" name="username" required="required" maxlength="32" value="<?= e($username) ?>" autocomplete="username" <?= $provider_authorization ? 'disabled' : '' ?>>
+            <input class="form-control" type="text" id="username" name="username<?= !$edit_user_name ? '_disabled' : '' ?>" required="required" maxlength="32" value="<?= e($username) ?>" autocomplete="username" <?= !$edit_user_name ? 'disabled' : '' ?>>
             <div class="form-text">
                 <?= MoreI18N::xlate('Usernames are case-insensitive and ignore accented letters, so that “chloe”, “chloë”, and “Chloe” are considered to be the same.') ?>
             </div>

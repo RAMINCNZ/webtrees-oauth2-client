@@ -9,7 +9,9 @@ use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Individual;
 use Fisharebest\Webtrees\Session;
 use Fisharebest\Webtrees\Tree;
+use Jefferson49\Webtrees\Module\OAuth2Client\Factories\AuthorizationProviderFactory;
 use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
+use Jefferson49\Webtrees\Module\OAuth2Client\Provider\AbstractAuthoriationProvider;
 
 /**
  * @var array<string,string> $contact_methods
@@ -23,9 +25,23 @@ use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
  * @var UserInterface        $user
  */
 
+ $edit_user_name = true;
+ $edit_real_name = true;
+ $edit_email     = true; 
+
 //Check whether the user is logged in with an OAuth2 provider
 $is_oauth2_user = boolval($user->getPreference(OAuth2Client::USER_PREF_LOGIN_WITH_OAUTH2_PROVIDER, '0'));
-$provider_name = $is_oauth2_user ? Session::get(OAuth2Client::activeModuleName() . 'provider_name') : '';
+
+if ($is_oauth2_user) {
+    $provider_name = $is_oauth2_user ? Session::get(OAuth2Client::activeModuleName() . 'provider_name') : '';
+    $provider = (new AuthorizationProviderFactory())->make($provider_name, '');
+    $user_key_info = $provider->getUserKeyInformation();
+
+    //Determine, whether parts of the user data can be edited
+    $edit_user_name = $user_key_info['user_name'] === AbstractAuthoriationProvider::USER_DATA_OPTIONAL_KEY;    
+    $edit_real_name = $user_key_info['real_name'] === AbstractAuthoriationProvider::USER_DATA_OPTIONAL_KEY;    
+    $edit_email     = $user_key_info['email']     === AbstractAuthoriationProvider::USER_DATA_OPTIONAL_KEY;    
+}
 
 ?>
 
@@ -35,16 +51,23 @@ $provider_name = $is_oauth2_user ? Session::get(OAuth2Client::activeModuleName()
 
 <?php if ($is_oauth2_user) : ?>
     <div class="h4">
-        <?= I18N::translate('Signed in in with') .  ' ' . $provider_name . ' - ' . I18N::translate('User account data from authorization provider cannot be changed') ?>	
+        <?= I18N::translate('Signed in in with') .  ' ' . $provider_name . ' - ' . I18N::translate('Mandatory user account data from the authorization provider cannot be changed') ?>	
     </div>
 <?php endif ?>
 
 <form method="post" class="wt-page-options wt-page-options-my-account">
 
     <?php if ($is_oauth2_user) : ?>
-        <input type="hidden" name="user_name" value="<?= e($user->userName()) ?>">
-        <input type="hidden" name="real_name" value="<?= e($user->realName()) ?>">
-        <input type="hidden" name="email" value="<?= e($user->email()) ?>">
+        <?php if (!$edit_user_name) : ?>    
+            <input type="hidden" name="user_name" value="<?= e($user->userName()) ?>">
+        <?php endif ?>
+        <?php if (!$edit_real_name) : ?>    
+            <input type="hidden" name="real_name" value="<?= e($user->realName()) ?>">
+        <?php endif ?>
+        <?php if (!$edit_email) : ?>        
+            <input type="hidden" name="email" value="<?= e($user->email()) ?>">
+        <?php endif ?>
+
         <input type="hidden" name="password" value="">
     <?php endif ?>
 
@@ -53,7 +76,7 @@ $provider_name = $is_oauth2_user ? Session::get(OAuth2Client::activeModuleName()
             <?= MoreI18N::xlate('Username') ?>
         </label>
         <div class="col-sm-9 wt-page-options-value">
-            <input type="text" class="form-control" id="user-name" name="user_name<?= $is_oauth2_user ? '_disabled' : '' ?>" value="<?= e($user->userName()) ?>" dir="auto" aria-describedby="username-description" required="required" <?= $is_oauth2_user ? 'disabled' : '' ?>>
+            <input type="text" class="form-control" id="user-name" name="user_name<?= !$edit_user_name ? '_disabled' : '' ?>" value="<?= e($user->userName()) ?>" dir="auto" aria-describedby="username-description" required="required" <?= !$edit_user_name ? 'disabled' : '' ?>>
             <div class="form-text" id="username-description">
                 <?= MoreI18N::xlate('Usernames are case-insensitive and ignore accented letters, so that “chloe”, “chloë”, and “Chloe” are considered to be the same.') ?>
             </div>
@@ -65,7 +88,7 @@ $provider_name = $is_oauth2_user ? Session::get(OAuth2Client::activeModuleName()
             <?= MoreI18N::xlate('Real name') ?>
         </label>
         <div class="col-sm-9 wt-page-options-value">
-            <input type="text" class="form-control" id="real-name" name="real_name<?= $is_oauth2_user ? '_disabled' : '' ?>" value="<?= e($user->realName()) ?>" dir="auto" aria-describedby="real-name-description" required="required" <?= $is_oauth2_user ? 'disabled' : '' ?>>
+            <input type="text" class="form-control" id="real-name" name="real_name<?= !$edit_real_name ? '_disabled' : '' ?>" value="<?= e($user->realName()) ?>" dir="auto" aria-describedby="real-name-description" required="required" <?= !$edit_real_name ? 'disabled' : '' ?>>
             <div class="form-text" id="real-name-description">
                 <?= MoreI18N::xlate('This is your real name, as you would like it displayed on screen.') ?>
             </div>
@@ -144,7 +167,7 @@ $provider_name = $is_oauth2_user ? Session::get(OAuth2Client::activeModuleName()
             <?= MoreI18N::xlate('Email address') ?>
         </label>
         <div class="col-sm-9 wt-page-options-value">
-            <input class="form-control" type="email" id="email" name="email<?= $is_oauth2_user ? '_disabled' : '' ?>" value="<?= e($user->email()) ?>" aria-describedby="email-description" <?= $is_oauth2_user ? 'disabled' : '' ?>>
+            <input class="form-control" type="email" id="email" name="email<?= !$edit_email ? '_disabled' : '' ?>" value="<?= e($user->email()) ?>" aria-describedby="email-description" <?= !$edit_email ? 'disabled' : '' ?>>
             <div class="form-text" id="email-description">
                 <?= MoreI18N::xlate('This email address will be used to send password reminders, website notifications, and messages from other family members who are registered on the website.') ?>
             </div>
