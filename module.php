@@ -52,6 +52,7 @@ $loader->addPsr4('Cissee\\WebtreesExt\\', __DIR__ . "/vendor/cissee/vesta-webtre
 $loader->register();
 
 //Provider wrappers are directly required, because they shall be detected by "get_declared_classes"
+require __DIR__ . '/src/Provider/GenericAuthoriationProvider.php';
 require __DIR__ . '/src/Provider/GithubAuthoriationProvider.php';
 require __DIR__ . '/src/Provider/GoogleAuthoriationProvider.php';
 require __DIR__ . '/src/Provider/JoomlaAuthoriationProvider.php';
