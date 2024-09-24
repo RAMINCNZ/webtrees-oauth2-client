@@ -89,13 +89,13 @@ class JoomlaAuthoriationProvider extends AbstractAuthoriationProvider implements
             (int) $resourceOwner->getId() ?? '',
 
             //User name: Default has to be empty, because empty username needs to be detected as error
-            $user_data['username']        ?? '',     
+            $user_data['username'] ?? '',
             
-            //Real name: If no real name is provided, we take user name as a default 
-            $user_data['name']            ?? $user_data['username'] ?? '',
+            //Real name: 
+            $user_data['name']     ?? '',
 
             //Email: Default has to be empty, because empty email needs to be detected as error
-            $user_data['email']           ?? '',                             
+            $user_data['email']    ?? '',                 
         );
     }
 
