@@ -129,7 +129,9 @@ abstract class AbstractAuthoriationProvider
         return [
             'clientId',
             'clientSecret',
-            'redirectUri',
+            'urlAuthorize',
+            'urlAccessToken',
+            'urlResourceOwnerDetails',        
         ];
     }
 
@@ -141,9 +143,9 @@ abstract class AbstractAuthoriationProvider
      */
     public static function getUserKeyInformation() : array {
         return [
-                'user_name' => self::USER_DATA_PRIMARY_KEY,
-                'real_name' => self::USER_DATA_OPTIONAL_KEY,
-                'email'     => self::USER_DATA_MANDATORY_KEY,
+            'user_name' => self::USER_DATA_MANDATORY_KEY,
+            'real_name' => self::USER_DATA_OPTIONAL_KEY,
+            'email'     => self::USER_DATA_PRIMARY_KEY,
         ];
     } 
 
