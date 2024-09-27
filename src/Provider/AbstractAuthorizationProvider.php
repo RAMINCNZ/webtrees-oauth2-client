@@ -42,15 +42,53 @@ use League\OAuth2\Client\Token\AccessTokenInterface;
 /**
  * An abstract OAuth2 authorization client, which provides basic methods
  */
-abstract class AbstractAuthoriationProvider
+abstract class AbstractAuthorizationProvider
 {
     //The authorization provider
     protected AbstractProvider $provider;
+    
+    //A label for the login button
+    protected string $login_button_label;
 
     public const USER_DATA_PRIMARY_KEY   = 'primary_key';
     public const USER_DATA_MANDATORY_KEY = 'mandatory_key';
     public const USER_DATA_OPTIONAL_KEY  = 'optional_key';
     public const USER_DATA_UNUSED_KEY    = 'unused_key';
+   
+
+    /**
+     * Get the name of the authorization client
+     * 
+     * @return string
+     */
+    public static function getName() : string {
+
+        $name_space = str_replace('\\\\', '\\',__NAMESPACE__ );
+        $class_name = str_replace($name_space . '\\', '', static::class);
+        return str_replace('AuthorizationProvider', '', $class_name);
+    }    
+
+    /**
+     * Set the login button label for the authorization client
+     * 
+     * @param string $label
+     * 
+     * @return void
+     */
+    public function setLoginButtonLabel(string $label) : void {
+
+        $this->login_button_label = $label;
+    }
+
+    /**
+     * Get the login button label for the authorization client
+     * 
+     * @return string
+     */
+    public function getLoginButtonLabel() : string {
+
+        return $this->login_button_label ?? $this->getName();
+    }
 
     /**
      * Get the authorization URL
@@ -157,14 +195,14 @@ abstract class AbstractAuthoriationProvider
     public function validate() : string
     {
         //Validate the user data definition of the provider
-        if (!in_array(AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY, static::getUserKeyInformation())) {
+        if (!in_array(AbstractAuthorizationProvider::USER_DATA_PRIMARY_KEY, static::getUserKeyInformation())) {
             return I18N::translate('Cannot use the login data of the authorization provider. No primary key defined for the user data.');
         }
-        elseif (Array_count_values(static::getUserKeyInformation())[AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY] > 1) {
+        elseif (Array_count_values(static::getUserKeyInformation())[AbstractAuthorizationProvider::USER_DATA_PRIMARY_KEY] > 1) {
             return I18N::translate('Cannot use the login data of the authorization provider. More than one primary key defined for the user data.');
         }
-        elseif (static::getUserKeyInformation()['user_name'] !== AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY
-            &&  static::getUserKeyInformation()['email']     !== AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY) {
+        elseif (static::getUserKeyInformation()['user_name'] !== AbstractAuthorizationProvider::USER_DATA_PRIMARY_KEY
+            &&  static::getUserKeyInformation()['email']     !== AbstractAuthorizationProvider::USER_DATA_PRIMARY_KEY) {
 
             return I18N::translate('Cannot use the login data of the authorization provider. Neither username nor email is a primary key.');
         }
@@ -185,7 +223,7 @@ abstract class AbstractAuthoriationProvider
         foreach(static::getUserKeyInformation() as $key => $obligation_level) {
 
             //Update user data if mandatory and has changed since last login with webtrees
-            if ($obligation_level === AbstractAuthoriationProvider::USER_DATA_MANDATORY_KEY) {
+            if ($obligation_level === AbstractAuthorizationProvider::USER_DATA_MANDATORY_KEY) {
 
                 if ($key === 'user_name' && $user->userName() !== $user_data_from_provider->userName()) {
                     $user->setUserName($user_data_from_provider->userName());

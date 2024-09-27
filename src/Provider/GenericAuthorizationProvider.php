@@ -32,17 +32,16 @@ declare(strict_types=1);
 namespace Jefferson49\Webtrees\Module\OAuth2Client\Provider;
 
 use Fisharebest\Webtrees\User;
-use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
 use Jefferson49\Webtrees\Module\OAuth2Client\Contracts\AuthorizationProviderInterface;
 use League\OAuth2\Client\Provider\AbstractProvider;
-use League\OAuth2\Client\Provider\Google;
+use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Token\AccessToken;
 
 /**
- * An OAuth2 authorization client for Github
+ * A generic OAuth2 authorization client, which can be configured for several authorization provider
  */
-class GoogleAuthoriationProvider extends AbstractAuthoriationProvider implements AuthorizationProviderInterface
-{
+class GenericAuthorizationProvider extends AbstractAuthorizationProvider implements AuthorizationProviderInterface
+{    
     //The authorization provider
     protected AbstractProvider $provider;
 
@@ -57,17 +56,12 @@ class GoogleAuthoriationProvider extends AbstractAuthoriationProvider implements
         $options = array_merge($options, [
             'redirectUri'             => $redirectUri,
         ]);
+        
+        $this->provider = new GenericProvider($options, $collaborators);
 
-        $this->provider = new Google($options, $collaborators);
-    }
-
-    /**
-     * Get the name of the authorization client
-     * 
-     * @return string
-     */
-    public static function getName() : string {
-        return 'Google';
+        if (isset($options['loginButtonLabel'])) {
+            $this->setLoginButtonLabel($options['loginButtonLabel']);
+        }   
     }
 
     /**
@@ -80,20 +74,21 @@ class GoogleAuthoriationProvider extends AbstractAuthoriationProvider implements
     public function getUserData(AccessToken $token) : User {
 
         $resourceOwner = $this->provider->getResourceOwner($token);
+        $user_data = $resourceOwner->toArray();
 
-        return new User(            
+        return new User(
             (int) $resourceOwner->getId() ?? '',
 
-            //User name: Empty, because not provided by Google
-            '', 
+            //User name: Default has to be empty, because empty username needs to be detected as error
+            $user_data['username']        ?? $user_data['email'] ?? '',
             
             //Real name:
-            $resourceOwner->getName()     ?? '', 
-            
+            $user_data['name']            ?? '',
+
             //Email: Default has to be empty, because empty email needs to be detected as error
-            $resourceOwner->getEmail()    ?? '',                         
+            $user_data['email']           ?? '',                             
         );
-    }      
+    }
 
     /**
      * Returns a list with options that can be passed to the provider
@@ -105,8 +100,12 @@ class GoogleAuthoriationProvider extends AbstractAuthoriationProvider implements
         return [
             'clientId',
             'clientSecret',
+            'urlAuthorize',
+            'urlAccessToken',
+            'urlResourceOwnerDetails',
+            'loginButtonLabel',
         ];
-    }
+    }    
 
     /**
      * Returns an array with the webtrees user data keys, which defines if they are primary or mandatory
@@ -116,9 +115,9 @@ class GoogleAuthoriationProvider extends AbstractAuthoriationProvider implements
      */
     public static function getUserKeyInformation() : array {
         return [
-                'user_name' => self::USER_DATA_OPTIONAL_KEY,
+                'user_name' => self::USER_DATA_MANDATORY_KEY,
                 'real_name' => self::USER_DATA_OPTIONAL_KEY,
                 'email'     => self::USER_DATA_PRIMARY_KEY,
         ];
-    }    
+    }      
 }

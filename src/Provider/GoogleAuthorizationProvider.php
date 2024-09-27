@@ -34,14 +34,14 @@ namespace Jefferson49\Webtrees\Module\OAuth2Client\Provider;
 use Fisharebest\Webtrees\User;
 use Jefferson49\Webtrees\Module\OAuth2Client\Contracts\AuthorizationProviderInterface;
 use League\OAuth2\Client\Provider\AbstractProvider;
-use League\OAuth2\Client\Provider\GenericProvider;
+use League\OAuth2\Client\Provider\Google;
 use League\OAuth2\Client\Token\AccessToken;
 
 /**
- * An OAuth2 authorization client for Joomla
+ * An OAuth2 authorization client for Github
  */
-class JoomlaAuthoriationProvider extends AbstractAuthoriationProvider implements AuthorizationProviderInterface
-{
+class GoogleAuthorizationProvider extends AbstractAuthorizationProvider implements AuthorizationProviderInterface
+{        
     //The authorization provider
     protected AbstractProvider $provider;
 
@@ -53,24 +53,13 @@ class JoomlaAuthoriationProvider extends AbstractAuthoriationProvider implements
      */
     public function __construct(string $redirectUri, array $options = [], array $collaborators = [])
     {
+        if ($redirectUri === '' && $options === []) return;
+
         $options = array_merge($options, [
             'redirectUri'             => $redirectUri,
-
-            //The URLs for access token and ressource owner detail are identical to the authorize URL
-            'urlAccessToken'          => $options['urlAuthorize'] ?? '',
-            'urlResourceOwnerDetails' => $options['urlAuthorize'] ?? '',
         ]);
-        
-        $this->provider = new GenericProvider($options, $collaborators);
-    }
 
-    /**
-     * Get the name of the authorization client
-     * 
-     * @return string
-     */
-    public static function getName() : string {
-        return 'Joomla';
+        $this->provider = new Google($options, $collaborators);
     }
 
     /**
@@ -83,21 +72,20 @@ class JoomlaAuthoriationProvider extends AbstractAuthoriationProvider implements
     public function getUserData(AccessToken $token) : User {
 
         $resourceOwner = $this->provider->getResourceOwner($token);
-        $user_data = $resourceOwner->toArray();
 
-        return new User(
+        return new User(            
             (int) $resourceOwner->getId() ?? '',
 
-            //User name: Default has to be empty, because empty username needs to be detected as error
-            $user_data['username'] ?? '',
+            //User name: Empty, because not provided by Google
+            '', 
             
-            //Real name: 
-            $user_data['name']     ?? '',
-
+            //Real name:
+            $resourceOwner->getName()     ?? '', 
+            
             //Email: Default has to be empty, because empty email needs to be detected as error
-            $user_data['email']    ?? '',                 
+            $resourceOwner->getEmail()    ?? '',                         
         );
-    }
+    }      
 
     /**
      * Returns a list with options that can be passed to the provider
@@ -109,9 +97,8 @@ class JoomlaAuthoriationProvider extends AbstractAuthoriationProvider implements
         return [
             'clientId',
             'clientSecret',
-            'urlAuthorize',
         ];
-    }    
+    }
 
     /**
      * Returns an array with the webtrees user data keys, which defines if they are primary or mandatory
@@ -121,9 +108,9 @@ class JoomlaAuthoriationProvider extends AbstractAuthoriationProvider implements
      */
     public static function getUserKeyInformation() : array {
         return [
-            'user_name' => self::USER_DATA_PRIMARY_KEY,
-            'real_name' => self::USER_DATA_OPTIONAL_KEY,
-            'email'     => self::USER_DATA_MANDATORY_KEY,
+                'user_name' => self::USER_DATA_OPTIONAL_KEY,
+                'real_name' => self::USER_DATA_OPTIONAL_KEY,
+                'email'     => self::USER_DATA_PRIMARY_KEY,
         ];
-    }      
+    }    
 }

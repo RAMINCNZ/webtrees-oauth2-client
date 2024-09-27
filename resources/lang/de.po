@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-09-11 06:09+0200\n"
-"PO-Revision-Date: 2024-09-11 06:12+0200\n"
+"POT-Creation-Date: 2024-09-27 06:01+0200\n"
+"PO-Revision-Date: 2024-09-27 06:01+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -32,7 +32,7 @@ msgstr ""
 "Fehler beim Empfang des Zugriffs-Tokens oder der Benutzer-Daten vom "
 "Autorisierungsanbieter"
 
-#: src/LoginWithAuthorizationProviderAction.php:185
+#: src/LoginWithAuthorizationProviderAction.php:202
 msgid ""
 "No valid user account data received from authorizaton provider. Username or "
 "email missing."
@@ -40,12 +40,12 @@ msgstr ""
 "Vom Autorisierungsanbieter wurden keine validen Daten empfangen. Benutzer-"
 "Name oder Email fehlt."
 
-#: src/LoginWithAuthorizationProviderAction.php:213
+#: src/LoginWithAuthorizationProviderAction.php:219
 msgid "Automatic user registration after sign in with authorization provider"
 msgstr ""
 "Automatische Benutzer-Registrierung nach Einloggen mit Autorisierungsanbieter"
 
-#: src/LoginWithAuthorizationProviderAction.php:329
+#: src/LoginWithAuthorizationProviderAction.php:328
 #, php-format
 msgid ""
 "The length of the \"%s\" exceeded the maximum length of %s and was reduced "
@@ -120,7 +120,7 @@ msgstr ""
 "führen. Es wird dringend empfohlen, eines der Module zu deaktivieren. Der "
 "Pfad für den Custom View ist: %s"
 
-#: src/Provider/AbstractAuthoriationProvider.php:159
+#: src/Provider/AbstractAuthorizationProvider.php:199
 msgid ""
 "Cannot use the login data of the authorization provider. No primary key "
 "defined for the user data."
@@ -128,7 +128,7 @@ msgstr ""
 "Die Login-Daten vom Autorisierungsanbieter können nicht genutzt werden. Es "
 "ist kein verbindlicher Primärschlüssel definiert."
 
-#: src/Provider/AbstractAuthoriationProvider.php:162
+#: src/Provider/AbstractAuthorizationProvider.php:202
 msgid ""
 "Cannot use the login data of the authorization provider. More than one "
 "primary key defined for the user data."
@@ -136,7 +136,7 @@ msgstr ""
 "Die Login-Daten vom Autorisierungsanbieter können nicht genutzt werden. Es "
 "ist mehr als ein Primärschlüssel definiert."
 
-#: src/Provider/AbstractAuthoriationProvider.php:167
+#: src/Provider/AbstractAuthorizationProvider.php:207
 msgid ""
 "Cannot use the login data of the authorization provider. Neither username "
 "nor email is a primary key."
@@ -149,11 +149,11 @@ msgstr ""
 msgid "Custom module"
 msgstr "Benutzerdefiniertes Modul"
 
-#: resources/views/edit-account-page.phtml:51
+#: resources/views/edit-account-page.phtml:54
 msgid "Signed in in with"
 msgstr "Anmelden mit"
 
-#: resources/views/edit-account-page.phtml:51
+#: resources/views/edit-account-page.phtml:54
 msgid ""
 "Mandatory user account data from the authorization provider cannot be changed"
 msgstr ""
@@ -188,15 +188,15 @@ msgstr ""
 "sich mit %s anmeldet. Das Passwort wird vom Autorisierungsanbieter (%s) "
 "verwaltet und kann nicht innerhalb von webtrees geändert werden."
 
-#: resources/views/register-page.phtml:44
+#: resources/views/register-page.phtml:62
 msgid "Register with"
 msgstr "Registrierung mit"
 
-#: resources/views/register-page.phtml:44
+#: resources/views/register-page.phtml:62
 msgid "User account data from authorization provider cannot be changed"
 msgstr "Benutzer-Daten vom Autorisierungsanbieter können nicht geändert werden"
 
-#: resources/views/register-page.phtml:106
+#: resources/views/register-page.phtml:131
 msgid "Further registration data - Please complete and continue"
 msgstr "Weitere Registrierungsdaten - Bitte vervollständigen und fortsetzen"
 

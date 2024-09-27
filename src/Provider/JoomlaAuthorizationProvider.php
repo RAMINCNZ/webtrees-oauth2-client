@@ -34,13 +34,13 @@ namespace Jefferson49\Webtrees\Module\OAuth2Client\Provider;
 use Fisharebest\Webtrees\User;
 use Jefferson49\Webtrees\Module\OAuth2Client\Contracts\AuthorizationProviderInterface;
 use League\OAuth2\Client\Provider\AbstractProvider;
-use League\OAuth2\Client\Provider\Github;
+use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Token\AccessToken;
 
 /**
- * An OAuth2 authorization client for Github
+ * An OAuth2 authorization client for Joomla
  */
-class GithubAuthoriationProvider extends AbstractAuthoriationProvider implements AuthorizationProviderInterface
+class JoomlaAuthorizationProvider extends AbstractAuthorizationProvider implements AuthorizationProviderInterface
 {
     //The authorization provider
     protected AbstractProvider $provider;
@@ -53,21 +53,21 @@ class GithubAuthoriationProvider extends AbstractAuthoriationProvider implements
      */
     public function __construct(string $redirectUri, array $options = [], array $collaborators = [])
     {
+        if ($redirectUri === '' && $options === []) return;
+
         $options = array_merge($options, [
             'redirectUri'             => $redirectUri,
-            'urlResourceOwnerDetails' => 'https://api.github.com/user'
+
+            //The URLs for access token and ressource owner detail are identical to the authorize URL
+            'urlAccessToken'          => $options['urlAuthorize'] ?? '',
+            'urlResourceOwnerDetails' => $options['urlAuthorize'] ?? '',
         ]);
+        
+        $this->provider = new GenericProvider($options, $collaborators);
 
-        $this->provider = new Github($options, $collaborators);
-    }
-
-    /**
-     * Get the name of the authorization client
-     * 
-     * @return string
-     */
-    public static function getName() : string {
-        return 'Github';
+        if (isset($options['loginButtonLabel'])) {
+            $this->setLoginButtonLabel($options['loginButtonLabel']);
+        }
     }
 
     /**
@@ -86,18 +86,18 @@ class GithubAuthoriationProvider extends AbstractAuthoriationProvider implements
             (int) $resourceOwner->getId() ?? '',
 
             //User name: Default has to be empty, because empty username needs to be detected as error
-            $user_data['login']           ?? '',
-
-            //Real name:                         
-            $resourceOwner->getName()     ?? '',
+            $user_data['username'] ?? '',
+            
+            //Real name: 
+            $user_data['name']     ?? '',
 
             //Email: Default has to be empty, because empty email needs to be detected as error
-            $resourceOwner->getEmail()    ?? '',                    
+            $user_data['email']    ?? '',                 
         );
-    }      
+    }
 
     /**
-     * Returns a list with options that need to be passed to the provider
+     * Returns a list with options that can be passed to the provider
      *
      * @return array   An array of option names, which can be set for this provider.
      *                 Options include `clientId`, `clientSecret`, `redirectUri`, etc.
@@ -106,8 +106,10 @@ class GithubAuthoriationProvider extends AbstractAuthoriationProvider implements
         return [
             'clientId',
             'clientSecret',
+            'urlAuthorize',
+            'loginButtonLabel',
         ];
-    }
+    }    
 
     /**
      * Returns an array with the webtrees user data keys, which defines if they are primary or mandatory
@@ -121,5 +123,5 @@ class GithubAuthoriationProvider extends AbstractAuthoriationProvider implements
             'real_name' => self::USER_DATA_OPTIONAL_KEY,
             'email'     => self::USER_DATA_MANDATORY_KEY,
         ];
-    }
+    }      
 }

@@ -52,7 +52,7 @@ use Fisharebest\Webtrees\Site;
 use Fisharebest\Webtrees\User;
 use Fisharebest\Webtrees\Validator;
 use Jefferson49\Webtrees\Module\OAuth2Client\Factories\AuthorizationProviderFactory;
-use Jefferson49\Webtrees\Module\OAuth2Client\Provider\AbstractAuthoriationProvider;
+use Jefferson49\Webtrees\Module\OAuth2Client\Provider\AbstractAuthorizationProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -116,7 +116,7 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         $oauth2_client = $this->module_service->findByName(OAuth2Client::activeModuleName());
         $user = null;
 
-        $provider = (new AuthorizationProviderFactory())->make($provider_name, OAuth2Client::getRedirectUrl($base_url));
+        $provider = (new AuthorizationProviderFactory())::make($provider_name, OAuth2Client::getRedirectUrl($base_url));
 
         //Check if requested provider is available
         if ($provider === null) {
@@ -187,10 +187,10 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         $password  = $this->resizeUserData('Password', $accessToken->getToken(), false);
         
         //Determine identifier (user_name or email), which is used for login
-        if ($provider->getUserKeyInformation()['user_name'] === AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY) {
+        if ($provider->getUserKeyInformation()['user_name'] === AbstractAuthorizationProvider::USER_DATA_PRIMARY_KEY) {
             $identifyer = $user_name;
         }
-        elseif ($provider->getUserKeyInformation()['email'] === AbstractAuthoriationProvider::USER_DATA_PRIMARY_KEY) {
+        elseif ($provider->getUserKeyInformation()['email'] === AbstractAuthorizationProvider::USER_DATA_PRIMARY_KEY) {
             $identifyer = $email;
         }
         else {

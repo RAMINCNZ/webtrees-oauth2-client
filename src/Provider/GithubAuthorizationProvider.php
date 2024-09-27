@@ -34,13 +34,13 @@ namespace Jefferson49\Webtrees\Module\OAuth2Client\Provider;
 use Fisharebest\Webtrees\User;
 use Jefferson49\Webtrees\Module\OAuth2Client\Contracts\AuthorizationProviderInterface;
 use League\OAuth2\Client\Provider\AbstractProvider;
-use League\OAuth2\Client\Provider\GenericProvider;
+use League\OAuth2\Client\Provider\Github;
 use League\OAuth2\Client\Token\AccessToken;
 
 /**
- * A generic OAuth2 authorization client, which can be configured for several authorization provider
+ * An OAuth2 authorization client for Github
  */
-class GenericAuthoriationProvider extends AbstractAuthoriationProvider implements AuthorizationProviderInterface
+class GithubAuthorizationProvider extends AbstractAuthorizationProvider implements AuthorizationProviderInterface
 {
     //The authorization provider
     protected AbstractProvider $provider;
@@ -55,18 +55,10 @@ class GenericAuthoriationProvider extends AbstractAuthoriationProvider implement
     {
         $options = array_merge($options, [
             'redirectUri'             => $redirectUri,
+            'urlResourceOwnerDetails' => 'https://api.github.com/user'
         ]);
-        
-        $this->provider = new GenericProvider($options, $collaborators);
-    }
 
-    /**
-     * Get the name of the authorization client
-     * 
-     * @return string
-     */
-    public static function getName() : string {
-        return 'Generic';
+        $this->provider = new Github($options, $collaborators);
     }
 
     /**
@@ -85,18 +77,18 @@ class GenericAuthoriationProvider extends AbstractAuthoriationProvider implement
             (int) $resourceOwner->getId() ?? '',
 
             //User name: Default has to be empty, because empty username needs to be detected as error
-            $user_data['username']        ?? $user_data['email'] ?? '',
-            
-            //Real name:
-            $user_data['name']            ?? '',
+            $user_data['login']           ?? '',
+
+            //Real name:                         
+            $resourceOwner->getName()     ?? '',
 
             //Email: Default has to be empty, because empty email needs to be detected as error
-            $user_data['email']           ?? '',                             
+            $resourceOwner->getEmail()    ?? '',                    
         );
-    }
+    }      
 
     /**
-     * Returns a list with options that can be passed to the provider
+     * Returns a list with options that need to be passed to the provider
      *
      * @return array   An array of option names, which can be set for this provider.
      *                 Options include `clientId`, `clientSecret`, `redirectUri`, etc.
@@ -105,11 +97,8 @@ class GenericAuthoriationProvider extends AbstractAuthoriationProvider implement
         return [
             'clientId',
             'clientSecret',
-            'urlAuthorize',
-            'urlAccessToken',
-            'urlResourceOwnerDetails',
         ];
-    }    
+    }
 
     /**
      * Returns an array with the webtrees user data keys, which defines if they are primary or mandatory
@@ -119,9 +108,9 @@ class GenericAuthoriationProvider extends AbstractAuthoriationProvider implement
      */
     public static function getUserKeyInformation() : array {
         return [
-                'user_name' => self::USER_DATA_MANDATORY_KEY,
-                'real_name' => self::USER_DATA_OPTIONAL_KEY,
-                'email'     => self::USER_DATA_PRIMARY_KEY,
+            'user_name' => self::USER_DATA_PRIMARY_KEY,
+            'real_name' => self::USER_DATA_OPTIONAL_KEY,
+            'email'     => self::USER_DATA_MANDATORY_KEY,
         ];
-    }      
+    }
 }

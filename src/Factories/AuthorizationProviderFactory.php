@@ -33,7 +33,6 @@ namespace Jefferson49\Webtrees\Module\OAuth2Client\Factories;
 
 use Fisharebest\Webtrees\Webtrees;
 use Jefferson49\Webtrees\Module\OAuth2Client\Contracts\AuthorizationProviderInterface;
-use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
 
 use ReflectionMethod;
 
@@ -54,7 +53,7 @@ class AuthorizationProviderFactory
      * 
      * @return AuthorizationProviderInterface   A configured authorization provider. Null, if error 
      */
-    public function make(string $name, string $redirectUri) : ?AuthorizationProviderInterface
+    public static function make(string $name, string $redirectUri) : ?AuthorizationProviderInterface
     {
         $name_space = str_replace('\\\\', '\\',__NAMESPACE__ );
         $name_space = str_replace('Factories', 'Provider\\', $name_space);
@@ -94,9 +93,11 @@ class AuthorizationProviderFactory
         foreach (get_declared_classes() as $class_name) { 
             if (strpos($class_name, $name_space_provider) !==  false) {
                 if (in_array($name_space_contracts . 'AuthorizationProviderInterface', class_implements($class_name))) {
-                    $reflectionMethod = new ReflectionMethod($class_name, 'getName');
-                    $class_name = str_replace($name_space_provider, '', $class_name, );
-                    $provider_names[$class_name] = $reflectionMethod->invoke(null);
+                    if (str_replace($name_space_provider, '',  $class_name) !== 'AbstractAuthorizationProvider') {
+                        $reflectionMethod = new ReflectionMethod($class_name, 'getName');
+                        $class_name = str_replace($name_space_provider, '', $class_name);
+                        $provider_names[$class_name] = $reflectionMethod->invoke(null);    
+                    }
                 }
             }
         }

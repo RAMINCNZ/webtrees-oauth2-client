@@ -59,6 +59,22 @@ interface AuthorizationProviderInterface
     public static function getName() : string;
 
     /**
+     * Set the login button label for the authorization client
+     * 
+     * @param string $label
+     * 
+     * @return void
+     */
+    public function setLoginButtonLabel(string $label) : void;
+
+    /**
+     * Get the login button label for the authorization client
+     * 
+     * @return string
+     */
+    public function getLoginButtonLabel() : string;
+    
+    /**
      * Get the authorization URL
      *
      * @param  array $options

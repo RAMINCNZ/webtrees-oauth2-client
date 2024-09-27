@@ -23,7 +23,7 @@ uasort($provider_names, function (string $a, string $b) {
     return strcmp($a, $b);
 });
 
-//Remove any provider from list, for which no config is available
+//Remove any provider from list, for which no sufficient config is available
 foreach($provider_names as $class_name => $provider_name) {
     if(AuthorizationProviderFactory::readProviderOptionsFromConfigFile($provider_name) === []) {
         unset($provider_names[$class_name]);
@@ -40,12 +40,13 @@ foreach($provider_names as $class_name => $provider_name) {
         <div class="col-sm-9 wt-page-options-value">
             <form method="post">
                 <?php foreach ($provider_names as $provider_name) : ?>
+
                     <a href="<?= e(route(LoginWithAuthorizationProviderAction::class, [
                             'tree'          => $tree instanceof Tree ? $tree->name() : null,
                             'url'           => $url,
                             'provider_name' => $provider_name,
                         ])) ?>" type="submit" class="btn btn-secondary">
-                        <?= $provider_name ?>
+                        <?= AuthorizationProviderFactory::make($provider_name, '')->getLoginButtonLabel() ?>
                     </a>
                 <?php endforeach ?>
                 <?= csrf_field() ?>
