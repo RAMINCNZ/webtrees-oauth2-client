@@ -9,13 +9,13 @@ This README file contains the following main sections:
 +   [What are the benefits of this module?](#what-are-the-benefits-of-this-module)
 +   [IMPORTANT SECURITY NOTES](#important-security-notes)
 +   [Installation](#installation)
-+   [Webtrees Version](#webtrees-version)
 +   [Supported Authorization Providers](#supported-authorization-providers)
 +   [Configuration of Authorization Providers](#configuration-of-authorization-providers)
     + [General Configuration](#general-configuration)
     + [Github](#github)
     + [Google](#google)
     + [Joomla](#joomla)
++   [Webtrees Version](#webtrees-version)
 +   [Translation](#translation)
 +   [Bugs and Feature Requests](#bugs-and-feature-requests)
 +   [Github Repository](#github-repository)
@@ -30,6 +30,14 @@ This README file contains the following main sections:
 It is **highly recommended to use** the **HTTPS** protocol for your webtrees installations. The [HTTPS](https://en.wikipedia.org/wiki/HTTPS) protocol will ensure the encryption of the communication between webtrees and the authorization provider for a secure exchange of secret IDs and secret access tokens.
 
 Please check whether your **webtrees BASE_URL** in the config.ini.php file **starts with "https"**, e.g. https://my_site.net/webtrees.
+
+## Installation
++ Download the [latest release](https://github.com/Jefferson49/webtrees-oauth2-client/releases/latest) of the module
++ Copy the folder "oauth2_client" into the "module_v4" folder of your webtrees installation
++ Check if the module is activated in the control panel:
+  + Login to webtrees as an administrator
+	+ Go to "Control Panel/All Modules", and find the module called "ExtendedImportExport"
+	+ Check if it has a tick for "Enabled"
 
 ## Supported Authorization Providers
 
@@ -132,14 +140,6 @@ Joomla_urlAuthorize='xxx'
     + **Joomla_clientId**='...' (value shown in Joomla, like described above)
     + **Joomla_clientSecret**='...' (value shown in Joomla, like described above)
     + **Joomla_urlAuthorize**='JOOMLA_BASE_URL/index.php' (JOOMLA_BASE_URL from your Joomla installation, e.g. 'https://mysite.net/joomla')
-
-## Installation
-+ Download the [latest release](https://github.com/Jefferson49/webtrees-oauth2-client/releases/latest) of the module
-+ Copy the folder "oauth2_client" into the "module_v4" folder of your webtrees installation
-+ Check if the module is activated in the control panel:
-  + Login to webtrees as an administrator
-	+ Go to "Control Panel/All Modules", and find the module called "ExtendedImportExport"
-	+ Check if it has a tick for "Enabled"
 
 ## Webtrees Version
 The module was developed and tested with [webtrees 2.1.20](https://webtrees.net/download), but should also run with any other 2.1 version.
