@@ -1,8 +1,8 @@
 [![Latest Release](https://img.shields.io/github/v/release/Jefferson49/webtrees-oauth2-client?display_name=tag)](https://github.com/Jefferson49/ExtendedImportExport/releases/latest)
 [![webtrees major version](https://img.shields.io/badge/webtrees-v2.1.x-green)](https://webtrees.net/download)
 
-# OAuth2 Client for webtrees
-A [webtrees](https://webtrees.net) 2.1 custom module to provide [OAuth 2.0](https://en.wikipedia.org/wiki/OAuth) single sign on ([SSO](https://en.wikipedia.org/wiki/Single_sign-on)).
+# OAuth 2.0 Client for webtrees
+A [webtrees](https://webtrees.net) 2.1 custom module to provide [OAuth 2.0](https://en.wikipedia.org/wiki/OAuth) single sign on ([SSO](https://en.wikipedia.org/wiki/Single_sign-on)) with OAuth 2.0 authorization providers.
 
 ##  Table of contents
 This README file contains the following main sections:
@@ -22,7 +22,6 @@ This README file contains the following main sections:
 +   [Github Repository](#github-repository)
 
 ## What are the benefits of this module?
-
 + The module provides single sign on ([SSO](https://en.wikipedia.org/wiki/Single_sign-on)) into the webtrees application based on the [OAuth 2.0](https://en.wikipedia.org/wiki/OAuth) standard.
 + A pre-configured set of authorization providers can be selected during webtrees login.
 + If using sign on with an authorization provider, the user account data (i.e. name, user name, email) from the authorization provider is used in webtrees.
@@ -41,7 +40,6 @@ Please check whether your **webtrees BASE_URL** in the config.ini.php file **sta
 	+ Check if it has a tick for "Enabled"
 
 ## Supported Authorization Providers
-
 Currently, the following authorization providers are supported:
 + Generic (can be configured for several authorization providers)
 + Github
@@ -49,9 +47,7 @@ Currently, the following authorization providers are supported:
 + Joomla (with a specific authorization provider installed in Joomla)
 
 ## Configuration of Authorization Providers
-
 ### General Configuration
-
 In general, the following steps need to be taken to configure an authorization provider:
 + Login on the provider web page
 + Register an OAuth2 app (or web app)
@@ -79,6 +75,7 @@ Joomla_clientSecret='xxx'
 Generic_urlAuthorize='xxx'
 Generic_urlAccessToken='xxx'
 Generic_urlResourceOwnerDetails='xxx'
+Generic_loginButtonLabel='xxx'
 ```
 + Insert the configuration details from the OAuth 2.0 Server into the newly included configuration lines of your config.ini.php file:
     + **Generic_clientId**='...' (value from the OAuth 2.0 Server)
@@ -86,6 +83,7 @@ Generic_urlResourceOwnerDetails='xxx'
     + **Generic_urlAuthorize**='...' (value from the OAuth 2.0 Server)
     + **Generic_urlAccessToken**='...' (value from the OAuth 2.0 Server)
     + **Generic_urlResourceOwnerDetails**='...' (value from the OAuth 2.0 Server)
+    + **Generic_loginButtonLabel**='...' (the label, which shall be shown for the login button etc.))
 
 ### Github
 + Open the [Github](https://github.com/) page and log into your Github account
@@ -157,11 +155,13 @@ Google_clientSecret='xxx'
 Joomla_clientId='xxx'
 Joomla_clientSecret='xxx'
 Joomla_urlAuthorize='xxx'
+Joomla_loginButtonLabel='xxx'
 ```
 + Insert the configuration details from the Joomla OAuth 2.0 Server into the newly included configuration lines of your config.ini.php file:
     + **Joomla_clientId**='...' (value shown in Joomla, like described above)
     + **Joomla_clientSecret**='...' (value shown in Joomla, like described above)
     + **Joomla_urlAuthorize**='JOOMLA_BASE_URL/index.php' (JOOMLA_BASE_URL from your Joomla installation, e.g. 'https://mysite.net/joomla')
+    + **Joomla_loginButtonLabel**='...' (the label, which shall be shown for the login button etc.))
 
 ## Webtrees Version
 The module was developed and tested with [webtrees 2.1.20](https://webtrees.net/download), but should also run with any other 2.1 version.
