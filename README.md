@@ -1,8 +1,8 @@
-[![Latest Release](https://img.shields.io/github/v/release/Jefferson49/OAuth2ClienForWebtrees?display_name=tag)](https://github.com/Jefferson49/ExtendedImportExport/releases/latest)
+[![Latest Release](https://img.shields.io/github/v/release/Jefferson49/webtrees-oauth2-client?display_name=tag)](https://github.com/Jefferson49/ExtendedImportExport/releases/latest)
 [![webtrees major version](https://img.shields.io/badge/webtrees-v2.1.x-green)](https://webtrees.net/download)
 
 # OAuth2 Client for webtrees
-A [webtrees](https://webtrees.net) 2.1 custom module to provide [OAuth2](https://en.wikipedia.org/wiki/OAuth) single sign on ([SSO](https://en.wikipedia.org/wiki/Single_sign-on)).
+A [webtrees](https://webtrees.net) 2.1 custom module to provide [OAuth 2.0](https://en.wikipedia.org/wiki/OAuth) single sign on ([SSO](https://en.wikipedia.org/wiki/Single_sign-on)).
 
 ##  Table of contents
 This README file contains the following main sections:
@@ -22,8 +22,8 @@ This README file contains the following main sections:
 
 ## What are the benefits of this module?
 
-+ The module provides single sign on ([SSO](https://en.wikipedia.org/wiki/Single_sign-on)) into webtrees based on the [OAuth2](https://en.wikipedia.org/wiki/OAuth) standard.
-+ A pre-configured set of certain authorization can be selected during webtrees login.
++ The module provides single sign on ([SSO](https://en.wikipedia.org/wiki/Single_sign-on)) into the webtrees application based on the [OAuth 2.0](https://en.wikipedia.org/wiki/OAuth) standard.
++ A pre-configured set of authorization providers can be selected during webtrees login.
 + If using sign on with an authorization provider, the user account data (i.e. name, user name, email) from the authorization provider is used in webtrees.
 
 ## IMPORTANT SECURITY NOTES
@@ -114,9 +114,27 @@ Google_clientSecret='xxx'
 + Press the "OK" button in the Google browser page
 
 ### Joomla
++ Download the Joomla extension [joomla-oauth2-server](https://github.com/Jefferson49/joomla-oauth2-server/releases/latest)
++ Install the extension in the Joomla administration backend
++ Open the backend menu: Components / OAuth2 Server / Configure OAuth
++ Click on the button "Add client"
++ Enter a name for "Client Name"
++ Enter the "Authorized Redirect URL" for the webtrees OAuth 2.0 client:
+    + URL: **BASE_URL/index.php?route=/webtrees/OAuth2Client** (BASE_URL from webtrees config.ini.php; base_url='...')
++ Check the "Client Name", "Client ID", and "Client Secret" in the list of OAuth clients
++ Open your config.ini.php file and insert the following lines:
+```PHP
+Joomla_clientId='xxx'
+Joomla_clientSecret='xxx'
+Joomla_urlAuthorize='xxx'
+```
++ Insert the configuration details from the Joomla OAuth 2.0 Server into the newly included configuration lines of your config.ini.php file:
+    + **Joomla_clientId**='...' (value shown in Joomla, like described above)
+    + **Joomla_clientSecret**='...' (value shown in Joomla, like described above)
+    + **Joomla_urlAuthorize**='JOOMLA_BASE_URL/index.php' (JOOMLA_BASE_URL from your Joomla installation, e.g. 'https://mysite.net/joomla')
 
 ## Installation
-+ Download the [latest release](https://github.com/Jefferson49/OAuth2ClienForWebtrees/releases/latest) of the module
++ Download the [latest release](https://github.com/Jefferson49/webtrees-oauth2-client/releases/latest) of the module
 + Copy the folder "oauth2_client" into the "module_v4" folder of your webtrees installation
 + Check if the module is activated in the control panel:
   + Login to webtrees as an administrator
@@ -127,14 +145,14 @@ Google_clientSecret='xxx'
 The module was developed and tested with [webtrees 2.1.20](https://webtrees.net/download), but should also run with any other 2.1 version.
 
 ## Translation
-You can help to translate this module. The translation is based on [gettext](https://en.wikipedia.org/wiki/Gettext) and uses .po files, which can be found in [/resources/lang/](https://github.com/Jefferson49/OAuth2ClienForWebtrees/tree/main/resources/lang). You can use a local editor like [Poedit](https://poedit.net/) or notepad++ to work on translations and provide them in the [Github repository](https://github.com/Jefferson49/OAuth2ClienForWebtrees) of the module. You can do this via a pull request (if you know how to do), or by opening a new issue and attaching a .po file. Updated translations will be included in the next release of this module.
+You can help to translate this module. The translation is based on [gettext](https://en.wikipedia.org/wiki/Gettext) and uses .po files, which can be found in [/resources/lang/](https://github.com/Jefferson49/webtrees-oauth2-client/tree/main/resources/lang). You can use a local editor like [Poedit](https://poedit.net/) or notepad++ to work on translations and provide them in the [Github repository](https://github.com/Jefferson49/webtrees-oauth2-client) of the module. You can do this via a pull request (if you know how to do), or by opening a new issue and attaching a .po file. Updated translations will be included in the next release of this module.
 
-Currently, the following languages are already available:
+Currently, the following languages are available:
 + English
 + German
 
 ## Bugs and Feature Requests
-If you experience any bugs or have a feature request for this webtrees custom module, you can [create a new issue](https://github.com/Jefferson49/OAuth2ClienForWebtrees/issues).
+If you experience any bugs or have a feature request for this webtrees custom module, you can [create a new issue](https://github.com/Jefferson49/webtrees-oauth2-client/issues).
 
 ## Github Repository
-https://github.com/Jefferson49/OAuth2ClienForWebtrees
+https://github.com/Jefferson49/webtrees-oauth2-client
