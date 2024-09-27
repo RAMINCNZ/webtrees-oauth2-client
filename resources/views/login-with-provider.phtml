@@ -18,10 +18,7 @@ use Jefferson49\Webtrees\Module\OAuth2Client\LoginWithAuthorizationProviderActio
 $url = $url ?? route(HomePage::class);
 
 $provider_names = AuthorizationProviderFactory::getAuthorizatonProviderNames();
-
-uasort($provider_names, function (string $a, string $b) {
-    return strcmp($a, $b);
-});
+$login_button_labels = [];
 
 //Remove any provider from list, for which no sufficient config is available
 foreach($provider_names as $class_name => $provider_name) {
@@ -29,6 +26,17 @@ foreach($provider_names as $class_name => $provider_name) {
         unset($provider_names[$class_name]);
     }
 }
+
+//Get login button labels for all providers
+foreach($provider_names as $class_name => $provider_name) {
+    $provider = AuthorizationProviderFactory::make($provider_name, '');
+    $login_button_labels[$provider_name] = $provider->getLoginButtonLabel();
+}
+
+//Alphabetically sort provider labels
+uasort($login_button_labels, function (string $a, string $b) {
+    return strcmp($a, $b);
+});
 
 ?>
 
@@ -39,14 +47,14 @@ foreach($provider_names as $class_name => $provider_name) {
         </label>
         <div class="col-sm-9 wt-page-options-value">
             <form method="post">
-                <?php foreach ($provider_names as $provider_name) : ?>
+                <?php foreach ($login_button_labels as $provider_name => $login_button_label) : ?>
 
                     <a href="<?= e(route(LoginWithAuthorizationProviderAction::class, [
                             'tree'          => $tree instanceof Tree ? $tree->name() : null,
                             'url'           => $url,
                             'provider_name' => $provider_name,
                         ])) ?>" type="submit" class="btn btn-secondary">
-                        <?= AuthorizationProviderFactory::make($provider_name, '')->getLoginButtonLabel() ?>
+                        <?= $login_button_label ?>
                     </a>
                 <?php endforeach ?>
                 <?= csrf_field() ?>
