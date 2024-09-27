@@ -12,6 +12,7 @@ This README file contains the following main sections:
 +   [Supported Authorization Providers](#supported-authorization-providers)
 +   [Configuration of Authorization Providers](#configuration-of-authorization-providers)
     + [General Configuration](#general-configuration)
+    + [Generic](#generic)
     + [Github](#github)
     + [Google](#google)
     + [Joomla](#joomla)
@@ -42,6 +43,7 @@ Please check whether your **webtrees BASE_URL** in the config.ini.php file **sta
 ## Supported Authorization Providers
 
 Currently, the following authorization providers are supported:
++ Generic (can be configured for several authorization providers)
 + Github
 + Google
 + Joomla (with a specific authorization provider installed in Joomla)
@@ -65,6 +67,26 @@ BASE_URL/index.php?route=/webtrees/OAuth2Client
 
 In the following, the configuration is described for a subset of authorization providers. Simular configuration procedures apply to other providers. 
 
+### Generic
++ Configure the OAuth 2.0 server, which shall be used as authorization provider
++ Configure the "Redirect URL" to webtrees within the OAuth 2.0 server:
+    + URL: **BASE_URL/index.php?route=/webtrees/OAuth2Client** (BASE_URL from webtrees config.ini.php; base_url='...')
++ Create and check the "Client ID", and "Client Secret" within the OAuth 2.0 server
++ Open your webtrees config.ini.php file and insert the following lines:
+```PHP
+Generic_clientId='xxx'
+Joomla_clientSecret='xxx'
+Generic_urlAuthorize='xxx'
+Generic_urlAccessToken='xxx'
+Generic_urlResourceOwnerDetails='xxx'
+```
++ Insert the configuration details from the OAuth 2.0 Server into the newly included configuration lines of your config.ini.php file:
+    + **Generic_clientId**='...' (value from the OAuth 2.0 Server)
+    + **Generic_clientSecret**='...' (value from the OAuth 2.0 Server)
+    + **Generic_urlAuthorize**='...' (value from the OAuth 2.0 Server)
+    + **Generic_urlAccessToken**='...' (value from the OAuth 2.0 Server)
+    + **Generic_urlResourceOwnerDetails**='...' (value from the OAuth 2.0 Server)
+
 ### Github
 + Open the [Github](https://github.com/) page and log into your Github account
 + Click on the symbol for your user account on the top right side of the browser
@@ -79,7 +101,7 @@ In the following, the configuration is described for a subset of authorization p
 + Press button "Register application"
 + Press button "Create a new client secret"
 + Copy the newly created client secret to a save place
-+ Open your config.ini.php file and insert the following lines:
++ Open your webtrees config.ini.php file and insert the following lines:
 ```PHP
 Github_clientId='xxx'
 Github_clientSecret='xxx'
@@ -111,7 +133,7 @@ Github_clientSecret='xxx'
     + URL: **BASE_URL/index.php?route=/webtrees/OAuth2Client** (BASE_URL from webtrees config.ini.php; base_url='...')
 + From the pop window, copy the **Client ID** and the **Client secret**
 + Copy the client secret to a save place
-+ Open your config.ini.php file and insert the following lines:
++ Open your webtrees config.ini.php file and insert the following lines:
 ```PHP
 Google_clientId='xxx'
 Google_clientSecret='xxx'
@@ -130,7 +152,7 @@ Google_clientSecret='xxx'
 + Enter the "Authorized Redirect URL" for the webtrees OAuth 2.0 client:
     + URL: **BASE_URL/index.php?route=/webtrees/OAuth2Client** (BASE_URL from webtrees config.ini.php; base_url='...')
 + Check the "Client Name", "Client ID", and "Client Secret" in the list of OAuth clients
-+ Open your config.ini.php file and insert the following lines:
++ Open your webtrees config.ini.php file and insert the following lines:
 ```PHP
 Joomla_clientId='xxx'
 Joomla_clientSecret='xxx'
