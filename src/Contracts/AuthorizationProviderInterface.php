@@ -124,7 +124,7 @@ interface AuthorizationProviderInterface
      * @return array   An array of option names, which can be set for this provider.
      *                 Options include `clientId`, `clientSecret`, `redirectUri`, etc.
      */
-    public static function getOptionNames() : array;
+    public static function getRequiredOptions() : array;
 
     /**
      * Returns an array with the webtrees user data keys, which defines if they are primary or mandatory

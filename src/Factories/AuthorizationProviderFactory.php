@@ -121,7 +121,7 @@ class AuthorizationProviderFactory
 
         foreach ($provider_names as $class_name => $provider_name) {
             if ($provider_name === $name) {
-                $reflectionMethod = new ReflectionMethod($name_space_provider . $class_name, 'getOptionNames');
+                $reflectionMethod = new ReflectionMethod($name_space_provider . $class_name, 'getRequiredOptions');
                 $option_names = $reflectionMethod->invoke(null);
                 break;
             }
