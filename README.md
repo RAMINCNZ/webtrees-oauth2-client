@@ -28,7 +28,7 @@ This README file contains the following main sections:
 + If using sign on with an authorization provider, the user account data (i.e. name, user name, email) from the authorization provider is used in webtrees.
 
 ## IMPORTANT SECURITY NOTES
-It is **highly recommended to use** the **HTTPS** protocol for your webtrees installations. The [HTTPS](https://en.wikipedia.org/wiki/HTTPS) protocol will ensure the encryption of the communication between webtrees and the authorization provider for a secure exchange of secret IDs and secret access tokens.
+It is **highly recommended to use** the **HTTPS** protocol for your webtrees installation. The [HTTPS](https://en.wikipedia.org/wiki/HTTPS) protocol will ensure the encryption of the communication between webtrees and the authorization provider for a secure exchange of secret IDs and secret access tokens.
 
 Please check whether your **webtrees BASE_URL** in the config.ini.php file **starts with "https"**, e.g. https://my_site.net/webtrees.
 
