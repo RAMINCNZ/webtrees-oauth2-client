@@ -19,6 +19,7 @@ This README file contains the following main sections:
 +   [Webtrees Version](#webtrees-version)
 +   [Translation](#translation)
 +   [Bugs and Feature Requests](#bugs-and-feature-requests)
++   [License](#license)
 +   [Github Repository](#github-repository)
 
 ## What are the benefits of this module?
@@ -175,6 +176,20 @@ Currently, the following languages are available:
 
 ## Bugs and Feature Requests
 If you experience any bugs or have a feature request for this webtrees custom module, you can [create a new issue](https://github.com/Jefferson49/webtrees-oauth2-client/issues).
+
+## License
++ [GNU General Public License, Version 3](https://github.com/Jefferson49/webtrees-oauth2-client/LICENSE.md)
++ webtrees
+    + webtrees: online genealogy
+    + Copyright (C) 2024 [webtrees development team](http://webtrees.net)
++ OAuth2Client (webtrees custom module)
+    + Copyright (C) 2024 [Jefferson49](https://github.com/Jefferson49)
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 
 ## Github Repository
 https://github.com/Jefferson49/webtrees-oauth2-client
