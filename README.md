@@ -178,7 +178,7 @@ Currently, the following languages are available:
 If you experience any bugs or have a feature request for this webtrees custom module, you can [create a new issue](https://github.com/Jefferson49/webtrees-oauth2-client/issues).
 
 ## License
-+ [GNU General Public License, Version 3](https://github.com/Jefferson49/webtrees-oauth2-client/LICENSE.md)
++ [GNU General Public License, Version 3](https://github.com/Jefferson49/webtrees-oauth2-client/blob/main/LICENSE.md)
 + webtrees
     + webtrees: online genealogy
     + Copyright (C) 2024 [webtrees development team](http://webtrees.net)
