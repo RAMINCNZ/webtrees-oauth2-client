@@ -16,6 +16,9 @@ This README file contains the following main sections:
     + [Github](#github)
     + [Google](#google)
     + [Joomla](#joomla)
++   [Concept](#concept)
+    + [Definitons](#definitions)
+    + [Protocol Flow](#protocol-flow)
 +   [Webtrees Version](#webtrees-version)
 +   [Translation](#translation)
 +   [Bugs and Feature Requests](#bugs-and-feature-requests)
@@ -163,6 +166,29 @@ Joomla_loginButtonLabel='xxx'
     + **Joomla_clientSecret**='...' (value shown in Joomla, like described above)
     + **Joomla_urlAuthorize**='JOOMLA_BASE_URL/index.php' (JOOMLA_BASE_URL from your Joomla installation, e.g. 'https://mysite.net/joomla')
     + **Joomla_loginButtonLabel**='...' (the label, which shall be shown for the login button etc.))
+
+## Concept
++ "OAuth (short for open authorization) is an open standard for access delegation, commonly used as a way for internet users to grant websites or applications access to their information on other websites but without giving them the passwords." \[[wikipedia](https://en.wikipedia.org/wiki/OAuth)\].
++ The "OAuth 2.0 authorization framework enables a third-party application to obtain limited access to an HTTP service [...] on behalf of a resource owner by orchestrating an approval interaction between the resource owner and the HTTP service" \[[RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749)\].
++ The OAuth 2.0 standard is specified in [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749).
++ The OAuth 2.0 Client for webtrees uses the OAuth2 implementation of the [League/oauth2-client](https://oauth2-client.thephpleague.com/) by configuring/using it with the code as described in the [basic usage](https://oauth2-client.thephpleague.com/usage/) of the League/oauth2-client.
+
+### Definitions 
+[RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749) defines several roles, which are used in OAuth2. In the context of the OAuth 2.0 Client for webtrees and webtrees single sign on, the OAuth2 [roles](https://datatracker.ietf.org/doc/html/rfc6749#section-1.1) and definitions are used as follows:
++ **Resource Owner**: The webtrees user
++ **Ressource**: The user data (e.g. user name, real name, email address, ...), which belongs to the webtrees user while using a 3rd party webservice (e.g. Github, Google, Joomla).
++ **Client**: The webtrees application used in a web browser.
++ **Authorization Provider**: A 3rd party web application, which usually provides the "Authorization Server", the "Ressource Server", and the "User Authentification" in one entity.
++ **Authorization Server**: A part of the Authorization Provider, which is issuing access tokens to  webtrees after successfully authenticating the webtrees user.
++ **Ressource Server**: A part of the Authorization Provider, which is responding the protected user data (e.g. user name, real name, email address) on requests with authenticated access tokens.
++ **User Authentification**: A part of the Authorization Provider, which is providing 3rd party user login and authentification.
+
+### Protocol Flow
+The following figure shows how the protocol flow of [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749) is implemented. For further descriptions of the protocol flow, please refer to the following chapters of [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749):
++ [OAuth 2 Protocol Flow](https://datatracker.ietf.org/doc/html/rfc6749#section-1.2)
++ [Authorization Code Grant](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1)
+
+![Screenshot](resources/img/protocol_flow.jpg)
 
 ## Webtrees Version
 The module was developed and tested with [webtrees 2.1.20](https://webtrees.net/download), but should also run with any other 2.1 version.
