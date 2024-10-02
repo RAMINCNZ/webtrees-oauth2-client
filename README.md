@@ -16,6 +16,7 @@ This README file contains the following main sections:
     + [Github](#github)
     + [Google](#google)
     + [Joomla](#joomla)
++   [Mapping of the User Data to webtrees](#mapping-of-the-user-data-to-webtrees)
 +   [Concept](#concept)
     + [Definitons](#definitions)
     + [Protocol Flow](#protocol-flow)
@@ -26,9 +27,11 @@ This README file contains the following main sections:
 +   [Github Repository](#github-repository)
 
 ## What are the benefits of this module?
-+ The module provides single sign on ([SSO](https://en.wikipedia.org/wiki/Single_sign-on)) into the webtrees application based on the [OAuth 2.0](https://en.wikipedia.org/wiki/OAuth) standard.
++ The module provides single sign on ([SSO](https://en.wikipedia.org/wiki/Single_sign-on)) into the [webtrees](https://webtrees.net) application based on the [OAuth 2.0](https://en.wikipedia.org/wiki/OAuth) standard.
 + A pre-configured set of authorization providers can be selected during webtrees login.
-+ If using sign on with an authorization provider, the user account data (i.e. name, user name, email) from the authorization provider is used in webtrees.
++ If choosing sign on with an authorization provider, the user account data (i.e. user name, real name, email address) of the authorization provider is used for the user account in webtrees.
+
+![Login Page](resources/img/login_page_with_authorization_providers.jpg)
 
 ## IMPORTANT SECURITY NOTES
 It is **highly recommended to use** the **HTTPS** protocol for your webtrees installation. The [HTTPS](https://en.wikipedia.org/wiki/HTTPS) protocol will ensure the encryption of the communication between webtrees and the authorization provider for a secure exchange of secret IDs and secret access tokens.
@@ -167,28 +170,47 @@ Joomla_loginButtonLabel='xxx'
     + **Joomla_urlAuthorize**='JOOMLA_BASE_URL/index.php' (JOOMLA_BASE_URL from your Joomla installation, e.g. 'https://mysite.net/joomla')
     + **Joomla_loginButtonLabel**='...' (the label, which shall be shown for the login button etc.))
 
-## Concept
-+ "OAuth (short for open authorization) is an open standard for access delegation, commonly used as a way for internet users to grant websites or applications access to their information on other websites but without giving them the passwords." \[[wikipedia](https://en.wikipedia.org/wiki/OAuth)\].
-+ The "OAuth 2.0 authorization framework enables a third-party application to obtain limited access to an HTTP service [...] on behalf of a resource owner by orchestrating an approval interaction between the resource owner and the HTTP service" \[[RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749)\].
-+ The OAuth 2.0 standard is specified in [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749).
-+ The OAuth 2.0 Client for webtrees uses the OAuth2 implementation of the [League/oauth2-client](https://oauth2-client.thephpleague.com/) by configuring/using it with the code as described in the [basic usage](https://oauth2-client.thephpleague.com/usage/) of the League/oauth2-client.
+## Mapping of the User Data to webtrees
+The user data (i.e. user name, real name, email address), which is received with the OAuth 2.0 protocol from the authorization provider, is mapped to a webtrees user. Since there might be differences regarding availablility and changability of the user data, the following mapping is used:
++ **primary**: The primary key of the user data within the authorization provider. The primary key **cannot be changed** within webtrees and usually also cannot be changed within the authorization provider. If the primary key within the authorization provider is changed by any means, this will result in loosing the link of the user data between webtrees and the authorization provider.
++ **mandatory**: A mandatory part of the user data, which can only be changed within the authorization provider and is not allowed to be changed within webtrees. Mandatory parts of the user data **are updated** in webtrees if changed within the authorization provider.
++ **optional**: An optional part of the user data, which can be changed within webtrees. Optional user data will not be updated/synchronized between the authorization provider and webtrees.
 
-### Definitions 
-[RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749) defines several roles, which are used in OAuth2. In the context of the OAuth 2.0 Client for webtrees and webtrees single sign on, the OAuth2 [roles](https://datatracker.ietf.org/doc/html/rfc6749#section-1.1) and definitions are used as follows:
-+ **Resource Owner**: The webtrees user
-+ **Ressource**: The user data (e.g. user name, real name, email address, ...), which belongs to the webtrees user while using a 3rd party webservice (e.g. Github, Google, Joomla).
+The following table shows the mapping of the user data for the different authorization providers:
+
+|Authorization provider|user name|real name|email address|
+|:---------------------|:--------|:--------|:------------|
+|Generic|mandatory|optional|primary|
+|Github|primary|optional|mandatory|
+|Google|optional|optional|primary|
+|Joomla|primary|optional|mandatory|
+
+## Definitions 
+[RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749) defines several roles, which are used in OAuth. In the context of the OAuth 2.0 Client and webtrees single sign on, the OAuth [roles](https://datatracker.ietf.org/doc/html/rfc6749#section-1.1) and definitions are used as follows:
++ **Resource Owner**: The webtrees user.
++ **Ressource**: The user data (e.g. user name, real name, email address, ...), which belong to the webtrees user while using a 3rd party webservice (e.g. Github, Google, Joomla).
 + **Client**: The webtrees application used in a web browser.
 + **Authorization Provider**: A 3rd party web application, which usually provides the "Authorization Server", the "Ressource Server", and the "User Authentification" in one entity.
 + **Authorization Server**: A part of the Authorization Provider, which is issuing access tokens to  webtrees after successfully authenticating the webtrees user.
 + **Ressource Server**: A part of the Authorization Provider, which is responding the protected user data (e.g. user name, real name, email address) on requests with authenticated access tokens.
 + **User Authentification**: A part of the Authorization Provider, which is providing 3rd party user login and authentification.
 
+## Concept
++ "OAuth (short for open authorization) is an open standard for access delegation, commonly used as a way for internet users to grant websites or applications access to their information on other websites but without giving them the passwords." \[[wikipedia](https://en.wikipedia.org/wiki/OAuth)\].
++ The "OAuth 2.0 authorization framework enables a third-party application to obtain limited access to an HTTP service [...] on behalf of a resource owner by orchestrating an approval interaction between the resource owner and the HTTP service" \[[RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749)\].
++ The OAuth 2.0 standard is specified in [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749).
++ The OAuth 2.0 Client for webtrees uses the OAuth2 implementation of the [League/oauth2-client](https://oauth2-client.thephpleague.com/) by configuring/using it with the code as described in [basic usage](https://oauth2-client.thephpleague.com/usage/) of the League/oauth2-client.
++ The OAuth 2.0 Client for webtrees requests the user data (i.e. user name, real name, email address) from the authorization provider.
++ After submitting a request to login with an authorization provider, the user will be redirected to a website with the authorizaton provider's user authentification.
++ With the login at the authorization provider, the user (Resource Owner) confirms to use the user data (Ressource) from the authorization provider in webtrees. Some authorizaton providers (e.g. Google) explicitly request to confirm the usage of the user data. Others (e.g. Github) provide access by simply login.
+
 ### Protocol Flow
-The following figure shows how the protocol flow of [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749) is implemented. For further descriptions of the protocol flow, please refer to the following chapters of [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749):
+The following figure shows how the protocol flow of [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749) is implemented. For further descriptions of the protocol flow, please refer to the following chapters of [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749) and the description of the [League/OAuth2 Client](https://oauth2-client.thephpleague.com/):
 + [OAuth 2 Protocol Flow](https://datatracker.ietf.org/doc/html/rfc6749#section-1.2)
 + [Authorization Code Grant](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1)
++ [League/OAuth2 Client](https://oauth2-client.thephpleague.com/)
 
-![Screenshot](resources/img/protocol_flow.jpg)
+![Protocol Flow](resources/img/protocol_flow.jpg)
 
 ## Webtrees Version
 The module was developed and tested with [webtrees 2.1.20](https://webtrees.net/download), but should also run with any other 2.1 version.
@@ -205,17 +227,29 @@ If you experience any bugs or have a feature request for this webtrees custom mo
 
 ## License
 + [GNU General Public License, Version 3](LICENSE.md)
-+ webtrees
-    + webtrees: online genealogy
-    + Copyright (C) 2024 [webtrees development team](http://webtrees.net)
-+ OAuth2Client (webtrees custom module)
-    + Copyright (C) 2024 [Jefferson49](https://github.com/Jefferson49)
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
+
+## Contributions and Copyrights
++ webtrees
+    + [webtrees](https://webtrees.net): online genealogy
+    + Copyright (c) 2024 [webtrees development team](http://webtrees.net)
++ League
+    + [oauth2-client](https://github.com/thephpleague/oauth2-client)
+        + Copyright (c) 2013-2023 Alex Bilbie
+    + [oauth2-github](https://github.com/thephpleague/oauth2-github)
+        + Copyright (c) 2015 Steven Maguire
+    + [oauth2-google](https://github.com/thephpleague/oauth2-google)
+        + Copyright (c) 2015 Woody Gilk
++ Vesta Common (webtrees custom module)
+    + [Cissee\WebtreesExt\More18N](https://github.com/vesta-webtrees-2-custom-modules/vesta_common/blob/master/patchedWebtrees/MoreI18N.php)
+        + Copyright (c) 2019 – 2024 Richard Cissée
++ OAuth2Client (webtrees custom module)
+    + Copyright (c) 2024 [Jefferson49](https://github.com/Jefferson49)
 
 ## Github Repository
 https://github.com/Jefferson49/webtrees-oauth2-client
