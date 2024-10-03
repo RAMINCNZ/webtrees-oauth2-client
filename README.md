@@ -29,7 +29,7 @@ This README file contains the following main sections:
 ## What are the benefits of this module?
 + The module provides single sign on ([SSO](https://en.wikipedia.org/wiki/Single_sign-on)) into the [webtrees](https://webtrees.net) application based on the [OAuth 2.0](https://en.wikipedia.org/wiki/OAuth) standard.
 + A pre-configured set of authorization providers can be selected during webtrees login.
-+ If choosing sign on with an authorization provider, the user account data (i.e. user name, real name, email address) of the authorization provider is used for the user account in webtrees.
++ If choosing to sign on with an authorization provider, the user account data (i.e. user name, real name, email address) of the authorization provider is used for the user account in webtrees.
 
 ![Login Page](resources/img/login_page_with_authorization_providers.jpg)
 
@@ -47,11 +47,17 @@ Please check whether your **webtrees BASE_URL** in the config.ini.php file **sta
 	+ Check if it has a tick for "Enabled"
 
 ## Supported Authorization Providers
+The OAuth 2.0 Client for webtrees uses the OAuth 2.0 implementation of the [The League](https://oauth2-client.thephpleague.com/), which allows developers to create OAuth 2.0 clients that interface with a wide-variety of OAuth 2.0 providers. Within this concept, The League supports serveral "[official providers](https://oauth2-client.thephpleague.com/providers/league/)". As far as suitable for webtrees, these official providers were included, see list below. 
+
 Currently, the following authorization providers are supported:
-+ Generic (can be configured for several authorization providers)
-+ Github
-+ Google
-+ Joomla (with a specific authorization provider installed in Joomla)
++ **Generic** (can be configured for several authorization providers)
++ **Github**
++ **Google**
++ **Joomla** (with a specific authorization provider installed in Joomla)
+
+To use further authorization providers, the following approaches are available:
++ Use the Generic authorization provider, which can be adopted to a wide range of authorization providers.
++ There are a large number of [3rd party provider clients](https://oauth2-client.thephpleague.com/providers/thirdparty/) available, which follow the same software structure and interfaces from [The League](https://oauth2-client.thephpleague.com/). The code of the OAuth 2.0 Client for webtrees allows to flexibly integrate further members of this set of provider clients. You can file a [feature request](#bugs-and-feature-requests), if you are interested in a specific provider.
 
 ## Configuration of Authorization Providers
 ### General Configuration
