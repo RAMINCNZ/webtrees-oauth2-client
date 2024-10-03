@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-09-27 06:01+0200\n"
-"PO-Revision-Date: 2024-09-27 06:01+0200\n"
+"POT-Creation-Date: 2024-10-03 18:05+0200\n"
+"PO-Revision-Date: 2024-10-03 18:05+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -19,12 +19,17 @@ msgstr ""
 msgid "The requested authorization provider could not be found"
 msgstr "Der angeforderte Autorisierungsanbieter konnte nicht gefunden werden"
 
-#: src/LoginWithAuthorizationProviderAction.php:157
+#: src/LoginWithAuthorizationProviderAction.php:155
+#: src/LoginWithAuthorizationProviderAction.php:174
+msgid "OAuth 2.0 communication error"
+msgstr "OAuth 2.0 Kommunikationsfehler"
+
+#: src/LoginWithAuthorizationProviderAction.php:158
 msgid "Invalid state in communication with authorization provider."
 msgstr ""
 "Ungültiger Zustand in der Kommunikation mit dem Autorisierungsanbieter."
 
-#: src/LoginWithAuthorizationProviderAction.php:175
+#: src/LoginWithAuthorizationProviderAction.php:177
 msgid ""
 "Failed to get the access token or the user details from the authorization "
 "provider"
@@ -32,7 +37,7 @@ msgstr ""
 "Fehler beim Empfang des Zugriffs-Tokens oder der Benutzer-Daten vom "
 "Autorisierungsanbieter"
 
-#: src/LoginWithAuthorizationProviderAction.php:202
+#: src/LoginWithAuthorizationProviderAction.php:204
 msgid ""
 "No valid user account data received from authorizaton provider. Username or "
 "email missing."
@@ -40,12 +45,12 @@ msgstr ""
 "Vom Autorisierungsanbieter wurden keine validen Daten empfangen. Benutzer-"
 "Name oder Email fehlt."
 
-#: src/LoginWithAuthorizationProviderAction.php:219
+#: src/LoginWithAuthorizationProviderAction.php:221
 msgid "Automatic user registration after sign in with authorization provider"
 msgstr ""
 "Automatische Benutzer-Registrierung nach Einloggen mit Autorisierungsanbieter"
 
-#: src/LoginWithAuthorizationProviderAction.php:328
+#: src/LoginWithAuthorizationProviderAction.php:330
 #, php-format
 msgid ""
 "The length of the \"%s\" exceeded the maximum length of %s and was reduced "
@@ -160,7 +165,7 @@ msgstr ""
 "Obligatorische Benutzer-Daten vom Autorisierungsanbieter können nicht "
 "geändert werden"
 
-#: resources/views/login-with-provider.phtml:38
+#: resources/views/login-with-provider.phtml:46
 #: resources/views/password-request-page.phtml:49
 msgid "Sign in with authorization provider"
 msgstr "Mit Autorisierungsanbieter anmelden"
@@ -177,7 +182,7 @@ msgstr ""
 "von webtrees anfordern, erhalten Sie zwar ein Email. Allerdings wird der "
 "enthaltene Link zur Erzeugung eines neuen Passworts nicht funktionieren."
 
-#: resources/views/password-reset-page.phtml:32
+#: resources/views/password-reset-page.phtml:37
 #, php-format
 msgid ""
 "The request to reset the passwort belongs to a user, who signs in with %s. "
@@ -224,13 +229,12 @@ msgstr ""
 "in der webtrees-Datei \"config.ini.php\" aktiviert werden. Aktuell startet "
 "\"base_url\" nicht mit \"https://\"."
 
-#: resources/views/settings.phtml:47
-msgid ""
-"In order to use changed settings for a download/upload, the settings need to "
-"be saved first."
-msgstr ""
-"Um geänderte Einstellungen beim Herunterladen/Hochladen zu nutzen, müssen "
-"die Einstellungen zunächst gespeichert werden."
+#~ msgid ""
+#~ "In order to use changed settings for a download/upload, the settings need "
+#~ "to be saved first."
+#~ msgstr ""
+#~ "Um geänderte Einstellungen beim Herunterladen/Hochladen zu nutzen, müssen "
+#~ "die Einstellungen zunächst gespeichert werden."
 
 #, fuzzy
 #~| msgid "Folder name"

@@ -152,6 +152,8 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
             }
         
             return $this->viewResponse(OAuth2Client::viewsNamespace() . '::alert', [
+                'title'        => I18N::translate('OAuth 2.0 communication error'),
+                'tree'          => $tree instanceof Tree ? $tree->name() : null,
                 'alert_type'   => OAuth2Client::ALERT_DANGER, 
                 'module_name'  => $oauth2_client->title(),
                 'text'         => I18N::translate('Invalid state in communication with authorization provider.'),
@@ -170,6 +172,8 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
 
                 // Failed to get the access token or user details.
                 return $this->viewResponse(OAuth2Client::viewsNamespace() . '::alert', [
+                    'title'        => I18N::translate('OAuth 2.0 communication error'),
+                    'tree'          => $tree instanceof Tree ? $tree->name() : null,
                     'alert_type'   => OAuth2Client::ALERT_DANGER,
                     'module_name'  => $oauth2_client->title(),
                     'text'         => I18N::translate('Failed to get the access token or the user details from the authorization provider') . ': ' . $e->getMessage(),
