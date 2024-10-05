@@ -64,23 +64,21 @@ To use further authorization providers, the following approaches are available:
 In general, the following steps need to be taken to configure an authorization provider:
 + Login on the provider web page
 + Register an OAuth2 app (or web app)
-+ Provide the **redirect URL** (or callback URL) for the registered app
++ Provide the **redirect URL** (or callback URL) from webtrees (see description/screenshot below) to the registered app.
 + Get the **client ID** for the registered app
 + Get (or generate) the **client secret** for the registered app
 + Enter the client ID and client secret into your webtrees configuratin file (config.ini.php)
 
-Use the following value as redirect or callback URL with BASE_URL from your webtrees config.ini.php (base_url="xxx"):
-```
-BASE_URL/index.php?route=/webtrees/OAuth2Client
-```
+In order to get the redirect URL, open the module settings in the control panel and copy the shown value.
+
+![Get redirect URL from module settings](resources/img/control_panel_redirect_url.jpg)
 
 In the following, the configuration is described for a subset of authorization providers. Simular configuration procedures apply to other providers. 
 
 ### Generic
-+ Configure the OAuth 2.0 server, which shall be used as authorization provider
-+ Configure the "Redirect URL" to webtrees within the OAuth 2.0 server:
-    + URL: **BASE_URL/index.php?route=/webtrees/OAuth2Client** (BASE_URL from webtrees config.ini.php; base_url='...')
-+ Create and check the "Client ID", and "Client Secret" within the OAuth 2.0 server
++ Configure the OAuth 2.0 server, which shall be used as authorization provider.
++ Configure the "Redirect URL" to webtrees within the OAuth 2.0 server. See chapter [General Configuration](#general-configuration) about how to get the redirect URL from the module settings.
++ Create and check the "Client ID", and "Client Secret" within the OAuth 2.0 server.
 + Open your webtrees config.ini.php file and insert the following lines:
 ```PHP
 Generic_clientId='xxx'
@@ -108,7 +106,7 @@ Generic_loginButtonLabel='xxx'
 + Enter the data for the GitHub App:
     + Application name: Can be freely chosen, e.g. "webtrees - Miller family" 
     + Homepage URL: **BASE_URL** (from webtress config.ini.php)
-    + Authorization callback URL: **BASE_URL/index.php?route=/webtrees/OAuth2Client** (BASE_URL from webtrees config.ini.php; base_url='...')
+    + Authorization callback URL: See chapter [General Configuration](#general-configuration) about how to get the redirect URL from the module settings.
 + Press button "Register application"
 + Press button "Create a new client secret"
 + Copy the newly created client secret to a save place
@@ -140,8 +138,7 @@ Github_clientSecret='xxx'
 + For "Application type", select "Web application"
 + Enter a name
 + At "Authorised redirect URIs", press the "ADD URI" button
-+ Enter the following redirect URL and press the "CREATE" button
-    + URL: **BASE_URL/index.php?route=/webtrees/OAuth2Client** (BASE_URL from webtrees config.ini.php; base_url='...')
++ Enter the redirect URL and press the "CREATE" button. See chapter [General Configuration](#general-configuration) about how to get the redirect URL from the module settings.
 + From the pop window, copy the **Client ID** and the **Client secret**
 + Copy the client secret to a save place
 + Open your webtrees config.ini.php file and insert the following lines:
@@ -160,8 +157,7 @@ Google_clientSecret='xxx'
 + Open the backend menu: Components / OAuth2 Server / Configure OAuth
 + Click on the button "Add client"
 + Enter a name for "Client Name"
-+ Enter the "Authorized Redirect URL" for the webtrees OAuth 2.0 client:
-    + URL: **BASE_URL/index.php?route=/webtrees/OAuth2Client** (BASE_URL from webtrees config.ini.php; base_url='...')
++ Enter the "Authorized Redirect URL" for the webtrees OAuth 2.0 client. See chapter [General Configuration](#general-configuration) about how to get the redirect URL from the module settings.
 + Check the "Client Name", "Client ID", and "Client Secret" in the list of OAuth clients
 + Open your webtrees config.ini.php file and insert the following lines:
 ```PHP

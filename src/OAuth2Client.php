@@ -77,7 +77,6 @@ class OAuth2Client extends AbstractModule implements
 	public const CUSTOM_VERSION = '1.0.0';
 
     //Routes
-    public const WEBTREES_ROUTE = '/index.php?route=/webtrees';
 	public const REDIRECT_ROUTE = '/OAuth2Client';
 
 	//Github repository
@@ -453,6 +452,6 @@ class OAuth2Client extends AbstractModule implements
      * @return string
      */
     public static function getRedirectUrl(string $base_url) : string {
-        return $base_url . self::WEBTREES_ROUTE . self:: REDIRECT_ROUTE;
+        return route(LoginWithAuthorizationProviderAction::class);
     }      
 }
