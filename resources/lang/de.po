@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-10-05 12:39+0200\n"
-"PO-Revision-Date: 2024-10-05 12:39+0200\n"
+"POT-Creation-Date: 2024-11-01 13:47+0100\n"
+"PO-Revision-Date: 2024-11-01 13:47+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -59,22 +59,26 @@ msgstr ""
 "Die Länge der/des \"%s\" überschreitet die maximale Länge von %s und wurde "
 "daher auf %s Zeichen gekürzt."
 
-#: src/OAuth2Client.php:163
+#: src/OAuth2Client.php:181
 msgid "OAuth2 Client"
 msgstr "OAuth2 Client"
 
-#: src/OAuth2Client.php:176
+#: src/OAuth2Client.php:194
 msgid "A custom module to implement a OAuth2 client for webtrees."
 msgstr ""
 "Ein benutzerspezifisches Modul, welches einen OAuth2 Client für webtrees zur "
 "Verfügung stellt."
 
-#: src/OAuth2Client.php:354
+#: src/OAuth2Client.php:356
+msgid "Sign in with"
+msgstr "Anmelden mit"
+
+#: src/OAuth2Client.php:438
 #, php-format
 msgid "The preferences for the module \"%s\" were updated."
 msgstr "Die Einstellungen für das Modul \"%s\" wurden aktualisiert."
 
-#: src/OAuth2Client.php:377
+#: src/OAuth2Client.php:461
 #, php-format
 msgid ""
 "The preferences for the custom module \"%s\" were sucessfully updated to the "
@@ -83,7 +87,7 @@ msgstr ""
 "Die Einstellungen für das benutzerdefinierte Modul \"%s\" wurden für die "
 "neue Modul-Version %s aktualisiert."
 
-#: src/OAuth2Client.php:409
+#: src/OAuth2Client.php:493
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -97,7 +101,7 @@ msgstr ""
 "deaktivieren, weil die identische Funktion ebenfalls im Modul %s integriert "
 "ist."
 
-#: src/OAuth2Client.php:414
+#: src/OAuth2Client.php:498
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -110,7 +114,7 @@ msgstr ""
 "beide Module die gleiche Custom View \"%s\" registriert haben. Es wird "
 "dringend empfohlen eines der beiden Module zu deaktivieren."
 
-#: src/OAuth2Client.php:438
+#: src/OAuth2Client.php:522
 #, php-format
 msgid ""
 "The custom module view \"%s\" is not registered as replacement for the "
@@ -127,7 +131,7 @@ msgstr ""
 
 #: src/Provider/AbstractAuthorizationProvider.php:199
 msgid ""
-"Cannot use the login data of the authorization provider. No primary key "
+"Cannot use the sign in data of the authorization provider. No primary key "
 "defined for the user data."
 msgstr ""
 "Die Login-Daten vom Autorisierungsanbieter können nicht genutzt werden. Es "
@@ -135,7 +139,7 @@ msgstr ""
 
 #: src/Provider/AbstractAuthorizationProvider.php:202
 msgid ""
-"Cannot use the login data of the authorization provider. More than one "
+"Cannot use the sign in data of the authorization provider. More than one "
 "primary key defined for the user data."
 msgstr ""
 "Die Login-Daten vom Autorisierungsanbieter können nicht genutzt werden. Es "
@@ -143,7 +147,7 @@ msgstr ""
 
 #: src/Provider/AbstractAuthorizationProvider.php:207
 msgid ""
-"Cannot use the login data of the authorization provider. Neither username "
+"Cannot use the sign in data of the authorization provider. Neither username "
 "nor email is a primary key."
 msgstr ""
 "Die Login-Daten vom Autorisierungsanbieter können nicht genutzt werden. "
@@ -155,8 +159,8 @@ msgid "Custom module"
 msgstr "Benutzerdefiniertes Modul"
 
 #: resources/views/edit-account-page.phtml:54
-msgid "Signed in in with"
-msgstr "Anmelden mit"
+msgid "Signed in with"
+msgstr "Angemeldet mit"
 
 #: resources/views/edit-account-page.phtml:54
 msgid ""
@@ -165,7 +169,7 @@ msgstr ""
 "Obligatorische Benutzer-Daten vom Autorisierungsanbieter können nicht "
 "geändert werden"
 
-#: resources/views/login-with-provider.phtml:46
+#: resources/views/login-with-provider.phtml:25
 #: resources/views/password-request-page.phtml:49
 msgid "Sign in with authorization provider"
 msgstr "Mit Autorisierungsanbieter anmelden"
@@ -205,11 +209,11 @@ msgstr "Benutzer-Daten vom Autorisierungsanbieter können nicht geändert werden
 msgid "Further registration data - Please complete and continue"
 msgstr "Weitere Registrierungsdaten - Bitte vervollständigen und fortsetzen"
 
-#: resources/views/settings.phtml:32
+#: resources/views/settings.phtml:25
 msgid "Control panel"
 msgstr "Verwaltung"
 
-#: resources/views/settings.phtml:44
+#: resources/views/settings.phtml:33
 msgid ""
 "Currently, webtrees does not use the HTTPS protocol. If signing in with "
 "authorization providers, it is urgently recommended to use HTTPS in order to "
@@ -224,6 +228,34 @@ msgstr ""
 "Server das Protokoll unterstützt, kann HTTPS durch Ändern von \"base_url\" "
 "in der webtrees-Datei \"config.ini.php\" aktiviert werden. Aktuell startet "
 "\"base_url\" nicht mit \"https://\"."
+
+#: resources/views/settings.phtml:50
+msgid "Settings for Sign In Menu"
+msgstr "Einstellungen für das Anmelde-Menü"
+
+#: resources/views/settings.phtml:55
+msgid "Show menu item for webtrees in sign in menu"
+msgstr "Menü-Eintrag für webtrees im Anmelde-Menü anzeigen"
+
+#: resources/views/settings.phtml:60
+msgid ""
+"By selecting/unselecting this option, it is possible to activate/deactivate "
+"the sign in menu entry for webtrees. If deactivated, only sign in menu "
+"entries for authorization providers might be shown."
+msgstr ""
+"Durch Auswählen/Abwählen dieser Auswahloption ist es möglich, den "
+"Menüeintrag für webtrees im Anmeldemenü zu aktivieren/deaktivieren. Falls "
+"deaktiviert, werden ggfs. nur Menüeinträge für Autorisierungsanbieter "
+"angezeigt."
+
+#~ msgid "Sign out"
+#~ msgstr "Abmelden"
+
+#~ msgid "Signed in in with"
+#~ msgstr "Anmelden mit"
+
+#~ msgid "sign in"
+#~ msgstr "anmelden"
 
 #~ msgid "Settings"
 #~ msgstr "Einstellungen"
@@ -768,12 +800,6 @@ msgstr ""
 
 #~ msgid "Select GEDOM import/export/conversion/datafix"
 #~ msgstr "Auswahl von GEDCOM Import/Export/Konvertierung/Datenkorrektur"
-
-#~ msgid "Settings for List Menu"
-#~ msgstr "Einstellungen für das Listen-Menü"
-
-#~ msgid "Show menu item in list menu"
-#~ msgstr "Menü-Eintrag im Listen-Menü anzeigen"
 
 #, php-format
 #~ msgid ""

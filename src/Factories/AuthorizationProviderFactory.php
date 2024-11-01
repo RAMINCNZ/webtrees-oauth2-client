@@ -106,7 +106,7 @@ class AuthorizationProviderFactory
     }
 
 	/**
-     * Reads the options of the provider from the webtrees config.ini.php file
+     * Read the options of the provider from the webtrees config.ini.php file
      * 
      * @param string $name  Authorization provider name
      * @return array        An array with the options. Empty if options could not be read completely.
@@ -152,5 +152,38 @@ class AuthorizationProviderFactory
         }
 
         return $options;
+    }
+
+	/**
+     * Get the sign in button labels for all active authorization providers
+     * 
+     * @return array
+     */ 
+
+     public static function getSignInButtonLables(): array {    
+
+        $provider_names = self::getAuthorizatonProviderNames();
+
+        $sign_in_button_labels = [];
+
+        //Remove any providers from list, for which no sufficient config is available
+        foreach($provider_names as $class_name => $provider_name) {
+            if(self::readProviderOptionsFromConfigFile($provider_name) === []) {
+                unset($provider_names[$class_name]);
+            }
+        }
+
+        //Get sign in button labels for all providers
+        foreach($provider_names as $class_name => $provider_name) {
+            $provider = self::make($provider_name, '');
+            $sign_in_button_labels[$provider_name] = $provider->getSignInButtonLabel();
+        }
+
+        //Alphabetically sort provider labels
+        uasort($sign_in_button_labels, function (string $a, string $b) {
+            return strcmp($a, $b);
+        });
+
+        return $sign_in_button_labels;
     }
 }

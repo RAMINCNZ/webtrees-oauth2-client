@@ -2,14 +2,17 @@
 
 declare(strict_types=1);
 
+use Cissee\WebtreesExt\MoreI18N;
 use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\View;
 use Jefferson49\Webtrees\Module\OAuth2Client\LoginWithAuthorizationProviderAction;
+use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
 
 /**
  * @var string $title
  * @var string $base_url
+ * @var bool   $show_webtrees_in_login_menu
  * 
  */
 
@@ -25,16 +28,11 @@ $redirect_url = route(LoginWithAuthorizationProviderAction::class);
 
 <div class="row mb-3"><?= view('icons/spacer') ?></div>
 
-<form method="post" id="settings-form">
-	<?= csrf_field() ?>
-	<input type="hidden" name="save" id="save" value="1">
-  
-    <?php if (!$uses_https) : ?>
-        <div class="alert alert-danger">
-            <p><?= I18N::translate('Currently, webtrees does not use the HTTPS protocol. If signing in with authorization providers, it is urgently recommended to use HTTPS in order to encrypt the communication with the authorization provider. If your server supports the protocol, HTTPS can be activated by changing "base_url" in the webtrees "config.ini.php" file. Currently, "base_url" does not start with "https://".') ?></p>
-        </div>
-    <?php endif ?>	    
-</form>	
+<?php if (!$uses_https) : ?>
+    <div class="alert alert-danger">
+        <p><?= I18N::translate('Currently, webtrees does not use the HTTPS protocol. If signing in with authorization providers, it is urgently recommended to use HTTPS in order to encrypt the communication with the authorization provider. If your server supports the protocol, HTTPS can be activated by changing "base_url" in the webtrees "config.ini.php" file. Currently, "base_url" does not start with "https://".') ?></p>
+    </div>
+<?php endif ?>
 
 <div class="h4">Redirect URL</div>
 <div class="row mb-3">
@@ -43,6 +41,37 @@ $redirect_url = route(LoginWithAuthorizationProviderAction::class);
         <input type="text" class="form-control" id="redirect_url-name" name="redirect_url" value="<?= e($redirect_url) ?>" dir="auto" required="required" disabled >
     </div>		
 </div>
+
+<form method="post" id="settings-form">
+	<?= csrf_field() ?>
+	<input type="hidden" name="save" id="save" value="1">
+  
+	<div class="h4">
+		<?= I18N::translate('Settings for Sign In Menu') ?>	
+	</div>    
+	<fieldset class="mb-3">
+		<div class="row">
+			<legend class="col-form-label col-sm-3">
+				<?= I18N::translate('Show menu item for webtrees in sign in menu') ?>
+			</legend>
+			<div class="col-sm-9">
+				<?= view('components/checkbox', ['label' => MoreI18N::xlate('Show'), 'name' => OAuth2Client::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, 'checked' => $show_webtrees_in_login_menu]) ?>
+				<div class="form-text">
+					<?= I18N::translate('By selecting/unselecting this option, it is possible to activate/deactivate the sign in menu entry for webtrees. If deactivated, only sign in menu entries for authorization providers might be shown.'); ?>
+				</div>
+			</div>
+		</div>
+	</fieldset>		    
+    <div class="row mb-3">
+		<div class="col">
+			<p></p>
+			<button type="submit" class="btn btn-primary">
+				<?= view('icons/save') ?>
+				<?= MoreI18N::xlate('save') ?>
+			</button>
+		</div>		
+	</div>	
+</form>	
 
 <?php View::push('javascript') ?>
 <script>

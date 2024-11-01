@@ -59,8 +59,8 @@ class GenericAuthorizationProvider extends AbstractAuthorizationProvider impleme
         
         $this->provider = new GenericProvider($options, $collaborators);
 
-        if (isset($options['loginButtonLabel'])) {
-            $this->setLoginButtonLabel($options['loginButtonLabel']);
+        if (isset($options['signInButtonLabel'])) {
+            $this->setSignInButtonLabel($options['signInButtonLabel']);
         }   
     }
 
@@ -103,7 +103,7 @@ class GenericAuthorizationProvider extends AbstractAuthorizationProvider impleme
             'urlAuthorize',
             'urlAccessToken',
             'urlResourceOwnerDetails',
-            'loginButtonLabel',
+            'signInButtonLabel',
         ];
     }    
 

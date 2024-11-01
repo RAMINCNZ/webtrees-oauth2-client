@@ -86,7 +86,7 @@ Joomla_clientSecret='xxx'
 Generic_urlAuthorize='xxx'
 Generic_urlAccessToken='xxx'
 Generic_urlResourceOwnerDetails='xxx'
-Generic_loginButtonLabel='xxx'
+Generic_signInButtonLabel='xxx'
 ```
 + Insert the configuration details from the OAuth 2.0 Server into the newly included configuration lines of your config.ini.php file:
     + **Generic_clientId**='...' (value from the OAuth 2.0 Server)
@@ -94,7 +94,7 @@ Generic_loginButtonLabel='xxx'
     + **Generic_urlAuthorize**='...' (value from the OAuth 2.0 Server)
     + **Generic_urlAccessToken**='...' (value from the OAuth 2.0 Server)
     + **Generic_urlResourceOwnerDetails**='...' (value from the OAuth 2.0 Server)
-    + **Generic_loginButtonLabel**='...' (the label, which shall be shown for the login button etc.))
+    + **Generic_signInButtonLabel**='...' (the label, which shall be shown for the sign in button etc.))
 
 ### Github
 + Open the [Github](https://github.com/) page and log into your Github account
@@ -164,13 +164,13 @@ Google_clientSecret='xxx'
 Joomla_clientId='xxx'
 Joomla_clientSecret='xxx'
 Joomla_urlAuthorize='xxx'
-Joomla_loginButtonLabel='xxx'
+Joomla_signInButtonLabel='xxx'
 ```
 + Insert the configuration details from the Joomla OAuth 2.0 Server into the newly included configuration lines of your config.ini.php file:
     + **Joomla_clientId**='...' (value shown in Joomla, like described above)
     + **Joomla_clientSecret**='...' (value shown in Joomla, like described above)
     + **Joomla_urlAuthorize**='JOOMLA_BASE_URL/index.php' (JOOMLA_BASE_URL from your Joomla installation, e.g. 'https://mysite.net/joomla')
-    + **Joomla_loginButtonLabel**='...' (the label, which shall be shown for the login button etc.))
+    + **Joomla_signInButtonLabel**='...' (the label, which shall be shown for the sign in button etc.))
 
 ## Mapping of the User Data to webtrees
 The user data (i.e. user name, real name, email address), which is received with the OAuth 2.0 protocol from the authorization provider, is mapped to a webtrees user. Since there might be differences regarding availablility and changability of the user data, the following mapping is used:

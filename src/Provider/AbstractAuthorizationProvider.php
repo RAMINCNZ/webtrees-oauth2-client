@@ -47,8 +47,8 @@ abstract class AbstractAuthorizationProvider
     //The authorization provider
     protected AbstractProvider $provider;
     
-    //A label for the login button
-    protected string $login_button_label;
+    //A label for the sign in button
+    protected string $sign_in_button_label;
 
     public const USER_DATA_PRIMARY_KEY   = 'primary_key';
     public const USER_DATA_MANDATORY_KEY = 'mandatory_key';
@@ -69,25 +69,25 @@ abstract class AbstractAuthorizationProvider
     }    
 
     /**
-     * Set the login button label for the authorization client
+     * Set the sing in button label for the authorization client
      * 
      * @param string $label
      * 
      * @return void
      */
-    public function setLoginButtonLabel(string $label) : void {
+    public function setSignInButtonLabel(string $label) : void {
 
-        $this->login_button_label = $label;
+        $this->sign_in_button_label = $label;
     }
 
     /**
-     * Get the login button label for the authorization client
+     * Get the sign in button label for the authorization client
      * 
      * @return string
      */
-    public function getLoginButtonLabel() : string {
+    public function getSignInButtonLabel() : string {
 
-        return $this->login_button_label ?? $this->getName();
+        return $this->sign_in_button_label ?? $this->getName();
     }
 
     /**
@@ -196,15 +196,15 @@ abstract class AbstractAuthorizationProvider
     {
         //Validate the user data definition of the provider
         if (!in_array(AbstractAuthorizationProvider::USER_DATA_PRIMARY_KEY, static::getUserKeyInformation())) {
-            return I18N::translate('Cannot use the login data of the authorization provider. No primary key defined for the user data.');
+            return I18N::translate('Cannot use the sign in data of the authorization provider. No primary key defined for the user data.');
         }
         elseif (Array_count_values(static::getUserKeyInformation())[AbstractAuthorizationProvider::USER_DATA_PRIMARY_KEY] > 1) {
-            return I18N::translate('Cannot use the login data of the authorization provider. More than one primary key defined for the user data.');
+            return I18N::translate('Cannot use the sign in data of the authorization provider. More than one primary key defined for the user data.');
         }
         elseif (static::getUserKeyInformation()['user_name'] !== AbstractAuthorizationProvider::USER_DATA_PRIMARY_KEY
             &&  static::getUserKeyInformation()['email']     !== AbstractAuthorizationProvider::USER_DATA_PRIMARY_KEY) {
 
-            return I18N::translate('Cannot use the login data of the authorization provider. Neither username nor email is a primary key.');
+            return I18N::translate('Cannot use the sign in data of the authorization provider. Neither username nor email is a primary key.');
         }
  
         return '';
@@ -222,7 +222,7 @@ abstract class AbstractAuthorizationProvider
 
         foreach(static::getUserKeyInformation() as $key => $obligation_level) {
 
-            //Update user data if mandatory and has changed since last login with webtrees
+            //Update user data if mandatory and has changed since last sign in with webtrees
             if ($obligation_level === AbstractAuthorizationProvider::USER_DATA_MANDATORY_KEY) {
 
                 if ($key === 'user_name' && $user->userName() !== $user_data_from_provider->userName()) {

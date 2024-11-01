@@ -39,17 +39,30 @@ use Cissee\WebtreesExt\MoreI18N;
 use Fig\Http\Message\RequestMethodInterface;
 use Fig\Http\Message\StatusCodeInterface;
 use Fisharebest\Localization\Translation;
+use Fisharebest\Webtrees\Auth;
 use Fisharebest\Webtrees\FlashMessages;
+use Fisharebest\Webtrees\Http\RequestHandlers\HomePage;
+use Fisharebest\Webtrees\Http\RequestHandlers\LoginPage;
+use Fisharebest\Webtrees\Http\RequestHandlers\Logout;
 use Fisharebest\Webtrees\I18N;
+use Fisharebest\Webtrees\Menu;
 use Fisharebest\Webtrees\Module\AbstractModule;
 use Fisharebest\Webtrees\Module\ModuleConfigInterface;
 use Fisharebest\Webtrees\Module\ModuleConfigTrait;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
 use Fisharebest\Webtrees\Module\ModuleCustomTrait;
+use Fisharebest\Webtrees\Module\ModuleGlobalInterface;
+use Fisharebest\Webtrees\Module\ModuleGlobalTrait;
+use Fisharebest\Webtrees\Module\ModuleMenuInterface;
+use Fisharebest\Webtrees\Module\ModuleMenuTrait;
 use Fisharebest\Webtrees\Registry;
 use Fisharebest\Webtrees\Services\ModuleService;
+use Fisharebest\Webtrees\Session;
 use Fisharebest\Webtrees\Validator;
+use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
+use Jefferson49\Webtrees\Module\OAuth2Client\Factories\AuthorizationProviderFactory;
+use Jefferson49\Webtrees\Module\OAuth2Client\LoginWithAuthorizationProviderAction;
 use GuzzleHttp\Client;
 use Illuminate\Support\Collection;
 use GuzzleHttp\Exception\GuzzleException;
@@ -62,10 +75,14 @@ use function substr;
 
 class OAuth2Client extends AbstractModule implements
 	ModuleCustomInterface, 
-	ModuleConfigInterface
+	ModuleConfigInterface,
+    ModuleGlobalInterface,
+    ModuleMenuInterface
 {
     use ModuleCustomTrait;
     use ModuleConfigTrait;
+    use ModuleGlobalTrait;
+    use ModuleMenuTrait;
 
     //State of the OAuth2 session
     private $oauth2state;
@@ -95,6 +112,9 @@ class OAuth2Client extends AbstractModule implements
 	//Alert tpyes
 	public const ALERT_DANGER = 'alert_danger';
 	public const ALERT_SUCCESS = 'alert_success';
+
+    //Preferences
+    public const PREF_SHOW_WEBTREES_IN_LOGIN_MENU = 'show_webtrees_in_login_menu';
 
     //User preferences
     public const USER_PREF_LOGIN_WITH_OAUTH2_PROVIDER = 'login_with_oauth2_provider';
@@ -305,6 +325,99 @@ class OAuth2Client extends AbstractModule implements
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @return string
+     *
+     * @see \Fisharebest\Webtrees\Module\ModuleGlobalInterface::headContent()
+     */
+    public function headContent(): string
+    {
+        //Include CSS file in head of webtrees HTML to make sure it is always found
+        return '<link href="' . $this->assetUrl('css/oauth2-client.css') . '" type="text/css" rel="stylesheet" />';
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return string
+     *
+     * @see \Fisharebest\Webtrees\Module\ModuleMenuInterface::getMenu()
+     */
+    public function getMenu(Tree $tree): ?Menu
+    {
+        $url = route(HomePage::class);
+        $theme = Session::get('theme');
+        $menu_title_shown = in_array($theme, ['webtrees', 'minimal', 'xenea', 'fab']);
+
+        $submenus = [];
+        $sign_in_button_labels = AuthorizationProviderFactory::getSignInButtonLables();
+
+        //Add webtrees as submenu item, if preference is activated
+        if (boolval($this->getPreference(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, '1'))) {
+            $submenus[] = new Menu(MoreI18N::xlate('Sign in'), route(LoginPage::class), 'menu-oauth2-client-item' , ['rel' => 'nofollow']);
+        }
+
+        //Add submenu items for authorization providers
+        foreach ($sign_in_button_labels as $provider_name => $sign_in_button_label) {
+
+            $submenus[] = new Menu(I18N::translate('Sign in with') . ': ' . $sign_in_button_label, 
+                            route(LoginWithAuthorizationProviderAction::class, [
+                                'tree'          => $tree instanceof Tree ? $tree->name() : null,
+                                'url'           => $url,
+                                'provider_name' => $provider_name,
+                            ]),
+                            'menu-oauth2-client-item',
+                            ['rel' => 'nofollow']
+                        );
+        }
+
+        //If an user is already logged in, show sign out menu
+        if (Auth::check()) {
+            $parameters = [
+                'data-wt-post-url'   => route(Logout::class),
+                'data-wt-reload-url' => route(HomePage::class)
+            ];
+
+            //If theme shows menu titles, only show top menu with sign out
+            if ($menu_title_shown) {
+                return new Menu(MoreI18N::xlate('Sign out'), '#', 'menu-oauth2-client', $parameters);
+            }
+            //Show menu with sign out item
+            else {
+                $submenus = [];
+                $submenus[] = new Menu(MoreI18N::xlate('Sign out'), '#', 'menu-oauth2-client-item', $parameters);
+                return new Menu(MoreI18N::xlate('Sign out'), '#', 'menu-oauth2-client', ['rel' => 'nofollow'], $submenus);
+            }
+        } 
+        elseif ((sizeof($submenus) === 0)) {
+
+            //If no submenus and theme shows menu titles , only show top menu with link to webtrees login page
+            if ($menu_title_shown) {
+                return new Menu(MoreI18N::xlate('Sign in'), route(LoginPage::class), 'menu-oauth2-client' , ['rel' => 'nofollow']);
+            }
+            //Show menu with sign in item
+            else {
+                $submenus = [];
+                $submenus[] = new Menu(MoreI18N::xlate('Sign in'), route(LoginPage::class), 'menu-oauth2-client-item');
+                return new Menu(MoreI18N::xlate('Sign in'), '#', 'menu-oauth2-client', ['rel' => 'nofollow'], $submenus);
+            }
+        }
+        //If only one submenu item and theme shows menu titles, only show top menu with link
+        elseif ((sizeof($submenus) === 1) && $menu_title_shown) {
+            $menu = $submenus[0];
+            $menu->setLabel(MoreI18N::xlate('Sign in'));
+            $menu->setClass('menu-oauth2-client');
+
+            return $menu;
+        }
+        //Show menu with submenus
+        else {
+            return new Menu(MoreI18N::xlate('Sign in'), '#', 'menu-oauth2-client' , ['rel' => 'nofollow'], $submenus);
+        }
+    }  
+    
+    /**
      * Get the namespace for the views
      *
      * @return string
@@ -330,8 +443,10 @@ class OAuth2Client extends AbstractModule implements
         return $this->viewResponse(
             self::viewsNamespace() . '::settings',
             [
-                'title'    => $this->title(),
-                'base_url' => $base_url,
+                'title'                                => $this->title(),
+                'base_url'                             => $base_url,
+                self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU => boolval($this->getPreference(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, '1')),
+
             ]
         );
     }
@@ -345,9 +460,13 @@ class OAuth2Client extends AbstractModule implements
      */
     public function postAdminAction(ServerRequestInterface $request): ResponseInterface
     {
-        $save = Validator::parsedBody($request)->string('save', '');
+        $save                        = Validator::parsedBody($request)->string('save', '');
+        $show_webtrees_in_login_menu = Validator::parsedBody($request)->boolean(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, false);
 
-        //Save settings
+        //Save the received settings to the user preferences
+        if ($save === '1') {
+			$this->setPreference(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, $show_webtrees_in_login_menu ? '1' : '0');
+        }
 
         //Finally, show a success message
         $message = I18N::translate('The preferences for the module "%s" were updated.', $this->title());
@@ -453,5 +572,5 @@ class OAuth2Client extends AbstractModule implements
      */
     public static function getRedirectUrl(string $base_url) : string {
         return route(LoginWithAuthorizationProviderAction::class);
-    }      
+    }  
 }
