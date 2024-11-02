@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-11-01 13:47+0100\n"
-"PO-Revision-Date: 2024-11-01 13:47+0100\n"
+"POT-Creation-Date: 2024-11-02 05:58+0100\n"
+"PO-Revision-Date: 2024-11-02 06:05+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -59,26 +59,26 @@ msgstr ""
 "Die Länge der/des \"%s\" überschreitet die maximale Länge von %s und wurde "
 "daher auf %s Zeichen gekürzt."
 
-#: src/OAuth2Client.php:181
+#: src/OAuth2Client.php:183
 msgid "OAuth2 Client"
 msgstr "OAuth2 Client"
 
-#: src/OAuth2Client.php:194
+#: src/OAuth2Client.php:196
 msgid "A custom module to implement a OAuth2 client for webtrees."
 msgstr ""
 "Ein benutzerspezifisches Modul, welches einen OAuth2 Client für webtrees zur "
 "Verfügung stellt."
 
-#: src/OAuth2Client.php:356
+#: src/OAuth2Client.php:368
 msgid "Sign in with"
 msgstr "Anmelden mit"
 
-#: src/OAuth2Client.php:438
+#: src/OAuth2Client.php:478
 #, php-format
 msgid "The preferences for the module \"%s\" were updated."
 msgstr "Die Einstellungen für das Modul \"%s\" wurden aktualisiert."
 
-#: src/OAuth2Client.php:461
+#: src/OAuth2Client.php:501
 #, php-format
 msgid ""
 "The preferences for the custom module \"%s\" were sucessfully updated to the "
@@ -87,7 +87,7 @@ msgstr ""
 "Die Einstellungen für das benutzerdefinierte Modul \"%s\" wurden für die "
 "neue Modul-Version %s aktualisiert."
 
-#: src/OAuth2Client.php:493
+#: src/OAuth2Client.php:533
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -101,7 +101,7 @@ msgstr ""
 "deaktivieren, weil die identische Funktion ebenfalls im Modul %s integriert "
 "ist."
 
-#: src/OAuth2Client.php:498
+#: src/OAuth2Client.php:538
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -114,7 +114,7 @@ msgstr ""
 "beide Module die gleiche Custom View \"%s\" registriert haben. Es wird "
 "dringend empfohlen eines der beiden Module zu deaktivieren."
 
-#: src/OAuth2Client.php:522
+#: src/OAuth2Client.php:562
 #, php-format
 msgid ""
 "The custom module view \"%s\" is not registered as replacement for the "
@@ -230,14 +230,14 @@ msgstr ""
 "\"base_url\" nicht mit \"https://\"."
 
 #: resources/views/settings.phtml:50
-msgid "Settings for Sign In Menu"
-msgstr "Einstellungen für das Anmelde-Menü"
+msgid "Settings for Sign In Menus"
+msgstr "Einstellungen für Anmelde-Menüs"
 
-#: resources/views/settings.phtml:55
+#: resources/views/settings.phtml:56
 msgid "Show menu item for webtrees in sign in menu"
 msgstr "Menü-Eintrag für webtrees im Anmelde-Menü anzeigen"
 
-#: resources/views/settings.phtml:60
+#: resources/views/settings.phtml:61
 msgid ""
 "By selecting/unselecting this option, it is possible to activate/deactivate "
 "the sign in menu entry for webtrees. If deactivated, only sign in menu "
@@ -247,6 +247,42 @@ msgstr ""
 "Menüeintrag für webtrees im Anmeldemenü zu aktivieren/deaktivieren. Falls "
 "deaktiviert, werden ggfs. nur Menüeinträge für Autorisierungsanbieter "
 "angezeigt."
+
+#: resources/views/settings.phtml:70
+msgid "Hide the webtrees sign in menu"
+msgstr "Das webtrees Anmelde-Menü verbergen"
+
+#: resources/views/settings.phtml:73
+msgid "Hide"
+msgstr "Verbergen"
+
+#: resources/views/settings.phtml:75
+msgid ""
+"By selecting this option, it is possible to hide the original webtrees sign "
+"in menu. This might be helpful if the custom module specific top menu for "
+"sign in is used instead."
+msgstr ""
+"Durch Auswahl dieser Option ist es möglich, das original webtrees Anmelde-"
+"Menü zu verbergen. Dies ist möglicherweise hilfreich, wenn stattdessen das "
+"modulspezifische Top-Menu zum Anmelden genutzt wird."
+
+#: resources/views/settings.phtml:83
+msgid ""
+"Currently, all menus to directly sign in with webtrees are deactivated. "
+"Therefore, only sign in with authorization providers is possible. Please be "
+"sure that you establish a webtrees administrator account with an "
+"authorization provider. Otherwise, administrator sign in is not possible any "
+"more. Hint: You can still access the original webtrees login page by typing "
+"the login route into the browser line, e.g.: http://my_site.net/webtrees/"
+"login/"
+msgstr ""
+"Aktuell sind alle Menüs zum direkten Anmelden in webtrees deaktiviert. Daher "
+"ist aktuell nur ein Anmelden über Autorisierungsanbieter möglich. Bitte "
+"stellen Sie sicher, dass ein webtrees Administrator-Account über einen "
+"Autorisierungsanbieter etabliert ist. Anderfalls ist es nicht mehr möglich, "
+"sich als Administrator anzumelden. HInweis: Es ist immer noch möglich, die "
+"original webtrees Anmeldeseite durch Eingabe der Route in der Browserzeile "
+"aufzurufen, z.B.: http://my_site.net/webtrees/login/"
 
 #~ msgid "Sign out"
 #~ msgstr "Abmelden"

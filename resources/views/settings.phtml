@@ -13,7 +13,7 @@ use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
  * @var string $title
  * @var string $base_url
  * @var bool   $show_webtrees_in_login_menu
- * 
+ * @var bool   $dont_show_webtrees_login_menu
  */
 
 $uses_https = strpos(Strtoupper($base_url), 'HTTPS://') === false ? false : true;
@@ -47,8 +47,9 @@ $redirect_url = route(LoginWithAuthorizationProviderAction::class);
 	<input type="hidden" name="save" id="save" value="1">
   
 	<div class="h4">
-		<?= I18N::translate('Settings for Sign In Menu') ?>	
-	</div>    
+		<?= I18N::translate('Settings for Sign In Menus') ?>	
+	</div>
+
 	<fieldset class="mb-3">
 		<div class="row">
 			<legend class="col-form-label col-sm-3">
@@ -61,7 +62,28 @@ $redirect_url = route(LoginWithAuthorizationProviderAction::class);
 				</div>
 			</div>
 		</div>
-	</fieldset>		    
+	</fieldset>
+
+	<fieldset class="mb-3">
+		<div class="row">
+			<legend class="col-form-label col-sm-3">
+				<?= I18N::translate('Hide the webtrees sign in menu') ?>
+			</legend>
+			<div class="col-sm-9">
+				<?= view('components/checkbox', ['label' => I18N::translate('Hide'), 'name' => OAuth2Client::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU, 'checked' => $dont_show_webtrees_login_menu]) ?>
+				<div class="form-text">
+					<?= I18N::translate('By selecting this option, it is possible to hide the original webtrees sign in menu. This might be helpful if the custom module specific top menu for sign in is used instead.'); ?>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+
+	<?php if (!$show_webtrees_in_login_menu && $dont_show_webtrees_login_menu) : ?>
+		<div class="alert alert-warning">
+			<p><?= I18N::translate('Currently, all menus to directly sign in with webtrees are deactivated. Therefore, only sign in with authorization providers is possible. Please be sure that you establish a webtrees administrator account with an authorization provider. Otherwise, administrator sign in is not possible any more. Hint: You can still access the original webtrees login page by typing the login route into the browser line, e.g.: http://my_site.net/webtrees/login/') ?></p>
+		</div>
+	<?php endif ?>	
+
     <div class="row mb-3">
 		<div class="col">
 			<p></p>
@@ -70,7 +92,8 @@ $redirect_url = route(LoginWithAuthorizationProviderAction::class);
 				<?= MoreI18N::xlate('save') ?>
 			</button>
 		</div>		
-	</div>	
+	</div>
+
 </form>	
 
 <?php View::push('javascript') ?>

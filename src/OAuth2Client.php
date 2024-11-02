@@ -114,7 +114,8 @@ class OAuth2Client extends AbstractModule implements
 	public const ALERT_SUCCESS = 'alert_success';
 
     //Preferences
-    public const PREF_SHOW_WEBTREES_IN_LOGIN_MENU = 'show_webtrees_in_login_menu';
+    public const PREF_SHOW_WEBTREES_IN_LOGIN_MENU   = 'show_webtrees_in_login_menu';
+    public const PREF_DONT_SHOW_WEBTREES_LOGIN_MENU = 'dont_show_webtrees_login_menu';
 
     //User preferences
     public const USER_PREF_LOGIN_WITH_OAUTH2_PROVIDER = 'login_with_oauth2_provider';
@@ -334,7 +335,15 @@ class OAuth2Client extends AbstractModule implements
     public function headContent(): string
     {
         //Include CSS file in head of webtrees HTML to make sure it is always found
-        return '<link href="' . $this->assetUrl('css/oauth2-client.css') . '" type="text/css" rel="stylesheet" />';
+        $css = '<link href="' . $this->assetUrl('css/oauth2-client.css') . '" type="text/css" rel="stylesheet" />';
+        $hide_login_logout_menu_css = '<link href="' . $this->assetUrl('css/hide-login-logout-menu.css') . '" type="text/css" rel="stylesheet" />';
+
+        //If option to hide webtrees login menu is activated, add css to hide the related classes with "display: none"
+        if (boolval($this->getPreference(self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU, '0'))) {
+            $css .= "\n" . $hide_login_logout_menu_css;
+        }
+
+        return $css; 
     }
 
     /**
@@ -443,10 +452,10 @@ class OAuth2Client extends AbstractModule implements
         return $this->viewResponse(
             self::viewsNamespace() . '::settings',
             [
-                'title'                                => $this->title(),
-                'base_url'                             => $base_url,
-                self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU => boolval($this->getPreference(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, '1')),
-
+                'title'                                  => $this->title(),
+                'base_url'                               => $base_url,
+                self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU   => boolval($this->getPreference(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, '1')),
+                self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU => boolval($this->getPreference(self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU, '0')),
             ]
         );
     }
@@ -460,12 +469,14 @@ class OAuth2Client extends AbstractModule implements
      */
     public function postAdminAction(ServerRequestInterface $request): ResponseInterface
     {
-        $save                        = Validator::parsedBody($request)->string('save', '');
-        $show_webtrees_in_login_menu = Validator::parsedBody($request)->boolean(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, false);
+        $save                          = Validator::parsedBody($request)->string('save', '');
+        $show_webtrees_in_login_menu   = Validator::parsedBody($request)->boolean(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, false);
+        $dont_show_webtrees_login_menu = Validator::parsedBody($request)->boolean(self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU, false);
 
         //Save the received settings to the user preferences
         if ($save === '1') {
 			$this->setPreference(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, $show_webtrees_in_login_menu ? '1' : '0');
+			$this->setPreference(self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU, $dont_show_webtrees_login_menu ? '1' : '0');
         }
 
         //Finally, show a success message
