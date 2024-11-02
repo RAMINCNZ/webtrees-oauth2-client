@@ -33,6 +33,8 @@ This README file contains the following main sections:
 
 ![Login Page](resources/img/login_page_with_authorization_providers.jpg)
 
+![Login Page](resources/img/sign_in_custom_menu.jpg)
+
 ## IMPORTANT SECURITY NOTES
 It is **highly recommended to use** the **HTTPS** protocol for your webtrees installation. The [HTTPS](https://en.wikipedia.org/wiki/HTTPS) protocol will ensure the encryption of the communication between webtrees and the authorization provider for a secure exchange of secret IDs and secret access tokens.
 
