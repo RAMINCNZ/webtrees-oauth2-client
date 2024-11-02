@@ -80,7 +80,7 @@ $redirect_url = route(LoginWithAuthorizationProviderAction::class);
 
 	<?php if (!$show_webtrees_in_login_menu && $dont_show_webtrees_login_menu) : ?>
 		<div class="alert alert-warning">
-			<p><?= I18N::translate('Currently, all menus to directly sign in with webtrees are deactivated. Therefore, only sign in with authorization providers is possible. Please be sure that you establish a webtrees administrator account with an authorization provider. Otherwise, administrator sign in is not possible any more. Hint: You can still access the original webtrees login page by typing the login route into the browser line, e.g.: http://my_site.net/webtrees/login/') ?></p>
+			<p><?= I18N::translate('Currently, all menus to directly sign in with webtrees are deactivated. Therefore, only sign in with authorization providers is possible. Please be sure that you establish a webtrees administrator account with an authorization provider. Otherwise, administrator sign in is not possible any more. Hint: You can still access the original webtrees login page by typing the login route into the browser line, e.g.:') . ' http://my_site.net/webtrees/index.php?route=login' ?></p>
 		</div>
 	<?php endif ?>	
 
