@@ -59,7 +59,7 @@ if ($provider_authorization) {
 
     <?php if ($provider_authorization) : ?>
         <div class="h4">
-            <?= I18N::translate('Register with') .  ' ' . $provider->getLoginButtonLabel() . ' - ' . I18N::translate('User account data from authorization provider cannot be changed') ?>	
+            <?= I18N::translate('Register with') .  ' ' . $provider->getSignInButtonLabel() . ' - ' . I18N::translate('User account data from authorization provider cannot be changed') ?>	
         </div>
 
         <?php if (!$edit_user_name) : ?>    
