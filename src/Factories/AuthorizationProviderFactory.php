@@ -146,7 +146,12 @@ class AuthorizationProviderFactory
             return [];
         }
 
-        //Check, if complete configuration was found
+        //Return if no options found, i.e. the authorization provider is not configured
+        if (sizeof($options) === 0) {
+            return [];
+        }
+
+        //Check if configuration is complete, i.e. contains all required options
         foreach ($option_names as $option_name) {
             if (!key_exists($option_name, $options)) {
                 FlashMessages::addMessage(I18N::translate('The configuration for the authorization provider "%s" does not include data for the option "%s". Please check the configuration in the following file: data/config.ini.php', $provider_name, $option_name), 'danger');
