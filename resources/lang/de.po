@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-11-02 08:18+0100\n"
-"PO-Revision-Date: 2024-11-02 08:18+0100\n"
+"POT-Creation-Date: 2024-11-24 11:08+0100\n"
+"PO-Revision-Date: 2024-11-24 11:08+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -14,6 +14,17 @@ msgstr ""
 "X-Poedit-Basepath: ../..\n"
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: src/Factories/AuthorizationProviderFactory.php:152
+#, php-format
+msgid ""
+"The configuration for the authorization provider \"%s\" does not include "
+"data for the option \"%s\". Please check the configuration in the following "
+"file: data/config.ini.php"
+msgstr ""
+"Die Konfiguration für den Authorisierungsanbieter \"%s\" enthält keine "
+"Angaben für die Option \"%s\". Bitte prüfen Sie die Konfiguration in der "
+"folgenden Datei: data/config.ini.php"
 
 #: src/LoginWithAuthorizationProviderAction.php:123
 msgid "The requested authorization provider could not be found"

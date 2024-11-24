@@ -31,6 +31,8 @@ declare(strict_types=1);
 
 namespace Jefferson49\Webtrees\Module\OAuth2Client\Factories;
 
+use Fisharebest\Webtrees\FlashMessages;
+use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Webtrees;
 use Jefferson49\Webtrees\Module\OAuth2Client\Contracts\AuthorizationProviderInterface;
 
@@ -147,6 +149,7 @@ class AuthorizationProviderFactory
         //Check, if complete configuration was found
         foreach ($option_names as $option_name) {
             if (!key_exists($option_name, $options)) {
+                FlashMessages::addMessage(I18N::translate('The configuration for the authorization provider "%s" does not include data for the option "%s". Please check the configuration in the following file: data/config.ini.php', $provider_name, $option_name), 'danger');
                 return [];
             }
         }
