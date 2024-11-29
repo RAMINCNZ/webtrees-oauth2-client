@@ -99,7 +99,6 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         $code          = Validator::queryParams($request)->string('code', '');
         $state         = Validator::queryParams($request)->string('state', '');
         $provider_name = Validator::queryParams($request)->string('provider_name', '');
-        $base_url      = Validator::attributes($request)->string('base_url');
         $tree          = Validator::attributes($request)->treeOptional();
         $url           = Validator::queryParams($request)->isLocalUrl()->string('url', route(HomePage::class));
 
@@ -116,7 +115,7 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         $oauth2_client = $this->module_service->findByName(OAuth2Client::activeModuleName());
         $user = null;
 
-        $provider = (new AuthorizationProviderFactory())::make($provider_name, OAuth2Client::getRedirectUrl($base_url));
+        $provider = (new AuthorizationProviderFactory())::make($provider_name, OAuth2Client::getRedirectUrl());
 
         //Check if requested provider is available
         if ($provider === null) {

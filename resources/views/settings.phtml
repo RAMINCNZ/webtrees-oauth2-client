@@ -16,9 +16,8 @@ use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
  * @var bool   $dont_show_webtrees_login_menu
  */
 
-$uses_https = strpos(Strtoupper($base_url), 'HTTPS://') === false ? false : true;
-
-$redirect_url = route(LoginWithAuthorizationProviderAction::class);
+$uses_https   = strpos(Strtoupper($base_url), 'HTTPS://') === false ? false : true;
+$redirect_url = OAuth2Client::getRedirectUrl();
 
 ?>
 

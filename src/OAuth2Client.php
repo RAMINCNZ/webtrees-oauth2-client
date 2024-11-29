@@ -41,6 +41,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use Fisharebest\Localization\Translation;
 use Fisharebest\Webtrees\Auth;
 use Fisharebest\Webtrees\FlashMessages;
+use Fisharebest\Webtrees\Html;
 use Fisharebest\Webtrees\Http\RequestHandlers\HomePage;
 use Fisharebest\Webtrees\Http\RequestHandlers\LoginPage;
 use Fisharebest\Webtrees\Http\RequestHandlers\Logout;
@@ -63,6 +64,7 @@ use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
 use Jefferson49\Webtrees\Module\OAuth2Client\Factories\AuthorizationProviderFactory;
 use Jefferson49\Webtrees\Module\OAuth2Client\LoginWithAuthorizationProviderAction;
+use Jefferson49\Webtrees\WebtreesDeprecated\WebtreesDeprecated;
 use GuzzleHttp\Client;
 use Illuminate\Support\Collection;
 use GuzzleHttp\Exception\GuzzleException;
@@ -581,7 +583,18 @@ class OAuth2Client extends AbstractModule implements
      * 
      * @return string
      */
-    public static function getRedirectUrl(string $base_url) : string {
-        return route(LoginWithAuthorizationProviderAction::class);
+    public static function getRedirectUrl() : string {
+
+        // Create an ugly URL for the route to the module as redirect URL
+        // Note: Pretty URLs cannot be used, because they do not work with URL parameters
+        $request     = WebtreesDeprecated::app(ServerRequestInterface::class);
+        $base_url    = Validator::attributes($request)->string('base_url');
+        $path        = parse_url($base_url, PHP_URL_PATH) ?? '';
+        $parameters  = ['route' => $path];
+        $url         = $base_url . '/index.php';
+
+        $redirectUrl = Html::url($url, $parameters) . self::REDIRECT_ROUTE;
+
+        return $redirectUrl;
     }  
 }
