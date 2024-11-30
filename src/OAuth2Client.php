@@ -587,7 +587,7 @@ class OAuth2Client extends AbstractModule implements
 
         // Create an ugly URL for the route to the module as redirect URL
         // Note: Pretty URLs cannot be used, because they do not work with URL parameters
-        $request     = Functions::getInterfaceFromContainer(ServerRequestInterface::class);
+        $request     = Functions::getFromContainer(ServerRequestInterface::class);
         $base_url    = Validator::attributes($request)->string('base_url');
         $path        = parse_url($base_url, PHP_URL_PATH) ?? '';
         $parameters  = ['route' => $path];
