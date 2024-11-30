@@ -62,9 +62,9 @@ use Fisharebest\Webtrees\Session;
 use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
+use Jefferson49\Webtrees\Helpers\Functions;
 use Jefferson49\Webtrees\Module\OAuth2Client\Factories\AuthorizationProviderFactory;
 use Jefferson49\Webtrees\Module\OAuth2Client\LoginWithAuthorizationProviderAction;
-use Jefferson49\Webtrees\WebtreesDeprecated\WebtreesDeprecated;
 use GuzzleHttp\Client;
 use Illuminate\Support\Collection;
 use GuzzleHttp\Exception\GuzzleException;
@@ -587,7 +587,7 @@ class OAuth2Client extends AbstractModule implements
 
         // Create an ugly URL for the route to the module as redirect URL
         // Note: Pretty URLs cannot be used, because they do not work with URL parameters
-        $request     = WebtreesDeprecated::app(ServerRequestInterface::class);
+        $request     = Functions::getInterfaceFromContainer(ServerRequestInterface::class);
         $base_url    = Validator::attributes($request)->string('base_url');
         $path        = parse_url($base_url, PHP_URL_PATH) ?? '';
         $parameters  = ['route' => $path];

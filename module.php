@@ -41,6 +41,9 @@ $loader = new ClassLoader();
 //This webtrees custom module
 $loader->addPsr4('Jefferson49\\Webtrees\\Module\\OAuth2Client\\', __DIR__ . '/src');
 
+//Helper functions for webtrees custom modules
+$loader->addPsr4('Jefferson49\\Webtrees\\Helpers\\', __DIR__ . "/vendor/Jefferson49/Webtrees/Helpers/");
+
 //league/oauth2-clients
 $loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-client/src');
 $loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-github/src');
