@@ -120,7 +120,7 @@ class OAuth2Client extends AbstractModule implements
     public const PREF_DONT_SHOW_WEBTREES_LOGIN_MENU = 'dont_show_webtrees_login_menu';
 
     //User preferences
-    public const USER_PREF_LOGIN_WITH_OAUTH2_PROVIDER = 'login_with_oauth2_provider';
+    public const USER_PREF_PROVIDER_NAME = 'provider_name';
 
 
    /**

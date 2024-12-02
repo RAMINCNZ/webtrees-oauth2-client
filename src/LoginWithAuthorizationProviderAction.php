@@ -234,7 +234,7 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         //Login
         //Code from Fisharebest\Webtrees\Http\RequestHandlers\LoginAction
         try {
-            $user = $this->doLogin($identifyer);
+            $user = $this->doLogin($identifyer, $provider_name);
 
             //Update the user with the data received from the provider
             $provider->updateUserData($user, $user_data_from_provider);
@@ -260,14 +260,15 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
      * Log in, if we can. Throw an exception, if we can't.
      * Code from Fisharebest\Webtrees\Http\RequestHandlers\LoginAction
      *
-     * @param string $identifyer   An identifier for the user; either user_name or email
+     * @param string $identifyer     An identifier for the user; either user_name or email
+     * @param string $provider_name  Name of the authorization provider
      *
      * @return void
      * @throws Exception
      * 
      * @return User                The logged in user
      */
-    private function doLogin(string $identifyer): User
+    private function doLogin(string $identifyer, string $provider_name): User
     {
         if ($_COOKIE === []) {
             Log::addAuthenticationLog('Login failed (no session cookies): ' . $identifyer);
@@ -291,8 +292,9 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
             throw new Exception(MoreI18N::xlate('This account has not been approved. Please wait for an administrator to approve it.'));
         }
 
-        //If user logs in with authorization provider for the first time (i.e. preference for OAuth2 provider has not yet been set)
-        if ($user->getPreference(OAuth2Client::USER_PREF_LOGIN_WITH_OAUTH2_PROVIDER) !== '1') {
+        //If user logs in with authorization provider for the first time
+        //(i.e. preference for OAuth2 provider has not yet been set)
+        if ($user->getPreference(OAuth2Client::USER_PREF_PROVIDER_NAME, '') === '') {
 
             //If time stamp is different from 0 (i.e. user already logged in at least once before)
             if ($user->getPreference(UserInterface::PREF_TIMESTAMP_ACTIVE) !== '0') {
@@ -305,8 +307,8 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
         Log::addAuthenticationLog('Login: ' . Auth::user()->userName() . '/' . Auth::user()->realName());
         Auth::user()->setPreference(UserInterface::PREF_TIMESTAMP_ACTIVE, (string) time());
 
-        //Save OAuth2 login status to user preferences
-        $user->setPreference(OAuth2Client::USER_PREF_LOGIN_WITH_OAUTH2_PROVIDER, '1');
+        //Save authorization provider name to user preferences
+        $user->setPreference(OAuth2Client::USER_PREF_PROVIDER_NAME, $provider_name);
 
         Session::put('language', Auth::user()->getPreference(UserInterface::PREF_LANGUAGE));
         Session::put('theme', Auth::user()->getPreference(UserInterface::PREF_THEME));
