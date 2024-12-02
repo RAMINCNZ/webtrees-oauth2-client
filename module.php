@@ -59,5 +59,6 @@ require __DIR__ . '/src/Provider/GenericAuthorizationProvider.php';
 require __DIR__ . '/src/Provider/GithubAuthorizationProvider.php';
 require __DIR__ . '/src/Provider/GoogleAuthorizationProvider.php';
 require __DIR__ . '/src/Provider/JoomlaAuthorizationProvider.php';
+require __DIR__ . '/src/Provider/WordPressAuthorizationProvider.php';
 
 return new OAuth2Client();

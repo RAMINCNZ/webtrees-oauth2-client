@@ -17,6 +17,7 @@ This README file contains the following main sections:
     + [Github](#github)
     + [Google](#google)
     + [Joomla](#joomla)
+    + [WordPress](#wordpress)
 +   [Mapping of the User Data to webtrees](#mapping-of-the-user-data-to-webtrees)
 +   [Concept](#concept)
     + [Definitons](#definitions)
@@ -32,9 +33,9 @@ This README file contains the following main sections:
 + A pre-configured set of authorization providers can be selected during webtrees login.
 + If choosing to sign on with an authorization provider, the user account data (i.e. user name, real name, email address) of the authorization provider is used for the user account in webtrees.
 
-![Login Page](resources/img/login_page_with_authorization_providers.jpg)
+[<img src="resources/img/login_page_with_authorization_providers.jpg"/>](resources/img/login_page_with_authorization_providers.jpg)
 
-![Login Page](resources/img/sign_in_custom_menu.jpg)
+[<img src="resources/img/sign_in_custom_menu.jpg" width="300"/>](resources/img/sign_in_custom_menu.jpg)
 
 ## IMPORTANT SECURITY NOTES
 It is **highly recommended to use** the **HTTPS** protocol for your webtrees installation. The [HTTPS](https://en.wikipedia.org/wiki/HTTPS) protocol will ensure the encryption of the communication between webtrees and the authorization provider for a secure exchange of secret IDs and secret access tokens.
@@ -56,7 +57,8 @@ Currently, the following authorization providers are supported:
 + **Generic** (can be configured for several authorization providers)
 + **Github**
 + **Google**
-+ **Joomla** (with a specific authorization provider installed in Joomla)
++ **Joomla** (with a specific authorization provider extension installed in Joomla)
++ **WordPress** (with a specific authorization provider plugin installed in WordPress)
 
 To use further authorization providers, the following approaches are available:
 + Use the Generic authorization provider, which can be adopted to a wide range of authorization providers.
@@ -82,10 +84,10 @@ In the following, the configuration is described for a subset of authorization p
 + Configure the OAuth 2.0 server, which shall be used as authorization provider.
 + Configure the "Redirect URL" to webtrees within the OAuth 2.0 server. See chapter [General Configuration](#general-configuration) about how to get the redirect URL from the module settings.
 + Create and check the "Client ID", and "Client Secret" within the OAuth 2.0 server.
-+ Open your webtrees config.ini.php file and insert the following lines:
++ Open your webtrees config.ini.php file and add the following lines (copy/paste to the end):
 ```PHP
 Generic_clientId='xxx'
-Joomla_clientSecret='xxx'
+Generic_clientSecret='xxx'
 Generic_urlAuthorize='xxx'
 Generic_urlAccessToken='xxx'
 Generic_urlResourceOwnerDetails='xxx'
@@ -113,7 +115,7 @@ Generic_signInButtonLabel='xxx'
 + Press button "Register application"
 + Press button "Create a new client secret"
 + Copy the newly created client secret to a save place
-+ Open your webtrees config.ini.php file and insert the following lines:
++ Open your webtrees config.ini.php file and add the following lines (copy/paste to the end):
 ```PHP
 Github_clientId='xxx'
 Github_clientSecret='xxx'
@@ -141,10 +143,10 @@ Github_clientSecret='xxx'
 + For "Application type", select "Web application"
 + Enter a name
 + At "Authorised redirect URIs", press the "ADD URI" button
-+ Enter the redirect URL and press the "CREATE" button. See chapter [General Configuration](#general-configuration) about how to get the redirect URL from the module settings.
++ Enter the redirect URL and press the "CREATE" button. See chapter [General Configuration](#general-configuration) about how to get the redirect URL from the webtrees custom module settings.
 + From the pop window, copy the **Client ID** and the **Client secret**
 + Copy the client secret to a save place
-+ Open your webtrees config.ini.php file and insert the following lines:
++ Open your webtrees config.ini.php file and add the following lines (copy/paste to the end):
 ```PHP
 Google_clientId='xxx'
 Google_clientSecret='xxx'
@@ -159,10 +161,14 @@ Google_clientSecret='xxx'
 + Install the extension in the Joomla administration backend
 + Open the backend menu: Components / OAuth2 Server / Configure OAuth
 + Click on the button "Add client"
-+ Enter a name for "Client Name"
-+ Enter the "Authorized Redirect URL" for the webtrees OAuth 2.0 client. See chapter [General Configuration](#general-configuration) about how to get the redirect URL from the module settings.
-+ Check the "Client Name", "Client ID", and "Client Secret" in the list of OAuth clients
-+ Open your webtrees config.ini.php file and insert the following lines:
++ Enter a name for "Client Name", e.g. "webtrees"
++ Enter the "Authorized Redirect URL" for the webtrees OAuth 2.0 client. See chapter [General Configuration](#general-configuration) about how to get the redirect URL from the webtrees custom module settings
++ Find the following configuration parameters in the list of OAuth clients, which are needed for the webtrees configuration in config.ini.php below:
+    + Client ID
+    + Client Secret
++ Click on "Endpoint URLs" to find the following configuration parameter, which is needed for the webtrees configuration in config.ini.php below:
+    + Authorize Endpoint 
++ Open your webtrees config.ini.php file and add the following lines (copy/paste to the end):
 ```PHP
 Joomla_clientId='xxx'
 Joomla_clientSecret='xxx'
@@ -170,10 +176,44 @@ Joomla_urlAuthorize='xxx'
 Joomla_signInButtonLabel='xxx'
 ```
 + Insert the configuration details from the Joomla OAuth 2.0 Server into the newly included configuration lines of your config.ini.php file:
-    + **Joomla_clientId**='...' (value shown in Joomla, like described above)
-    + **Joomla_clientSecret**='...' (value shown in Joomla, like described above)
+    + **Joomla_clientId**='...' (value for "Client ID" shown in the Joomla extension, like described above)
+    + **Joomla_clientSecret**='...' (value for "Client Secret"  shown in the Joomla extension, like described above)
     + **Joomla_urlAuthorize**='JOOMLA_BASE_URL/index.php' (JOOMLA_BASE_URL from your Joomla installation, e.g. 'https://mysite.net/joomla')
-    + **Joomla_signInButtonLabel**='...' (the label, which shall be shown for the sign in button etc.))
+    + **Joomla_signInButtonLabel**='...' (the label, which shall be shown for the sign in button etc.)
+
+### WordPress
++ Download the WordPress plugin [WP OAuth Server](https://wordpress.org/plugins/miniorange-oauth-20-server/)
++ Install the plugin in the WordPress administration backend
++ Open the plugin settings in the administration backend
++ Click on the card "Configure Application"
++ Search/Select "Custom OAuth Client"
++ Enter a name for "Client Name", e.g. "webtrees"
++ Enter the "Callback/Redirect URI" for the webtrees OAuth 2.0 client. See chapter [General Configuration](#general-configuration) about how to get the redirect URL from the webtrees custom module settings.
++ Save
++ Find the following configuration parameters for the "Configured Client", which are needed for the webtrees configuration in config.ini.php below:
+    + Client ID
+    + Client Secret
+    + Authorization Endpoint
+    + Token Endpoint
+    + Userinfo Endpoint
++ Open your webtrees config.ini.php file and add the following lines (copy/paste to the end):
+```PHP
+WordPress_clientId='xxx'
+WordPress_clientSecret='xxx'
+WordPress_urlAuthorize='xxx'
+WordPress_urlAccessToken='xxx'
+WordPress_urlResourceOwnerDetails='xxx'
+WordPress_Scopes='openid profile email'
+WordPress_signInButtonLabel='WordPress'
+```
++ Insert the configuration details from the WP OAuth Server plugin into the newly included configuration lines of your config.ini.php file:
+    + **WordPress_clientId**='...' (value for "Client ID" shown in the WordPress plugin, like described above)
+    + **WordPress_clientSecret**='...' (value for "Client Secret" shown in the WordPress plugin, like described above)
+    + **WordPress_urlAuthorize**='...' (value for "Authorization Endpoint" shown in the WordPress plugin, like described above)
+    + **WordPress_urlAccessToken**='...' (value for "Token Endpoint" shown in the WordPress plugin, like described above)
+    + **WordPress_urlResourceOwnerDetails**='...' (value for "Userinfo Endpoint" shown in the WordPress plugin, like described above)
+    + **WordPress_Scopes**='openid profile email' (DON'T change!)
+    + **WordPress_signInButtonLabel**='...' (the label, which shall be shown for the sign in button etc.)    
 
 ## Mapping of the User Data to webtrees
 The user data (i.e. user name, real name, email address), which is received with the OAuth 2.0 protocol from the authorization provider, is mapped to a webtrees user. Since there might be differences regarding availablility and changability of the user data, the following mapping is used:
@@ -189,6 +229,7 @@ The following table shows the mapping of the user data for the different authori
 |Github|primary|optional|mandatory|
 |Google|optional|optional|primary|
 |Joomla|primary|optional|mandatory|
+|WordPress|primary|optional|mandatory|
 
 ## Definitions 
 [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749) defines several roles, which are used in OAuth. In the context of the OAuth 2.0 Client and webtrees single sign on, the OAuth [roles](https://datatracker.ietf.org/doc/html/rfc6749#section-1.1) and definitions are used as follows:
