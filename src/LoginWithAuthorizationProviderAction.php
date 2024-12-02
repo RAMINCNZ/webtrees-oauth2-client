@@ -291,6 +291,16 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
             throw new Exception(MoreI18N::xlate('This account has not been approved. Please wait for an administrator to approve it.'));
         }
 
+        //If user logs in with authorization provider for the first time (i.e. preference for OAuth2 provider has not yet been set)
+        if ($user->getPreference(OAuth2Client::USER_PREF_LOGIN_WITH_OAUTH2_PROVIDER) !== '1') {
+
+            //If time stamp is different from 0 (i.e. user already logged in at least once before)
+            if ($user->getPreference(UserInterface::PREF_TIMESTAMP_ACTIVE) !== '0') {
+                Log::addAuthenticationLog('Login denied (provided user/email from authorization provider is identical to an existing webtrees user, who has already logged in before): ' . $identifyer);
+                throw new Exception(I18N::translate('Login with the provided credentials denied. Username or email provided from authorization provider might already exist in webtrees.'));
+            }
+        }
+
         Auth::login($user);
         Log::addAuthenticationLog('Login: ' . Auth::user()->userName() . '/' . Auth::user()->realName());
         Auth::user()->setPreference(UserInterface::PREF_TIMESTAMP_ACTIVE, (string) time());
