@@ -203,7 +203,6 @@ WordPress_clientSecret='xxx'
 WordPress_urlAuthorize='xxx'
 WordPress_urlAccessToken='xxx'
 WordPress_urlResourceOwnerDetails='xxx'
-WordPress_Scopes='openid profile email'
 WordPress_signInButtonLabel='WordPress'
 ```
 + Insert the configuration details from the WP OAuth Server plugin into the newly included configuration lines of your config.ini.php file:
@@ -212,7 +211,6 @@ WordPress_signInButtonLabel='WordPress'
     + **WordPress_urlAuthorize**='...' (value for "Authorization Endpoint" shown in the WordPress plugin, like described above)
     + **WordPress_urlAccessToken**='...' (value for "Token Endpoint" shown in the WordPress plugin, like described above)
     + **WordPress_urlResourceOwnerDetails**='...' (value for "Userinfo Endpoint" shown in the WordPress plugin, like described above)
-    + **WordPress_Scopes**='openid profile email' (DON'T change!)
     + **WordPress_signInButtonLabel**='...' (the label, which shall be shown for the sign in button etc.)    
 
 ## Mapping of the User Data to webtrees
