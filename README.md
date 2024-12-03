@@ -1,4 +1,4 @@
-[![Latest Release](https://img.shields.io/badge/not_released_yet-red)
+[![Latest Release](https://img.shields.io/github/v/release/Jefferson49/webtrees-oauth2-client?display_name=tag)](https://github.com/Jefferson49/webtrees-oauth2-client/releases/latest)
 [![webtrees major version](https://img.shields.io/badge/webtrees-v2.1.x-green)](https://webtrees.net/download)
 [![webtrees major version](https://img.shields.io/badge/webtrees-v2.2.x-green)](https://webtrees.net/download)
 
