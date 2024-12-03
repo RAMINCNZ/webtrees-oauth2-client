@@ -81,6 +81,7 @@ class WordPressAuthorizationProvider extends AbstractAuthorizationProvider imple
 
         $first_name = $user_data['first_name'] ?? '';
         $last_name = $user_data['last_name'] ?? '';
+        $display_name = $user_data['display_name'] ?? '';
 
         $real_name = $first_name;
 
@@ -88,7 +89,12 @@ class WordPressAuthorizationProvider extends AbstractAuthorizationProvider imple
             $real_name .= ' ';
         } 
 
-        $real_name .= $user_data['last_name'];
+        $real_name .= $last_name;
+
+        //If no real name could be generated from first/last name, use display name
+        if ($real_name === '') {
+            $real_name = $display_name;
+        }
 
         return new User(
             (int) $resourceOwner->getId() ?? '',
