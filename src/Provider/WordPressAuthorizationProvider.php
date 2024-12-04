@@ -57,7 +57,8 @@ class WordPressAuthorizationProvider extends AbstractAuthorizationProvider imple
 
         $options = array_merge($options, [
             'redirectUri'             => $redirectUri,
-            'Scopes'                  => 'openid profile email',
+            'scopes'                  => 'openid profile email',
+            'scopeSeparator'          => ' '
         ]);
         
         $this->provider = new GenericProvider($options, $collaborators);
