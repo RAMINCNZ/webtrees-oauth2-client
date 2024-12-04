@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-12-03 06:20+0100\n"
-"PO-Revision-Date: 2024-12-03 06:20+0100\n"
+"POT-Creation-Date: 2024-12-04 21:41+0100\n"
+"PO-Revision-Date: 2024-12-04 21:41+0100\n"
 "Last-Translator: Rick Malkin <rick@alineofmalkins.com>\n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -167,6 +167,16 @@ msgstr ""
 "Cannot use the sign in data of the authorisation provider. Neither username "
 "nor email is a primary key."
 
+#: src/Provider/WordPressAuthorizationProvider.php:90
+msgid "Invalid user data received from the authorization provider"
+msgstr "Invalid user data received from the authorization provider"
+
+#: src/Provider/WordPressAuthorizationProvider.php:90
+msgid ""
+"Check the setting for urlResourceOwnerDetails in the webtrees configuration."
+msgstr ""
+"Check the setting for urlResourceOwnerDetails in the webtrees configuration."
+
 #: resources/views/alert.phtml:24
 msgid "Custom module"
 msgstr "Custom module"
@@ -323,11 +333,6 @@ msgstr ""
 #~| msgid "Default ending"
 #~ msgid "Default individual"
 #~ msgstr "Default individual"
-
-#, php-format
-#~| msgid "Sign in with authorization provider"
-#~ msgid "%s not received from authoriuation provider"
-#~ msgstr "%s not received from authoriuation provider"
 
 #, php-format
 #~| msgid "Save on the webtrees server"

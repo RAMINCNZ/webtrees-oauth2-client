@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-12-02 20:50+0100\n"
-"PO-Revision-Date: 2024-12-02 20:50+0100\n"
+"POT-Creation-Date: 2024-12-04 21:39+0100\n"
+"PO-Revision-Date: 2024-12-04 21:40+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -61,7 +61,7 @@ msgid "Automatic user registration after sign in with authorization provider"
 msgstr ""
 "Automatische Benutzer-Registrierung nach Einloggen mit Autorisierungsanbieter"
 
-#: src/LoginWithAuthorizationProviderAction.php:300
+#: src/LoginWithAuthorizationProviderAction.php:302
 msgid ""
 "Login with the provided credentials denied. Username or email provided from "
 "authorization provider might already exist in webtrees."
@@ -70,7 +70,7 @@ msgstr ""
 "oder E-Mail vom Autorisierungsanbieter sind möglicherweise bereits in "
 "webtrees vorhanden."
 
-#: src/LoginWithAuthorizationProviderAction.php:341
+#: src/LoginWithAuthorizationProviderAction.php:343
 #, php-format
 msgid ""
 "The length of the \"%s\" exceeded the maximum length of %s and was reduced "
@@ -173,6 +173,17 @@ msgstr ""
 "Die Login-Daten vom Autorisierungsanbieter können nicht genutzt werden. "
 "Weder Benutzername noch Email sind als verbindliche Primärschlüssel "
 "vorgesehen."
+
+#: src/Provider/WordPressAuthorizationProvider.php:90
+msgid "Invalid user data received from the authorization provider"
+msgstr "Ungültige Benutzerdaten vom Authorisierungsanbieter empfangen"
+
+#: src/Provider/WordPressAuthorizationProvider.php:90
+msgid ""
+"Check the setting for urlResourceOwnerDetails in the webtrees configuration."
+msgstr ""
+"Prüfen Sie den Wert für urlResourceOwnerDetails in der webtrees "
+"Konfiguration."
 
 #: resources/views/alert.phtml:24
 msgid "Custom module"
@@ -303,6 +314,11 @@ msgstr ""
 "original webtrees Anmeldeseite durch Eingabe der Route in der Browserzeile "
 "aufzurufen, z.B.:"
 
+#~ msgid ""
+#~ "Invalid user data received from the authorization provider; does not "
+#~ "contain user id. The following user data was received: "
+#~ msgstr "Ungültige Benutzerdaten vom Authorisierungsanbieter empfangen; "
+
 #~ msgid "Sign out"
 #~ msgstr "Abmelden"
 
@@ -336,11 +352,6 @@ msgstr ""
 #~| msgid "Default ending"
 #~ msgid "Default individual"
 #~ msgstr "Voreinstellung Zeilenenden"
-
-#, fuzzy, php-format
-#~| msgid "Sign in with authorization provider"
-#~ msgid "%s not received from authoriuation provider"
-#~ msgstr "Mit Authorisierungsanbieter einloggen"
 
 #, fuzzy, php-format
 #~| msgid "Save on the webtrees server"

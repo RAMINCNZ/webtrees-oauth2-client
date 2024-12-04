@@ -164,7 +164,7 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
                     'code' => $code
                 ]);
         
-                // Using the access token, we can get the user data of the resource owner        
+                // Using the access token, we can get the user data of the resource owner
                 $user_data_from_provider = $provider->getUserData($accessToken);
 
             } catch (IdentityProviderException $e) {
