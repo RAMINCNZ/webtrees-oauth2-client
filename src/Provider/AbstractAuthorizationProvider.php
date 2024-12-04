@@ -125,7 +125,12 @@ abstract class AbstractAuthorizationProvider
      */
     public function getAccessToken($grant, array $options = [])
     {
-        return $this->provider->getAccessToken($grant, $options);
+        try {
+            return $this->provider->getAccessToken($grant, $options);
+        }
+        catch (Exception $e) {
+            throw new IdentityProviderException(I18N::translate('Error while trying to get access token from authorization provider. Check the setting for urlAccessToken in the webtrees configuration.'), 0, 0);
+        }
     }
 
     /**

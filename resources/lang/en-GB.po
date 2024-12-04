@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-12-04 21:41+0100\n"
-"PO-Revision-Date: 2024-12-04 21:41+0100\n"
+"POT-Creation-Date: 2024-12-04 22:14+0100\n"
+"PO-Revision-Date: 2024-12-04 22:14+0100\n"
 "Last-Translator: Rick Malkin <rick@alineofmalkins.com>\n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -143,7 +143,35 @@ msgstr ""
 "strongly recommended to deactivate one of the modules. The path of the "
 "parallel view is: %s"
 
-#: src/Provider/AbstractAuthorizationProvider.php:199
+#: src/Provider/AbstractAuthorizationProvider.php:132
+msgid ""
+"Error while trying to get access token from authorization provider. Check "
+"the setting for urlAccessToken in the webtrees configuration."
+msgstr ""
+"Error while trying to get access token from authorization provider. Check "
+"the setting for urlAccessToken in the webtrees configuration."
+
+#: src/Provider/AbstractAuthorizationProvider.php:163
+#: src/Provider/GenericAuthorizationProvider.php:87
+#: src/Provider/GithubAuthorizationProvider.php:84
+#: src/Provider/GoogleAuthorizationProvider.php:85
+#: src/Provider/JoomlaAuthorizationProvider.php:93
+#: src/Provider/WordPressAuthorizationProvider.php:90
+msgid "Invalid user data received from the authorization provider"
+msgstr "Invalid user data received from the authorization provider"
+
+#: src/Provider/AbstractAuthorizationProvider.php:163
+#: src/Provider/GenericAuthorizationProvider.php:87
+#: src/Provider/GithubAuthorizationProvider.php:84
+#: src/Provider/GoogleAuthorizationProvider.php:85
+#: src/Provider/JoomlaAuthorizationProvider.php:93
+#: src/Provider/WordPressAuthorizationProvider.php:90
+msgid ""
+"Check the setting for urlResourceOwnerDetails in the webtrees configuration."
+msgstr ""
+"Check the setting for urlResourceOwnerDetails in the webtrees configuration."
+
+#: src/Provider/AbstractAuthorizationProvider.php:213
 msgid ""
 "Cannot use the sign in data of the authorization provider. No primary key "
 "defined for the user data."
@@ -151,7 +179,7 @@ msgstr ""
 "Cannot use the sign in data of the authorisation provider. No primary key "
 "defined for the user data."
 
-#: src/Provider/AbstractAuthorizationProvider.php:202
+#: src/Provider/AbstractAuthorizationProvider.php:216
 msgid ""
 "Cannot use the sign in data of the authorization provider. More than one "
 "primary key defined for the user data."
@@ -159,23 +187,13 @@ msgstr ""
 "Cannot use the sign in data of the authorisation provider. More than one "
 "primary key defined for the user data."
 
-#: src/Provider/AbstractAuthorizationProvider.php:207
+#: src/Provider/AbstractAuthorizationProvider.php:221
 msgid ""
 "Cannot use the sign in data of the authorization provider. Neither username "
 "nor email is a primary key."
 msgstr ""
 "Cannot use the sign in data of the authorisation provider. Neither username "
 "nor email is a primary key."
-
-#: src/Provider/WordPressAuthorizationProvider.php:90
-msgid "Invalid user data received from the authorization provider"
-msgstr "Invalid user data received from the authorization provider"
-
-#: src/Provider/WordPressAuthorizationProvider.php:90
-msgid ""
-"Check the setting for urlResourceOwnerDetails in the webtrees configuration."
-msgstr ""
-"Check the setting for urlResourceOwnerDetails in the webtrees configuration."
 
 #: resources/views/alert.phtml:24
 msgid "Custom module"

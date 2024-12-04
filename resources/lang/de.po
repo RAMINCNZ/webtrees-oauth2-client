@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-12-04 21:39+0100\n"
-"PO-Revision-Date: 2024-12-04 21:40+0100\n"
+"POT-Creation-Date: 2024-12-04 22:12+0100\n"
+"PO-Revision-Date: 2024-12-04 22:14+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -149,7 +149,36 @@ msgstr ""
 "führen. Es wird dringend empfohlen, eines der Module zu deaktivieren. Der "
 "Pfad für den Custom View ist: %s"
 
-#: src/Provider/AbstractAuthorizationProvider.php:199
+#: src/Provider/AbstractAuthorizationProvider.php:132
+msgid ""
+"Error while trying to get access token from authorization provider. Check "
+"the setting for urlAccessToken in the webtrees configuration."
+msgstr ""
+"Fehler beim Abrufen des Access-Tokens vom Authorisierungsanbieter. Prüfen "
+"Sie die Einstellung für urlAccessToken in der webtrees configuration."
+
+#: src/Provider/AbstractAuthorizationProvider.php:163
+#: src/Provider/GenericAuthorizationProvider.php:87
+#: src/Provider/GithubAuthorizationProvider.php:84
+#: src/Provider/GoogleAuthorizationProvider.php:85
+#: src/Provider/JoomlaAuthorizationProvider.php:93
+#: src/Provider/WordPressAuthorizationProvider.php:90
+msgid "Invalid user data received from the authorization provider"
+msgstr "Ungültige Benutzerdaten vom Authorisierungsanbieter empfangen"
+
+#: src/Provider/AbstractAuthorizationProvider.php:163
+#: src/Provider/GenericAuthorizationProvider.php:87
+#: src/Provider/GithubAuthorizationProvider.php:84
+#: src/Provider/GoogleAuthorizationProvider.php:85
+#: src/Provider/JoomlaAuthorizationProvider.php:93
+#: src/Provider/WordPressAuthorizationProvider.php:90
+msgid ""
+"Check the setting for urlResourceOwnerDetails in the webtrees configuration."
+msgstr ""
+"Prüfen Sie die Einstellung für urlResourceOwnerDetails in der webtrees "
+"Konfiguration."
+
+#: src/Provider/AbstractAuthorizationProvider.php:213
 msgid ""
 "Cannot use the sign in data of the authorization provider. No primary key "
 "defined for the user data."
@@ -157,7 +186,7 @@ msgstr ""
 "Die Login-Daten vom Autorisierungsanbieter können nicht genutzt werden. Es "
 "ist kein verbindlicher Primärschlüssel definiert."
 
-#: src/Provider/AbstractAuthorizationProvider.php:202
+#: src/Provider/AbstractAuthorizationProvider.php:216
 msgid ""
 "Cannot use the sign in data of the authorization provider. More than one "
 "primary key defined for the user data."
@@ -165,7 +194,7 @@ msgstr ""
 "Die Login-Daten vom Autorisierungsanbieter können nicht genutzt werden. Es "
 "ist mehr als ein Primärschlüssel definiert."
 
-#: src/Provider/AbstractAuthorizationProvider.php:207
+#: src/Provider/AbstractAuthorizationProvider.php:221
 msgid ""
 "Cannot use the sign in data of the authorization provider. Neither username "
 "nor email is a primary key."
@@ -173,17 +202,6 @@ msgstr ""
 "Die Login-Daten vom Autorisierungsanbieter können nicht genutzt werden. "
 "Weder Benutzername noch Email sind als verbindliche Primärschlüssel "
 "vorgesehen."
-
-#: src/Provider/WordPressAuthorizationProvider.php:90
-msgid "Invalid user data received from the authorization provider"
-msgstr "Ungültige Benutzerdaten vom Authorisierungsanbieter empfangen"
-
-#: src/Provider/WordPressAuthorizationProvider.php:90
-msgid ""
-"Check the setting for urlResourceOwnerDetails in the webtrees configuration."
-msgstr ""
-"Prüfen Sie den Wert für urlResourceOwnerDetails in der webtrees "
-"Konfiguration."
 
 #: resources/views/alert.phtml:24
 msgid "Custom module"
