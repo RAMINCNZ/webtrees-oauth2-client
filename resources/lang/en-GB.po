@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-12-04 22:14+0100\n"
-"PO-Revision-Date: 2024-12-04 22:14+0100\n"
+"POT-Creation-Date: 2024-12-05 05:52+0100\n"
+"PO-Revision-Date: 2024-12-05 05:53+0100\n"
 "Last-Translator: Rick Malkin <rick@alineofmalkins.com>\n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -145,11 +145,15 @@ msgstr ""
 
 #: src/Provider/AbstractAuthorizationProvider.php:132
 msgid ""
-"Error while trying to get access token from authorization provider. Check "
-"the setting for urlAccessToken in the webtrees configuration."
+"Error while trying to get an access token from the authorization provider. "
+"Check the setting for urlAccessToken in the webtrees configuration. Check "
+"the server access logs (or .htaccess configuration files) whether any 301 or "
+"302 redirects are applied, which might convert POST into GET requests."
 msgstr ""
-"Error while trying to get access token from authorization provider. Check "
-"the setting for urlAccessToken in the webtrees configuration."
+"Error while trying to get an access token from the authorization provider. "
+"Check the setting for urlAccessToken in the webtrees configuration. Check "
+"the server access logs (or .htaccess configuration files) whether any 301 or "
+"302 redirects are applied, which might convert POST into GET requests."
 
 #: src/Provider/AbstractAuthorizationProvider.php:163
 #: src/Provider/GenericAuthorizationProvider.php:87
