@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
 "POT-Creation-Date: 2024-12-05 05:52+0100\n"
-"PO-Revision-Date: 2024-12-05 05:53+0100\n"
+"PO-Revision-Date: 2024-12-05 06:00+0100\n"
 "Last-Translator: Rick Malkin <rick@alineofmalkins.com>\n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -33,7 +33,7 @@ msgstr "The requested authorisation provider could not be found"
 #: src/LoginWithAuthorizationProviderAction.php:154
 #: src/LoginWithAuthorizationProviderAction.php:174
 msgid "OAuth 2.0 communication error"
-msgstr "OAuth 2.0 communication error"
+msgstr ""
 
 #: src/LoginWithAuthorizationProviderAction.php:158
 msgid "Invalid state in communication with authorization provider."
@@ -73,12 +73,10 @@ msgid ""
 "The length of the \"%s\" exceeded the maximum length of %s and was reduced "
 "to %s characters."
 msgstr ""
-"The length of the \"%s\" exceeded the maximum length of %s and was reduced "
-"to %s characters."
 
 #: src/OAuth2Client.php:185
 msgid "OAuth2 Client"
-msgstr "OAuth2 Client"
+msgstr ""
 
 #: src/OAuth2Client.php:198
 msgid "A custom module to implement a OAuth2 client for webtrees."
@@ -86,12 +84,12 @@ msgstr "A custom module to implement a OAuth2 client for WebTrees."
 
 #: src/OAuth2Client.php:375
 msgid "Sign in with"
-msgstr "Sign in with"
+msgstr ""
 
 #: src/OAuth2Client.php:485
 #, php-format
 msgid "The preferences for the module \"%s\" were updated."
-msgstr "The preferences for the module \"%s\" were updated."
+msgstr ""
 
 #: src/OAuth2Client.php:508
 #, php-format
@@ -99,8 +97,6 @@ msgid ""
 "The preferences for the custom module \"%s\" were sucessfully updated to the "
 "new module version %s."
 msgstr ""
-"The preferences for the custom module \"%s\" were sucessfully updated to the "
-"new module version %s."
 
 #: src/OAuth2Client.php:540
 #, php-format
@@ -110,10 +106,6 @@ msgid ""
 "recommended to deactivate the \"%s\" module, because the identical "
 "functionality is also integrated in the %s module."
 msgstr ""
-"The custom module \"%s\" is activated in parallel to the %s custom module. "
-"This can lead to unintended behavior. If using the %s module, it is strongly "
-"recommended to deactivate the \"%s\" module, because the identical "
-"functionality is also integrated in the %s module."
 
 #: src/OAuth2Client.php:545
 #, php-format
@@ -123,10 +115,6 @@ msgid ""
 "registered the same custom view \"%s\". It is strongly recommended to "
 "deactivate one of the modules."
 msgstr ""
-"The custom module \"%s\" is activated in parallel to the %s custom module. "
-"This can lead to unintended behavior, because both of the modules have "
-"registered the same custom view \"%s\". It is strongly recommended to "
-"deactivate one of the modules."
 
 #: src/OAuth2Client.php:569
 #, php-format
@@ -150,7 +138,7 @@ msgid ""
 "the server access logs (or .htaccess configuration files) whether any 301 or "
 "302 redirects are applied, which might convert POST into GET requests."
 msgstr ""
-"Error while trying to get an access token from the authorization provider. "
+"Error while trying to get an access token from the authorisation provider. "
 "Check the setting for urlAccessToken in the webtrees configuration. Check "
 "the server access logs (or .htaccess configuration files) whether any 301 or "
 "302 redirects are applied, which might convert POST into GET requests."
@@ -162,7 +150,7 @@ msgstr ""
 #: src/Provider/JoomlaAuthorizationProvider.php:93
 #: src/Provider/WordPressAuthorizationProvider.php:90
 msgid "Invalid user data received from the authorization provider"
-msgstr "Invalid user data received from the authorization provider"
+msgstr "Invalid user data received from the authorisation provider"
 
 #: src/Provider/AbstractAuthorizationProvider.php:163
 #: src/Provider/GenericAuthorizationProvider.php:87
@@ -173,7 +161,6 @@ msgstr "Invalid user data received from the authorization provider"
 msgid ""
 "Check the setting for urlResourceOwnerDetails in the webtrees configuration."
 msgstr ""
-"Check the setting for urlResourceOwnerDetails in the webtrees configuration."
 
 #: src/Provider/AbstractAuthorizationProvider.php:213
 msgid ""
@@ -201,11 +188,11 @@ msgstr ""
 
 #: resources/views/alert.phtml:24
 msgid "Custom module"
-msgstr "Custom module"
+msgstr ""
 
 #: resources/views/edit-account-page.phtml:54
 msgid "Signed in with"
-msgstr "Signed in with"
+msgstr ""
 
 #: resources/views/edit-account-page.phtml:54
 msgid ""
@@ -243,7 +230,7 @@ msgstr ""
 
 #: resources/views/register-page.phtml:62
 msgid "Register with"
-msgstr "Register with"
+msgstr ""
 
 #: resources/views/register-page.phtml:62
 msgid "User account data from authorization provider cannot be changed"
@@ -251,11 +238,11 @@ msgstr "User account data from authorisation provider cannot be changed"
 
 #: resources/views/register-page.phtml:131
 msgid "Further registration data - Please complete and continue"
-msgstr "Further registration data - Please complete and continue"
+msgstr ""
 
 #: resources/views/settings.phtml:24
 msgid "Control panel"
-msgstr "Control panel"
+msgstr ""
 
 #: resources/views/settings.phtml:32
 msgid ""
@@ -275,7 +262,7 @@ msgstr ""
 
 #: resources/views/settings.phtml:49
 msgid "Settings for Sign In Menus"
-msgstr "Settings for Sign In Menus"
+msgstr ""
 
 #: resources/views/settings.phtml:55
 msgid "Show menu item for webtrees in sign in menu"
@@ -297,7 +284,7 @@ msgstr "Hide the WebTrees sign in menu"
 
 #: resources/views/settings.phtml:72
 msgid "Hide"
-msgstr "Hide"
+msgstr ""
 
 #: resources/views/settings.phtml:74
 msgid ""
