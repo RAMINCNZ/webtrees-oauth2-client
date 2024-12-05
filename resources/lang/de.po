@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-12-05 05:51+0100\n"
-"PO-Revision-Date: 2024-12-05 05:52+0100\n"
+"POT-Creation-Date: 2024-12-05 06:05+0100\n"
+"PO-Revision-Date: 2024-12-05 06:05+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -150,12 +150,6 @@ msgstr ""
 "Pfad für den Custom View ist: %s"
 
 #: src/Provider/AbstractAuthorizationProvider.php:132
-#, fuzzy
-#| msgid ""
-#| "Error while trying to get access token from authorization provider. Check "
-#| "the setting for urlAccessToken in the webtrees configuration. Check the "
-#| "server access logs (or .htaccess configuration files) whether any 301 or "
-#| "302 redirects are applied, which might convert POST into GET requests."
 msgid ""
 "Error while trying to get an access token from the authorization provider. "
 "Check the setting for urlAccessToken in the webtrees configuration. Check "
