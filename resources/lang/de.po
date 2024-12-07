@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-12-05 06:05+0100\n"
-"PO-Revision-Date: 2024-12-05 06:05+0100\n"
+"POT-Creation-Date: 2024-12-07 11:33+0100\n"
+"PO-Revision-Date: 2024-12-07 11:33+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -26,21 +26,21 @@ msgstr ""
 "Angaben für die Option \"%s\". Bitte prüfen Sie die Konfiguration in der "
 "folgenden Datei: data/config.ini.php"
 
-#: src/LoginWithAuthorizationProviderAction.php:122
+#: src/LoginWithAuthorizationProviderAction.php:128
 msgid "The requested authorization provider could not be found"
 msgstr "Der angeforderte Autorisierungsanbieter konnte nicht gefunden werden"
 
-#: src/LoginWithAuthorizationProviderAction.php:154
-#: src/LoginWithAuthorizationProviderAction.php:174
+#: src/LoginWithAuthorizationProviderAction.php:168
+#: src/LoginWithAuthorizationProviderAction.php:194
 msgid "OAuth 2.0 communication error"
 msgstr "OAuth 2.0 Kommunikationsfehler"
 
-#: src/LoginWithAuthorizationProviderAction.php:158
+#: src/LoginWithAuthorizationProviderAction.php:172
 msgid "Invalid state in communication with authorization provider."
 msgstr ""
 "Ungültiger Zustand in der Kommunikation mit dem Autorisierungsanbieter."
 
-#: src/LoginWithAuthorizationProviderAction.php:178
+#: src/LoginWithAuthorizationProviderAction.php:198
 msgid ""
 "Failed to get the access token or the user details from the authorization "
 "provider"
@@ -48,7 +48,7 @@ msgstr ""
 "Fehler beim Empfang des Zugriffs-Tokens oder der Benutzer-Daten vom "
 "Autorisierungsanbieter"
 
-#: src/LoginWithAuthorizationProviderAction.php:205
+#: src/LoginWithAuthorizationProviderAction.php:231
 msgid ""
 "No valid user account data received from authorizaton provider. Username or "
 "email missing."
@@ -56,12 +56,16 @@ msgstr ""
 "Vom Autorisierungsanbieter wurden keine validen Daten empfangen. Benutzer-"
 "Name oder Email fehlt."
 
-#: src/LoginWithAuthorizationProviderAction.php:222
+#: src/LoginWithAuthorizationProviderAction.php:238
+msgid "Redirect to webtrees registration page"
+msgstr "Weiterleitung zur webtrees-Registrierungsseite"
+
+#: src/LoginWithAuthorizationProviderAction.php:249
 msgid "Automatic user registration after sign in with authorization provider"
 msgstr ""
 "Automatische Benutzer-Registrierung nach Einloggen mit Autorisierungsanbieter"
 
-#: src/LoginWithAuthorizationProviderAction.php:302
+#: src/LoginWithAuthorizationProviderAction.php:330
 msgid ""
 "Login with the provided credentials denied. Username or email provided from "
 "authorization provider might already exist in webtrees."
@@ -70,7 +74,7 @@ msgstr ""
 "oder E-Mail vom Autorisierungsanbieter sind möglicherweise bereits in "
 "webtrees vorhanden."
 
-#: src/LoginWithAuthorizationProviderAction.php:343
+#: src/LoginWithAuthorizationProviderAction.php:371
 #, php-format
 msgid ""
 "The length of the \"%s\" exceeded the maximum length of %s and was reduced "
@@ -79,26 +83,26 @@ msgstr ""
 "Die Länge der/des \"%s\" überschreitet die maximale Länge von %s und wurde "
 "daher auf %s Zeichen gekürzt."
 
-#: src/OAuth2Client.php:185
+#: src/OAuth2Client.php:188
 msgid "OAuth2 Client"
 msgstr "OAuth2 Client"
 
-#: src/OAuth2Client.php:198
+#: src/OAuth2Client.php:201
 msgid "A custom module to implement a OAuth2 client for webtrees."
 msgstr ""
 "Ein benutzerspezifisches Modul, welches einen OAuth2 Client für webtrees zur "
 "Verfügung stellt."
 
-#: src/OAuth2Client.php:375
+#: src/OAuth2Client.php:378
 msgid "Sign in with"
 msgstr "Anmelden mit"
 
-#: src/OAuth2Client.php:485
+#: src/OAuth2Client.php:509
 #, php-format
 msgid "The preferences for the module \"%s\" were updated."
 msgstr "Die Einstellungen für das Modul \"%s\" wurden aktualisiert."
 
-#: src/OAuth2Client.php:508
+#: src/OAuth2Client.php:532
 #, php-format
 msgid ""
 "The preferences for the custom module \"%s\" were sucessfully updated to the "
@@ -107,7 +111,7 @@ msgstr ""
 "Die Einstellungen für das benutzerdefinierte Modul \"%s\" wurden für die "
 "neue Modul-Version %s aktualisiert."
 
-#: src/OAuth2Client.php:540
+#: src/OAuth2Client.php:564
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -121,7 +125,7 @@ msgstr ""
 "deaktivieren, weil die identische Funktion ebenfalls im Modul %s integriert "
 "ist."
 
-#: src/OAuth2Client.php:545
+#: src/OAuth2Client.php:569
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -134,7 +138,7 @@ msgstr ""
 "beide Module die gleiche Custom View \"%s\" registriert haben. Es wird "
 "dringend empfohlen eines der beiden Module zu deaktivieren."
 
-#: src/OAuth2Client.php:569
+#: src/OAuth2Client.php:593
 #, php-format
 msgid ""
 "The custom module view \"%s\" is not registered as replacement for the "
@@ -336,6 +340,24 @@ msgstr ""
 "sich als Administrator anzumelden. HInweis: Es ist immer noch möglich, die "
 "original webtrees Anmeldeseite durch Eingabe der Route in der Browserzeile "
 "aufzurufen, z.B.:"
+
+#: resources/views/settings.phtml:89
+msgid "Debugging"
+msgstr "Debugging"
+
+#: resources/views/settings.phtml:92
+msgid "Activate debug logs"
+msgstr "Debug-Log-Einträge aktivieren"
+
+#: resources/views/settings.phtml:94
+msgid ""
+"By selecting this option, additional debug information about the protocol "
+"flow between webtrees and the authorization provoider will be logged in the "
+"webtrees website logs."
+msgstr ""
+"Wenn Sie diese Option auswählen, werden zusätzliche Debug-Informationen über "
+"den Protokollfluss zwischen webtrees und dem Autorisierungsanbieter in den "
+"Website-Logs von webtrees protokolliert."
 
 #~ msgid ""
 #~ "Invalid user data received from the authorization provider; does not "

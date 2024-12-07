@@ -20,7 +20,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * 
- * Functions to be used in webtrees custom modules
+ * Interface for custom module specific logs
  *
  */
 
@@ -28,40 +28,23 @@ declare(strict_types=1);
 
 namespace Jefferson49\Webtrees\Helpers;
 
-use Fisharebest\Webtrees\Module\ModuleInterface;
-use Fisharebest\Webtrees\Registry;
-use Fisharebest\Webtrees\Webtrees;
 
 /**
- * Functions to be used in webtrees custom modules
+ * Interface for custom module specific logs
  */
-class Functions
+interface CustomModuleLogInterface
 {
+    /**
+     * Get the prefix for custom module specific logs
+     * 
+     * @return string
+     */
+    public static function getLogPrefix() : string;
 
     /**
-     * Get interface from container
-     *
-     * @return mixed
+     * Whether debugging is activated
+     * 
+     * @return bool
      */
-    public static function getFromContainer(string $id) {
-
-        if (version_compare(Webtrees::VERSION, '2.2.0', '>=')) {
-            return Registry::container()->get($id);
-        }
-        else {
-            return app($id);
-        }    
-    }    
-
-    /**
-     * Find a specified module, if it is currently active.
-     */
-    public static function moduleLogInterface(ModuleInterface $module): CustomModuleLogInterface|null
-    {
-        if (!in_array(CustomModuleLogInterface::class, class_implements($module))) {
-            return null;
-        }
-
-        return $module;
-    }
+    public function debuggingActivated() : bool;
 }

@@ -62,6 +62,7 @@ use Fisharebest\Webtrees\Session;
 use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
+use Jefferson49\Webtrees\Helpers\CustomModuleLogInterface;
 use Jefferson49\Webtrees\Helpers\Functions;
 use Jefferson49\Webtrees\Module\OAuth2Client\Factories\AuthorizationProviderFactory;
 use Jefferson49\Webtrees\Module\OAuth2Client\LoginWithAuthorizationProviderAction;
@@ -79,7 +80,8 @@ class OAuth2Client extends AbstractModule implements
 	ModuleCustomInterface, 
 	ModuleConfigInterface,
     ModuleGlobalInterface,
-    ModuleMenuInterface
+    ModuleMenuInterface,
+    CustomModuleLogInterface
 {
     use ModuleCustomTrait;
     use ModuleConfigTrait;
@@ -118,6 +120,7 @@ class OAuth2Client extends AbstractModule implements
     //Preferences
     public const PREF_SHOW_WEBTREES_IN_LOGIN_MENU   = 'show_webtrees_in_login_menu';
     public const PREF_DONT_SHOW_WEBTREES_LOGIN_MENU = 'dont_show_webtrees_login_menu';
+    public const PREF_DEBUGGING_ACTIVATED = 'debugging_activated';
 
     //User preferences
     public const USER_PREF_PROVIDER_NAME = 'provider_name';
@@ -427,6 +430,24 @@ class OAuth2Client extends AbstractModule implements
             return new Menu(MoreI18N::xlate('Sign in'), '#', 'menu-oauth2-client' , ['rel' => 'nofollow'], $submenus);
         }
     }  
+
+    /**
+     * Get the prefix for custom module specific logs
+     * 
+     * @return string
+     */
+    public static function getLogPrefix() : string {
+        return 'OAuth2 Client';
+    }  
+    
+    /**
+     * Whether debugging is activated
+     * 
+     * @return bool
+     */
+    public function debuggingActivated(): bool {
+        return boolval($this->getPreference(self::PREF_DEBUGGING_ACTIVATED, '0'));
+    }
     
     /**
      * Get the namespace for the views
@@ -458,6 +479,7 @@ class OAuth2Client extends AbstractModule implements
                 'base_url'                               => $base_url,
                 self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU   => boolval($this->getPreference(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, '1')),
                 self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU => boolval($this->getPreference(self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU, '0')),
+                self::PREF_DEBUGGING_ACTIVATED           => boolval($this->getPreference(self::PREF_DEBUGGING_ACTIVATED, '0')),
             ]
         );
     }
@@ -474,11 +496,13 @@ class OAuth2Client extends AbstractModule implements
         $save                          = Validator::parsedBody($request)->string('save', '');
         $show_webtrees_in_login_menu   = Validator::parsedBody($request)->boolean(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, false);
         $dont_show_webtrees_login_menu = Validator::parsedBody($request)->boolean(self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU, false);
+        $debugging_activated           = Validator::parsedBody($request)->boolean(self::PREF_DEBUGGING_ACTIVATED, false);
 
         //Save the received settings to the user preferences
         if ($save === '1') {
 			$this->setPreference(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, $show_webtrees_in_login_menu ? '1' : '0');
 			$this->setPreference(self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU, $dont_show_webtrees_login_menu ? '1' : '0');
+			$this->setPreference(self::PREF_DEBUGGING_ACTIVATED, $debugging_activated ? '1' : '0');
         }
 
         //Finally, show a success message

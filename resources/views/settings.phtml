@@ -6,7 +6,6 @@ use Cissee\WebtreesExt\MoreI18N;
 use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\View;
-use Jefferson49\Webtrees\Module\OAuth2Client\LoginWithAuthorizationProviderAction;
 use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
 
 /**
@@ -14,6 +13,7 @@ use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
  * @var string $base_url
  * @var bool   $show_webtrees_in_login_menu
  * @var bool   $dont_show_webtrees_login_menu
+ * @var bool   $debugging_activated
  */
 
 $uses_https   = strpos(Strtoupper($base_url), 'HTTPS://') === false ? false : true;
@@ -82,6 +82,20 @@ $redirect_url = OAuth2Client::getRedirectUrl();
 			<p><?= I18N::translate('Currently, all menus to directly sign in with webtrees are deactivated. Therefore, only sign in with authorization providers is possible. Please be sure that you establish a webtrees administrator account with an authorization provider. Otherwise, administrator sign in is not possible any more. Hint: You can still access the original webtrees login page by typing the login route into the browser line, e.g.:') . ' http://my_site.net/webtrees/index.php?route=login' ?></p>
 		</div>
 	<?php endif ?>	
+
+	<fieldset class="mb-3">
+		<div class="row">
+			<legend class="col-form-label col-sm-3">
+				<?= I18N::translate('Debugging') ?>
+			</legend>
+			<div class="col-sm-9">
+				<?= view('components/checkbox', ['label' => I18N::translate('Activate debug logs'), 'name' => OAuth2Client::PREF_DEBUGGING_ACTIVATED, 'checked' => $debugging_activated]) ?>
+				<div class="form-text">
+					<?= I18N::translate('By selecting this option, additional debug information about the protocol flow between webtrees and the authorization provoider will be logged in the webtrees website logs.'); ?>
+				</div>
+			</div>
+		</div>
+	</fieldset>
 
     <div class="row mb-3">
 		<div class="col">
