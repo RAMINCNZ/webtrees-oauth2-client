@@ -140,6 +140,9 @@ class OAuth2Client extends AbstractModule implements
      */
     public function boot(): void
     {
+        //Add autoload for vesta translation   
+        Functions::autoloadVestaTranslation(__DIR__);
+                        
         //Check update of module version
         $this->checkModuleVersionUpdate();
 
