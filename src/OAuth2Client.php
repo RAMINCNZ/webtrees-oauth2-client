@@ -131,6 +131,8 @@ class OAuth2Client extends AbstractModule implements
      */
     public function __construct()
     {
+        //Caution: Do not use the shared library jefferson47/webtrees-common within __construct(), 
+        //         because it might result in wrong autoload behavior
     }
 
     /**
