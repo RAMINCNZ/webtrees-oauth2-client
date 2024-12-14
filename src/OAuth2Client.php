@@ -35,7 +35,6 @@ declare(strict_types=1);
 
 namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
-use Cissee\WebtreesExt\MoreI18N;
 use Fig\Http\Message\RequestMethodInterface;
 use Fig\Http\Message\StatusCodeInterface;
 use Fisharebest\Localization\Translation;
@@ -62,8 +61,9 @@ use Fisharebest\Webtrees\Session;
 use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
-use Jefferson49\Webtrees\Helpers\CustomModuleLogInterface;
 use Jefferson49\Webtrees\Helpers\Functions;
+use Jefferson49\Webtrees\Internationalization\MoreI18N;
+use Jefferson49\Webtrees\Log\CustomModuleLogInterface;
 use Jefferson49\Webtrees\Module\OAuth2Client\Factories\AuthorizationProviderFactory;
 use Jefferson49\Webtrees\Module\OAuth2Client\LoginWithAuthorizationProviderAction;
 use GuzzleHttp\Client;
@@ -139,10 +139,7 @@ class OAuth2Client extends AbstractModule implements
      * @return void
      */
     public function boot(): void
-    {
-        //Add autoload for vesta translation   
-        Functions::autoloadVestaTranslation(__DIR__);
-                        
+    {              
         //Check update of module version
         $this->checkModuleVersionUpdate();
 
