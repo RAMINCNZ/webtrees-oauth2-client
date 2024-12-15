@@ -132,12 +132,9 @@ class AuthorizationProviderFactory
         // Read the configuration settings
         if (file_exists(Webtrees::CONFIG_FILE)) {
             $config = parse_ini_file(Webtrees::CONFIG_FILE);
-
             foreach ($config as $key => $value) {
-
-                $key = str_replace($name . '_', '', $key);
-
-                if (in_array($key, $option_names)) {
+                if (strpos($key, $name . '_') === 0) {
+                    $key = str_replace($name . '_', '', $key);
                     $options[$key] = $value;
                 }
             }
