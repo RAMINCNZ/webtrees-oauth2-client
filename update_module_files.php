@@ -30,7 +30,6 @@ use Fisharebest\Webtrees\FlashMessages;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 
-use Exception;
 
 //Error message
 $message  = basename(__DIR__) .': ';
@@ -48,17 +47,17 @@ $old_path = 'Jefferson49';
 $new_path = 'jefferson49';
 
 try {
-    if ($file_system->fileExists($old_path . '/webtrees-common/autoload_webtrees_common.php')) {
+    if ($file_system->fileExists($old_path . '/webtrees-common/autoload.php')) {
         $file_system->move($old_path, $new_path);
     }
 }
-catch (Exception $e) {
+catch (\Exception $e) {
     FlashMessages::addMessage($message);
     return false;
 }
 
 //Check accesibility of common library
-if (!$file_system->fileExists($new_path . '/webtrees-common/autoload_webtrees_common.php')) {
+if (!$file_system->fileExists($new_path . '/webtrees-common/autoload.php')) {
     FlashMessages::addMessage($message);
     return false;
 }
