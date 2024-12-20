@@ -35,6 +35,6 @@ declare(strict_types=1);
 
 namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
-require_once __DIR__ . '/autoload.php';
 
+if (!require_once __DIR__ . '/autoload.php') return null;
 return new OAuth2Client();

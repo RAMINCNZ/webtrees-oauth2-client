@@ -8,11 +8,11 @@
     "packages": [
         {
             "name": "jefferson49/webtrees-common",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Jefferson49/webtrees-common.git",
-                "reference": "ff7b5d9b364f76b13ed7fb9ddee8cc1aeba841a8"
+                "reference": "5e55a6df4142e4885fa3332b247b28d8ee6c1f63"
             },
             "require": {
                 "php": ">=7.4"
@@ -27,7 +27,7 @@
                 "webtree-module",
                 "webtrees"
             ],
-            "time": "2024-12-15T09:15:42+00:00"
+            "time": "2024-12-15T19:03:01+00:00"
         },
         {
             "name": "league/oauth2-client",
