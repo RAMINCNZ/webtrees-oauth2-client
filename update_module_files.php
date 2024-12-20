@@ -5,11 +5,6 @@
  * Copyright (C) 2024 webtrees development team
  *                    <http://webtrees.net>
  *
- * Fancy Research Links (webtrees custom module):
- * Copyright (C) 2022 Carmen Just
- *                    <https://justcarmen.nl>
- *
- * OAuth2Client (webtrees custom module):
  * Copyright (C) 2024 Markus Hemprich
  *                    <http://www.familienforschung-hemprich.de>
  *
@@ -25,13 +20,11 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * 
- * Update module files for: OAuth2-Client
+ * Update custom module files, e.g. to upgrade to a new version
  * 
  */
  
 declare(strict_types=1);
-
-namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
 use Fisharebest\Webtrees\FlashMessages;
 use League\Flysystem\Filesystem;
@@ -40,7 +33,8 @@ use League\Flysystem\Local\LocalFilesystemAdapter;
 use Exception;
 
 //Error message
-$message = 'OAuth2 Client: An error occured during updating the custom module files to a new version. Try to reload webtrees. If the error does not disappear, delete the custom module folder and re-install the new version from scratch.';
+$message  = basename(__DIR__) .': ';
+$message .= 'An error occured during updating the custom module files to a new version. Try to reload webtrees. If the error does not disappear, delete the custom module folder and re-install the new version from scratch.';
 
 //Create filesystem
 $file_system = new Filesystem(new LocalFilesystemAdapter(__DIR__ . '/vendor'));
