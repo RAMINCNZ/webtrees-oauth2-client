@@ -38,13 +38,15 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 
 
-//Autoload the latest version of the common code library, which is shared between webtrees custom modules
-//Caution: This autoload needs to be executed before autoloading any other libraries from __DIR__/vendor
+//Check availability of correct webtrees-common library; update files if needed
 $file_system = new Filesystem(new LocalFilesystemAdapter(__DIR__));
-if (!$file_system->fileExists('/vendor/jefferson49/webtrees-common/autoload_webtrees_common.php')) {
+if (!$file_system->fileExists('/vendor/jefferson49/webtrees-common/autoload.php')) {
     if (!require __DIR__ . '/update_module_files.php') return false;
 }
-require_once __DIR__ . '/vendor/jefferson49/webtrees-common/autoload_webtrees_common.php';
+
+//Autoload the latest version of the common code library, which is shared between webtrees custom modules
+//Caution: This autoload needs to be executed before autoloading any other libraries from __DIR__/vendor
+require_once __DIR__ . '/vendor/jefferson49/webtrees-common/autoload.php';
 
 //Autoload this webtrees custom module
 $loader = new ClassLoader(__DIR__);
@@ -52,17 +54,12 @@ $loader->addPsr4('Jefferson49\\Webtrees\\Module\\OAuth2Client\\', __DIR__ . '/sr
 $loader->register();
 
 //Autoload league/oauth2 clients
-$loader = new ClassLoader(__DIR__ . '/vendor');
-$loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-client/src');
-$loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-github/src');
-$loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-google/src');
-$loader->register();
+require_once __DIR__ . '/vendor/autoload.php';
 
 //Directly include provider wrappers, because they shall be detected by "get_declared_classes"
-require_once __DIR__ . '/src/Provider/GenericAuthorizationProvider.php';
-require_once __DIR__ . '/src/Provider/GithubAuthorizationProvider.php';
-require_once __DIR__ . '/src/Provider/GoogleAuthorizationProvider.php';
-require_once __DIR__ . '/src/Provider/JoomlaAuthorizationProvider.php';
-require_once __DIR__ . '/src/Provider/WordPressAuthorizationProvider.php';
+$files = glob(__DIR__ . '/src/Provider/*.php');
+foreach ($files as $file) {
+    require_once $file;
+}
 
 return true;
