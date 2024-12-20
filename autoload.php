@@ -57,9 +57,9 @@ $loader->register();
 require_once __DIR__ . '/vendor/autoload.php';
 
 //Directly include provider wrappers, because they shall be detected by "get_declared_classes"
-$files = glob(__DIR__ . '/src/Provider/*.php');
+$files = $file_system->listContents('/src/Provider')->toArray();
 foreach ($files as $file) {
-    require_once $file;
+    require_once __DIR__ . '/'. $file->path();
 }
 
 return true;
