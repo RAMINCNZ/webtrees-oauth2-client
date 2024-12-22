@@ -191,4 +191,17 @@ class AuthorizationProviderFactory
 
         return $sign_in_button_labels;
     }
+
+	/**
+     * Get the sign in button labels for all active authorization providers
+     * 
+     * @param string $provider_name
+     * 
+     * @return bool
+     */ 
+
+    public static function isValidProvider(string $provider_name): bool {        
+
+        return in_array($provider_name, self::getAuthorizatonProviderNames());
+    }
 }

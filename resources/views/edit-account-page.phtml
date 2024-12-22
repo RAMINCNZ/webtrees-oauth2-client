@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
 use Fisharebest\Webtrees\Contracts\UserInterface;
+use Fisharebest\Webtrees\FlashMessages;
 use Fisharebest\Webtrees\Http\RequestHandlers\AccountDelete;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Individual;
@@ -35,7 +36,17 @@ use Jefferson49\Webtrees\Module\OAuth2Client\Provider\AbstractAuthorizationProvi
 $is_oauth2_user = $user->getPreference(OAuth2Client::USER_PREF_PROVIDER_NAME, '') !== '';
 
 if ($is_oauth2_user) {
-    $provider_name = $is_oauth2_user ? Session::get(OAuth2Client::activeModuleName() . 'provider_name') : '';
+    $provider_name = Session::get(OAuth2Client::activeModuleName() . 'provider_name', '');
+
+    if ($provider_name === '') {
+        FlashMessages::addMessage(I18N::translate('An inconsistency regarding the user credentials was detected: The requested user usually logs in with an authorization provider, but no provider name is available. Please sign out and sign in with valid user credentials.'), 'danger');
+        return;
+    }
+    elseif (!AuthorizationProviderFactory::isValidProvider($provider_name)) {
+        FlashMessages::addMessage(I18N::translate('The authorization provider "%s" is not available. Please check the configuration in the following file: data/config.ini.php', $provider_name), 'danger');
+        return;
+    }
+
     $provider = (new AuthorizationProviderFactory())::make($provider_name, '');
     $user_key_info = $provider->getUserKeyInformation();
 
