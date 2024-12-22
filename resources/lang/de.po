@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-12-07 11:33+0100\n"
-"PO-Revision-Date: 2024-12-07 11:33+0100\n"
+"POT-Creation-Date: 2024-12-22 14:54+0100\n"
+"PO-Revision-Date: 2024-12-22 14:57+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: src/Factories/AuthorizationProviderFactory.php:157
+#: src/Factories/AuthorizationProviderFactory.php:154
 #, php-format
 msgid ""
 "The configuration for the authorization provider \"%s\" does not include "
@@ -83,26 +83,26 @@ msgstr ""
 "Die Länge der/des \"%s\" überschreitet die maximale Länge von %s und wurde "
 "daher auf %s Zeichen gekürzt."
 
-#: src/OAuth2Client.php:188
+#: src/OAuth2Client.php:190
 msgid "OAuth2 Client"
 msgstr "OAuth2 Client"
 
-#: src/OAuth2Client.php:201
+#: src/OAuth2Client.php:203
 msgid "A custom module to implement a OAuth2 client for webtrees."
 msgstr ""
 "Ein benutzerspezifisches Modul, welches einen OAuth2 Client für webtrees zur "
 "Verfügung stellt."
 
-#: src/OAuth2Client.php:378
+#: src/OAuth2Client.php:380
 msgid "Sign in with"
 msgstr "Anmelden mit"
 
-#: src/OAuth2Client.php:509
+#: src/OAuth2Client.php:511
 #, php-format
 msgid "The preferences for the module \"%s\" were updated."
 msgstr "Die Einstellungen für das Modul \"%s\" wurden aktualisiert."
 
-#: src/OAuth2Client.php:532
+#: src/OAuth2Client.php:538
 #, php-format
 msgid ""
 "The preferences for the custom module \"%s\" were sucessfully updated to the "
@@ -111,7 +111,7 @@ msgstr ""
 "Die Einstellungen für das benutzerdefinierte Modul \"%s\" wurden für die "
 "neue Modul-Version %s aktualisiert."
 
-#: src/OAuth2Client.php:564
+#: src/OAuth2Client.php:570
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -125,7 +125,7 @@ msgstr ""
 "deaktivieren, weil die identische Funktion ebenfalls im Modul %s integriert "
 "ist."
 
-#: src/OAuth2Client.php:569
+#: src/OAuth2Client.php:575
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -138,7 +138,7 @@ msgstr ""
 "beide Module die gleiche Custom View \"%s\" registriert haben. Es wird "
 "dringend empfohlen eines der beiden Module zu deaktivieren."
 
-#: src/OAuth2Client.php:593
+#: src/OAuth2Client.php:599
 #, php-format
 msgid ""
 "The custom module view \"%s\" is not registered as replacement for the "
@@ -216,11 +216,33 @@ msgstr ""
 msgid "Custom module"
 msgstr "Benutzerdefiniertes Modul"
 
-#: resources/views/edit-account-page.phtml:54
+#: resources/views/edit-account-page.phtml:42
+#: resources/views/password-reset-page.phtml:31
+msgid ""
+"An inconsistency regarding the user credentials was detected: The requested "
+"user usually logs in with an authorization provider, but no provider name is "
+"available. Please sign out and sign in with valid user credentials."
+msgstr ""
+"Es wurde eine Inkonsistenz bei den Benutzeranmeldeinformationen "
+"festgestellt: Der angeforderte Benutzer meldet sich normalerweise mit einem "
+"Autorisierungsanbieter an; es ist jedoch kein Anbietername verfügbar. Bitte "
+"melden Sie sich ab und mit gültigen Benutzeranmeldeinformationen erneut an."
+
+#: resources/views/edit-account-page.phtml:46
+#: resources/views/password-reset-page.phtml:35
+#, php-format
+msgid ""
+"The authorization provider \"%s\" is not available. Please check the "
+"configuration in the following file: data/config.ini.php"
+msgstr ""
+"Der  Authorisierungsanbieter \"%s\" ist nicht verfügbar. Bitte prüfen Sie "
+"die Konfiguration in der folgenden Datei: data/config.ini.php"
+
+#: resources/views/edit-account-page.phtml:67
 msgid "Signed in with"
 msgstr "Angemeldet mit"
 
-#: resources/views/edit-account-page.phtml:54
+#: resources/views/edit-account-page.phtml:67
 msgid ""
 "Mandatory user account data from the authorization provider cannot be changed"
 msgstr ""
@@ -228,11 +250,11 @@ msgstr ""
 "geändert werden"
 
 #: resources/views/login-with-provider.phtml:25
-#: resources/views/password-request-page.phtml:49
+#: resources/views/password-request-page.phtml:51
 msgid "Sign in with authorization provider"
 msgstr "Mit Autorisierungsanbieter anmelden"
 
-#: resources/views/password-request-page.phtml:52
+#: resources/views/password-request-page.phtml:54
 msgid ""
 "If you sign in with an authorization provider, your password cannot be "
 "changed within webtrees. If you request a new password from webtrees, you "
@@ -244,7 +266,7 @@ msgstr ""
 "von webtrees anfordern, erhalten Sie zwar ein Email. Allerdings wird der "
 "enthaltene Link zur Erzeugung eines neuen Passworts nicht funktionieren."
 
-#: resources/views/password-reset-page.phtml:37
+#: resources/views/password-reset-page.phtml:50
 #, php-format
 msgid ""
 "The request to reset the passwort belongs to a user, who signs in with %s. "
@@ -255,23 +277,23 @@ msgstr ""
 "sich mit %s anmeldet. Das Passwort wird vom Autorisierungsanbieter (%s) "
 "verwaltet und kann nicht innerhalb von webtrees geändert werden."
 
-#: resources/views/register-page.phtml:62
+#: resources/views/register-page.phtml:64
 msgid "Register with"
 msgstr "Registrierung mit"
 
-#: resources/views/register-page.phtml:62
+#: resources/views/register-page.phtml:64
 msgid "User account data from authorization provider cannot be changed"
 msgstr "Benutzer-Daten vom Autorisierungsanbieter können nicht geändert werden"
 
-#: resources/views/register-page.phtml:131
+#: resources/views/register-page.phtml:133
 msgid "Further registration data - Please complete and continue"
 msgstr "Weitere Registrierungsdaten - Bitte vervollständigen und fortsetzen"
 
-#: resources/views/settings.phtml:24
+#: resources/views/settings.phtml:26
 msgid "Control panel"
 msgstr "Verwaltung"
 
-#: resources/views/settings.phtml:32
+#: resources/views/settings.phtml:34
 msgid ""
 "Currently, webtrees does not use the HTTPS protocol. If signing in with "
 "authorization providers, it is urgently recommended to use HTTPS in order to "
@@ -287,15 +309,15 @@ msgstr ""
 "in der webtrees-Datei \"config.ini.php\" aktiviert werden. Aktuell startet "
 "\"base_url\" nicht mit \"https://\"."
 
-#: resources/views/settings.phtml:49
+#: resources/views/settings.phtml:51
 msgid "Settings for Sign In Menus"
 msgstr "Einstellungen für Anmelde-Menüs"
 
-#: resources/views/settings.phtml:55
+#: resources/views/settings.phtml:57
 msgid "Show menu item for webtrees in sign in menu"
 msgstr "Menü-Eintrag für webtrees im Anmelde-Menü anzeigen"
 
-#: resources/views/settings.phtml:60
+#: resources/views/settings.phtml:62
 msgid ""
 "By selecting/unselecting this option, it is possible to activate/deactivate "
 "the sign in menu entry for webtrees. If deactivated, only sign in menu "
@@ -306,15 +328,15 @@ msgstr ""
 "deaktiviert, werden ggfs. nur Menüeinträge für Autorisierungsanbieter "
 "angezeigt."
 
-#: resources/views/settings.phtml:69
+#: resources/views/settings.phtml:71
 msgid "Hide the webtrees sign in menu"
 msgstr "Das webtrees Anmelde-Menü verbergen"
 
-#: resources/views/settings.phtml:72
+#: resources/views/settings.phtml:74
 msgid "Hide"
 msgstr "Verbergen"
 
-#: resources/views/settings.phtml:74
+#: resources/views/settings.phtml:76
 msgid ""
 "By selecting this option, it is possible to hide the original webtrees sign "
 "in menu. This might be helpful if the custom module specific top menu for "
@@ -324,7 +346,7 @@ msgstr ""
 "Menü zu verbergen. Dies ist möglicherweise hilfreich, wenn stattdessen das "
 "modulspezifische Top-Menu zum Anmelden genutzt wird."
 
-#: resources/views/settings.phtml:82
+#: resources/views/settings.phtml:84
 msgid ""
 "Currently, all menus to directly sign in with webtrees are deactivated. "
 "Therefore, only sign in with authorization providers is possible. Please be "
@@ -341,18 +363,18 @@ msgstr ""
 "original webtrees Anmeldeseite durch Eingabe der Route in der Browserzeile "
 "aufzurufen, z.B.:"
 
-#: resources/views/settings.phtml:89
+#: resources/views/settings.phtml:91
 msgid "Debugging"
 msgstr "Debugging"
 
-#: resources/views/settings.phtml:92
+#: resources/views/settings.phtml:94
 msgid "Activate debug logs"
 msgstr "Debug-Log-Einträge aktivieren"
 
-#: resources/views/settings.phtml:94
+#: resources/views/settings.phtml:96
 msgid ""
 "By selecting this option, additional debug information about the protocol "
-"flow between webtrees and the authorization provoider will be logged in the "
+"flow between webtrees and the authorization provider will be logged in the "
 "webtrees website logs."
 msgstr ""
 "Wenn Sie diese Option auswählen, werden zusätzliche Debug-Informationen über "
