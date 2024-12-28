@@ -133,7 +133,7 @@ Github_clientSecret='xxx'
 + For organization, choose "No organization"
 + Press the "CREATE" button
 + Enter language/region data (or keep the default) and press the "SAVE" button
-+ From the menu on the left side, choose "OAuth consent screen"
++ From the menu on the left side, choose "APIs and services" and sub menu "OAuth consent screen"
 + Select "External" and press "CREATE" button
 + Enter the "App name", "User support email", and "Developer contact information"; do not enter data regarding the app domain
 + Press button "CREATE ÁND CONTINUE"
