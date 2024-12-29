@@ -364,7 +364,7 @@ class OAuth2Client extends AbstractModule implements
     {
         $url = route(HomePage::class);
         $theme = Session::get('theme');
-        $menu_title_shown = in_array($theme, ['webtrees', 'minimal', 'xenea', 'fab']);
+        $menu_title_shown = in_array($theme, ['webtrees', 'minimal', 'xenea', 'fab', 'rural']);
 
         $submenus = [];
         $sign_in_button_labels = AuthorizationProviderFactory::getSignInButtonLables();
