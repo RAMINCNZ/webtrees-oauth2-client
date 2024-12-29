@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-12-15 16:11+0100\n"
-"PO-Revision-Date: 2024-12-15 16:12+0100\n"
+"POT-Creation-Date: 2024-12-29 16:46+0100\n"
+"PO-Revision-Date: 2024-12-29 16:47+0100\n"
 "Last-Translator: Rick Malkin <rick@alineofmalkins.com>\n"
 "Language-Team: \n"
 "Language: en_AU\n"
@@ -86,23 +86,24 @@ msgstr ""
 msgid "A custom module to implement a OAuth2 client for webtrees."
 msgstr "A custom module to implement a OAuth2 client for WebTrees."
 
-#: src/OAuth2Client.php:380
+#: src/OAuth2Client.php:380 resources/views/login-with-provider.phtml:26
+#: resources/views/password-request-page.phtml:51
 msgid "Sign in with"
 msgstr ""
 
-#: src/OAuth2Client.php:511
+#: src/OAuth2Client.php:513
 #, php-format
 msgid "The preferences for the module \"%s\" were updated."
 msgstr ""
 
-#: src/OAuth2Client.php:534
+#: src/OAuth2Client.php:540
 #, php-format
 msgid ""
 "The preferences for the custom module \"%s\" were sucessfully updated to the "
 "new module version %s."
 msgstr ""
 
-#: src/OAuth2Client.php:566
+#: src/OAuth2Client.php:572
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -111,7 +112,7 @@ msgid ""
 "functionality is also integrated in the %s module."
 msgstr ""
 
-#: src/OAuth2Client.php:571
+#: src/OAuth2Client.php:577
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -120,7 +121,7 @@ msgid ""
 "deactivate one of the modules."
 msgstr ""
 
-#: src/OAuth2Client.php:595
+#: src/OAuth2Client.php:601
 #, php-format
 msgid ""
 "The custom module view \"%s\" is not registered as replacement for the "
@@ -194,20 +195,33 @@ msgstr ""
 msgid "Custom module"
 msgstr ""
 
-#: resources/views/edit-account-page.phtml:56
+#: resources/views/edit-account-page.phtml:42
+#: resources/views/password-reset-page.phtml:31
+msgid ""
+"An inconsistency regarding the user credentials was detected: The requested "
+"user usually logs in with an authorization provider, but no provider name is "
+"available. Please sign out and sign in with valid user credentials."
+msgstr ""
+
+#: resources/views/edit-account-page.phtml:46
+#: resources/views/password-reset-page.phtml:35
+#, php-format
+msgid ""
+"The authorization provider \"%s\" is not available. Please check the "
+"configuration in the following file: data/config.ini.php"
+msgstr ""
+"The authorisation provider \"%s\" is not available. Please check the "
+"configuration in the following file: data/config.ini.php"
+
+#: resources/views/edit-account-page.phtml:67
 msgid "Signed in with"
 msgstr ""
 
-#: resources/views/edit-account-page.phtml:56
+#: resources/views/edit-account-page.phtml:67
 msgid ""
 "Mandatory user account data from the authorization provider cannot be changed"
 msgstr ""
 "Mandatory user account data from the authorisation provider cannot be changed"
-
-#: resources/views/login-with-provider.phtml:25
-#: resources/views/password-request-page.phtml:51
-msgid "Sign in with authorization provider"
-msgstr "Sign in with authorisation provider"
 
 #: resources/views/password-request-page.phtml:54
 msgid ""
@@ -221,7 +235,7 @@ msgstr ""
 "will receive an email. However, the included link to create a new passwort "
 "will not work."
 
-#: resources/views/password-reset-page.phtml:39
+#: resources/views/password-reset-page.phtml:50
 #, php-format
 msgid ""
 "The request to reset the passwort belongs to a user, who signs in with %s. "
@@ -334,11 +348,16 @@ msgstr ""
 "flow between webtrees and the authorisation provider will be logged in the "
 "webtrees website logs."
 
+#~ msgid "Sign in with authorization provider"
+#~ msgstr "Sign in with authorisation provider"
+
+#, fuzzy
+#~| msgid "Signed in in with"
+#~ msgid "Sign in with:"
+#~ msgstr "Signed in with"
+
 #~ msgid "Sign out"
 #~ msgstr "Sign out"
-
-#~ msgid "Signed in in with"
-#~ msgstr "Signed in with"
 
 #~ msgid "sign in"
 #~ msgstr "Sign In"
