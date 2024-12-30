@@ -385,7 +385,7 @@ class OAuth2Client extends AbstractModule implements
         //Add submenu items for authorization providers
         foreach ($sign_in_button_labels as $provider_name => $sign_in_button_label) {
 
-            $submenus[] = new Menu(I18N::translate('Sign in with') . ': ' . $sign_in_button_label, 
+            $submenus[] = new Menu(I18N::translate('Sign in with') . ' ' . $sign_in_button_label, 
                             route(LoginWithAuthorizationProviderAction::class, [
                                 'tree'          => $tree instanceof Tree ? $tree->name() : null,
                                 'url'           => $url,
