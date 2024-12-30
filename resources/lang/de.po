@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-12-30 20:31+0100\n"
-"PO-Revision-Date: 2024-12-30 20:32+0100\n"
+"POT-Creation-Date: 2024-12-30 21:43+0100\n"
+"PO-Revision-Date: 2024-12-30 21:45+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -396,15 +396,19 @@ msgstr ""
 "von webtrees auszublenden. Dies kann hilfreich sein, wenn stattdessen das "
 "modulspezifische Menü für die Anmeldung verwendet wird."
 
-#: resources/views/settings.phtml:115
+#: resources/views/settings.phtml:113
+msgid "Settings for Debugging"
+msgstr "Einstellungen für das Debuggen"
+
+#: resources/views/settings.phtml:119
 msgid "Debugging"
 msgstr "Debugging"
 
-#: resources/views/settings.phtml:118
+#: resources/views/settings.phtml:122
 msgid "Activate debug logs"
 msgstr "Debug-Log-Einträge aktivieren"
 
-#: resources/views/settings.phtml:120
+#: resources/views/settings.phtml:124
 msgid ""
 "By selecting this option, additional debug information about the protocol "
 "flow between webtrees and the authorization provider will be logged in the "
