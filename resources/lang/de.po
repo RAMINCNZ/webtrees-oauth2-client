@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-12-29 16:48+0100\n"
-"PO-Revision-Date: 2024-12-29 16:48+0100\n"
+"POT-Creation-Date: 2024-12-30 20:31+0100\n"
+"PO-Revision-Date: 2024-12-30 20:32+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -83,27 +83,27 @@ msgstr ""
 "Die Länge der/des \"%s\" überschreitet die maximale Länge von %s und wurde "
 "daher auf %s Zeichen gekürzt."
 
-#: src/OAuth2Client.php:190
+#: src/OAuth2Client.php:193
 msgid "OAuth2 Client"
 msgstr "OAuth2 Client"
 
-#: src/OAuth2Client.php:203
+#: src/OAuth2Client.php:206
 msgid "A custom module to implement a OAuth2 client for webtrees."
 msgstr ""
 "Ein benutzerspezifisches Modul, welches einen OAuth2 Client für webtrees zur "
 "Verfügung stellt."
 
-#: src/OAuth2Client.php:380 resources/views/login-with-provider.phtml:26
+#: src/OAuth2Client.php:388 resources/views/login-with-provider.phtml:26
 #: resources/views/password-request-page.phtml:51
 msgid "Sign in with"
 msgstr "Anmelden mit"
 
-#: src/OAuth2Client.php:513
+#: src/OAuth2Client.php:523
 #, php-format
 msgid "The preferences for the module \"%s\" were updated."
 msgstr "Die Einstellungen für das Modul \"%s\" wurden aktualisiert."
 
-#: src/OAuth2Client.php:540
+#: src/OAuth2Client.php:550
 #, php-format
 msgid ""
 "The preferences for the custom module \"%s\" were sucessfully updated to the "
@@ -112,7 +112,7 @@ msgstr ""
 "Die Einstellungen für das benutzerdefinierte Modul \"%s\" wurden für die "
 "neue Modul-Version %s aktualisiert."
 
-#: src/OAuth2Client.php:572
+#: src/OAuth2Client.php:582
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -126,7 +126,7 @@ msgstr ""
 "deaktivieren, weil die identische Funktion ebenfalls im Modul %s integriert "
 "ist."
 
-#: src/OAuth2Client.php:577
+#: src/OAuth2Client.php:587
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -139,7 +139,7 @@ msgstr ""
 "beide Module die gleiche Custom View \"%s\" registriert haben. Es wird "
 "dringend empfohlen eines der beiden Module zu deaktivieren."
 
-#: src/OAuth2Client.php:601
+#: src/OAuth2Client.php:611
 #, php-format
 msgid ""
 "The custom module view \"%s\" is not registered as replacement for the "
@@ -285,11 +285,11 @@ msgstr "Benutzer-Daten vom Autorisierungsanbieter können nicht geändert werden
 msgid "Further registration data - Please complete and continue"
 msgstr "Weitere Registrierungsdaten - Bitte vervollständigen und fortsetzen"
 
-#: resources/views/settings.phtml:26
+#: resources/views/settings.phtml:28
 msgid "Control panel"
 msgstr "Verwaltung"
 
-#: resources/views/settings.phtml:34
+#: resources/views/settings.phtml:36
 msgid ""
 "Currently, webtrees does not use the HTTPS protocol. If signing in with "
 "authorization providers, it is urgently recommended to use HTTPS in order to "
@@ -305,44 +305,23 @@ msgstr ""
 "in der webtrees-Datei \"config.ini.php\" aktiviert werden. Aktuell startet "
 "\"base_url\" nicht mit \"https://\"."
 
-#: resources/views/settings.phtml:51
+#: resources/views/settings.phtml:53
 msgid "Settings for Sign In Menus"
 msgstr "Einstellungen für Anmelde-Menüs"
 
-#: resources/views/settings.phtml:57
-msgid "Show menu item for webtrees in sign in menu"
-msgstr "Menü-Eintrag für webtrees im Anmelde-Menü anzeigen"
+#: resources/views/settings.phtml:58
+msgid ""
+"Currently, all sign in menus are deactivated/hidden. Please activate one of "
+"the sign in menus with the settings below. Hint: You can still access the "
+"original webtrees login page by typing the login route into the browser "
+"line, e.g.:"
+msgstr ""
+"Derzeit sind alle Anmelde-Menüs deaktiviert/versteckt. Bitte aktivieren Sie "
+"eines der Anmelde-Menüs mit den untenstehenden Einstellungen. Hinweis: Sie "
+"können weiterhin auf die ursprüngliche Anmeldeseite von webtrees zugreifen, "
+"indem Sie den folgenden Anmeld-Pfad in die Browserzeile eingeben, z. B.:"
 
 #: resources/views/settings.phtml:62
-msgid ""
-"By selecting/unselecting this option, it is possible to activate/deactivate "
-"the sign in menu entry for webtrees. If deactivated, only sign in menu "
-"entries for authorization providers might be shown."
-msgstr ""
-"Durch Auswählen/Abwählen dieser Auswahloption ist es möglich, den "
-"Menüeintrag für webtrees im Anmeldemenü zu aktivieren/deaktivieren. Falls "
-"deaktiviert, werden ggfs. nur Menüeinträge für Autorisierungsanbieter "
-"angezeigt."
-
-#: resources/views/settings.phtml:71
-msgid "Hide the webtrees sign in menu"
-msgstr "Das webtrees Anmelde-Menü verbergen"
-
-#: resources/views/settings.phtml:74
-msgid "Hide"
-msgstr "Verbergen"
-
-#: resources/views/settings.phtml:76
-msgid ""
-"By selecting this option, it is possible to hide the original webtrees sign "
-"in menu. This might be helpful if the custom module specific top menu for "
-"sign in is used instead."
-msgstr ""
-"Durch Auswahl dieser Option ist es möglich, das original webtrees Anmelde-"
-"Menü zu verbergen. Dies ist möglicherweise hilfreich, wenn stattdessen das "
-"modulspezifische Top-Menu zum Anmelden genutzt wird."
-
-#: resources/views/settings.phtml:84
 msgid ""
 "Currently, all menus to directly sign in with webtrees are deactivated. "
 "Therefore, only sign in with authorization providers is possible. Please be "
@@ -359,15 +338,73 @@ msgstr ""
 "original webtrees Anmeldeseite durch Eingabe der Route in der Browserzeile "
 "aufzurufen, z.B.:"
 
-#: resources/views/settings.phtml:91
+#: resources/views/settings.phtml:66
+#, php-format
+msgid ""
+"Currently, the webtrees sign in menu is deactivated and the custom module "
+"sign in menu is hidden for the following trees: %s. Some of the users will "
+"not be able to sign in. Please consider to activate one of the sign in menus "
+"with the settings below."
+msgstr ""
+"Aktuell ist das webtrees Anmelde-Menü deaktiviert und das modulspezifische "
+"Anmelde-Menü wird für die folgenden Stammbäume nicht angezeigt: %s. Einige "
+"Anwender werden sich nicht anmelden können. Bitte erwägen Sie, eines der "
+"Anmelde-Menüs mit den untenstehenden Einstellungen zu aktivieren."
+
+#: resources/views/settings.phtml:73
+msgid "Show a custom module specific sign in menu"
+msgstr "Ein modulspezifisches Anmelde-Menü anzeigen"
+
+#: resources/views/settings.phtml:78
+msgid ""
+"By selecting/unselecting this option, it is possible to show/hide a custom "
+"module specific sign in menu in the webtrees main menu."
+msgstr ""
+"Durch Auswählen/Abwählen dieser Option ist es möglich, ein modulspezifisches "
+"Anmelde-Menü im Hauptmenü von webtrees anzuzeigen/auszublenden."
+
+#: resources/views/settings.phtml:87
+msgid "Show original webtrees sign in as menu item"
+msgstr "Menü-Eintrag für das ursprüngliche webtrees Anmelde-Menü anzeigen"
+
+#: resources/views/settings.phtml:92
+msgid ""
+"By selecting/unselecting this option, it is possible to activate/deactivate "
+"the sign in menu entry for webtrees. If deactivated, only sign in menu "
+"entries for authorization providers might be shown."
+msgstr ""
+"Durch Auswählen/Abwählen dieser Auswahloption ist es möglich, den "
+"Menüeintrag für webtrees im Anmeldemenü zu aktivieren/deaktivieren. Falls "
+"deaktiviert, werden ggfs. nur Menüeinträge für Autorisierungsanbieter "
+"angezeigt."
+
+#: resources/views/settings.phtml:101
+msgid "Hide the webtrees sign in menu"
+msgstr "Das webtrees Anmelde-Menü verbergen"
+
+#: resources/views/settings.phtml:104
+msgid "Hide"
+msgstr "Verbergen"
+
+#: resources/views/settings.phtml:106
+msgid ""
+"By selecting this option, it is possible to hide the original webtrees sign "
+"in menu. This might be helpful if the custom module specific top menu for "
+"sign in is used instead."
+msgstr ""
+"Durch Auswahl dieser Option ist es möglich, das ursprüngliche Anmelde-Menü "
+"von webtrees auszublenden. Dies kann hilfreich sein, wenn stattdessen das "
+"modulspezifische Menü für die Anmeldung verwendet wird."
+
+#: resources/views/settings.phtml:115
 msgid "Debugging"
 msgstr "Debugging"
 
-#: resources/views/settings.phtml:94
+#: resources/views/settings.phtml:118
 msgid "Activate debug logs"
 msgstr "Debug-Log-Einträge aktivieren"
 
-#: resources/views/settings.phtml:96
+#: resources/views/settings.phtml:120
 msgid ""
 "By selecting this option, additional debug information about the protocol "
 "flow between webtrees and the authorization provider will be logged in the "

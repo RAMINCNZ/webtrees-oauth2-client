@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-12-29 16:47+0100\n"
-"PO-Revision-Date: 2024-12-29 16:47+0100\n"
+"POT-Creation-Date: 2024-12-30 20:33+0100\n"
+"PO-Revision-Date: 2024-12-30 20:34+0100\n"
 "Last-Translator: Rick Malkin <rick@alineofmalkins.com>\n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -78,32 +78,32 @@ msgid ""
 "to %s characters."
 msgstr ""
 
-#: src/OAuth2Client.php:190
+#: src/OAuth2Client.php:193
 msgid "OAuth2 Client"
 msgstr ""
 
-#: src/OAuth2Client.php:203
+#: src/OAuth2Client.php:206
 msgid "A custom module to implement a OAuth2 client for webtrees."
 msgstr "A custom module to implement a OAuth2 client for WebTrees."
 
-#: src/OAuth2Client.php:380 resources/views/login-with-provider.phtml:26
+#: src/OAuth2Client.php:388 resources/views/login-with-provider.phtml:26
 #: resources/views/password-request-page.phtml:51
 msgid "Sign in with"
 msgstr ""
 
-#: src/OAuth2Client.php:513
+#: src/OAuth2Client.php:523
 #, php-format
 msgid "The preferences for the module \"%s\" were updated."
 msgstr ""
 
-#: src/OAuth2Client.php:540
+#: src/OAuth2Client.php:550
 #, php-format
 msgid ""
 "The preferences for the custom module \"%s\" were sucessfully updated to the "
 "new module version %s."
 msgstr ""
 
-#: src/OAuth2Client.php:572
+#: src/OAuth2Client.php:582
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -112,7 +112,7 @@ msgid ""
 "functionality is also integrated in the %s module."
 msgstr ""
 
-#: src/OAuth2Client.php:577
+#: src/OAuth2Client.php:587
 #, php-format
 msgid ""
 "The custom module \"%s\" is activated in parallel to the %s custom module. "
@@ -121,7 +121,7 @@ msgid ""
 "deactivate one of the modules."
 msgstr ""
 
-#: src/OAuth2Client.php:601
+#: src/OAuth2Client.php:611
 #, php-format
 msgid ""
 "The custom module view \"%s\" is not registered as replacement for the "
@@ -258,11 +258,11 @@ msgstr "User account data from authorisation provider cannot be changed"
 msgid "Further registration data - Please complete and continue"
 msgstr ""
 
-#: resources/views/settings.phtml:26
+#: resources/views/settings.phtml:28
 msgid "Control panel"
 msgstr ""
 
-#: resources/views/settings.phtml:34
+#: resources/views/settings.phtml:36
 msgid ""
 "Currently, webtrees does not use the HTTPS protocol. If signing in with "
 "authorization providers, it is urgently recommended to use HTTPS in order to "
@@ -278,43 +278,19 @@ msgstr ""
 "the WebTrees \"config.ini.php\" file. Currently, \"base_url\" does not start "
 "with \"https://\"."
 
-#: resources/views/settings.phtml:51
+#: resources/views/settings.phtml:53
 msgid "Settings for Sign In Menus"
 msgstr ""
 
-#: resources/views/settings.phtml:57
-msgid "Show menu item for webtrees in sign in menu"
-msgstr "Show menu item for WebTrees in sign in menu"
+#: resources/views/settings.phtml:58
+msgid ""
+"Currently, all sign in menus are deactivated/hidden. Please activate one of "
+"the sign in menus with the settings below. Hint: You can still access the "
+"original webtrees login page by typing the login route into the browser "
+"line, e.g.:"
+msgstr ""
 
 #: resources/views/settings.phtml:62
-msgid ""
-"By selecting/unselecting this option, it is possible to activate/deactivate "
-"the sign in menu entry for webtrees. If deactivated, only sign in menu "
-"entries for authorization providers might be shown."
-msgstr ""
-"By selecting/unselecting this option, it is possible to activate/deactivate "
-"the sign in menu entry for WebTrees. If deactivated, only sign in menu "
-"entries for authorisation providers might be shown."
-
-#: resources/views/settings.phtml:71
-msgid "Hide the webtrees sign in menu"
-msgstr "Hide the WebTrees sign in menu"
-
-#: resources/views/settings.phtml:74
-msgid "Hide"
-msgstr ""
-
-#: resources/views/settings.phtml:76
-msgid ""
-"By selecting this option, it is possible to hide the original webtrees sign "
-"in menu. This might be helpful if the custom module specific top menu for "
-"sign in is used instead."
-msgstr ""
-"By selecting this option, it is possible to hide the original WebTrees sign "
-"in menu. This might be helpful if the custom module specific top menu for "
-"sign in is used instead."
-
-#: resources/views/settings.phtml:84
 msgid ""
 "Currently, all menus to directly sign in with webtrees are deactivated. "
 "Therefore, only sign in with authorization providers is possible. Please be "
@@ -330,15 +306,66 @@ msgstr ""
 "more. Hint: You can still access the original WebTrees login page by typing "
 "the login route into the browser line, e.g.:"
 
-#: resources/views/settings.phtml:91
+#: resources/views/settings.phtml:66
+#, php-format
+msgid ""
+"Currently, the webtrees sign in menu is deactivated and the custom module "
+"sign in menu is hidden for the following trees: %s. Some of the users will "
+"not be able to sign in. Please consider to activate one of the sign in menus "
+"with the settings below."
+msgstr ""
+
+#: resources/views/settings.phtml:73
+msgid "Show a custom module specific sign in menu"
+msgstr ""
+
+#: resources/views/settings.phtml:78
+msgid ""
+"By selecting/unselecting this option, it is possible to show/hide a custom "
+"module specific sign in menu in the webtrees main menu."
+msgstr ""
+
+#: resources/views/settings.phtml:87
+msgid "Show original webtrees sign in as menu item"
+msgstr ""
+
+#: resources/views/settings.phtml:92
+msgid ""
+"By selecting/unselecting this option, it is possible to activate/deactivate "
+"the sign in menu entry for webtrees. If deactivated, only sign in menu "
+"entries for authorization providers might be shown."
+msgstr ""
+"By selecting/unselecting this option, it is possible to activate/deactivate "
+"the sign in menu entry for WebTrees. If deactivated, only sign in menu "
+"entries for authorisation providers might be shown."
+
+#: resources/views/settings.phtml:101
+msgid "Hide the webtrees sign in menu"
+msgstr "Hide the WebTrees sign in menu"
+
+#: resources/views/settings.phtml:104
+msgid "Hide"
+msgstr ""
+
+#: resources/views/settings.phtml:106
+msgid ""
+"By selecting this option, it is possible to hide the original webtrees sign "
+"in menu. This might be helpful if the custom module specific top menu for "
+"sign in is used instead."
+msgstr ""
+"By selecting this option, it is possible to hide the original WebTrees sign "
+"in menu. This might be helpful if the custom module specific top menu for "
+"sign in is used instead."
+
+#: resources/views/settings.phtml:115
 msgid "Debugging"
 msgstr ""
 
-#: resources/views/settings.phtml:94
+#: resources/views/settings.phtml:118
 msgid "Activate debug logs"
 msgstr ""
 
-#: resources/views/settings.phtml:96
+#: resources/views/settings.phtml:120
 msgid ""
 "By selecting this option, additional debug information about the protocol "
 "flow between webtrees and the authorization provider will be logged in the "

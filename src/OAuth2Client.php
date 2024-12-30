@@ -56,7 +56,9 @@ use Fisharebest\Webtrees\Module\ModuleGlobalTrait;
 use Fisharebest\Webtrees\Module\ModuleMenuInterface;
 use Fisharebest\Webtrees\Module\ModuleMenuTrait;
 use Fisharebest\Webtrees\Registry;
+use Fisharebest\Webtrees\Services\GedcomImportService;
 use Fisharebest\Webtrees\Services\ModuleService;
+use Fisharebest\Webtrees\Services\TreeService;
 use Fisharebest\Webtrees\Session;
 use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\Tree;
@@ -118,6 +120,7 @@ class OAuth2Client extends AbstractModule implements
 	public const ALERT_SUCCESS = 'alert_success';
 
     //Preferences
+    public const PREF_SHOW_LOGIN_MENU = 'show_login_menu';
     public const PREF_SHOW_WEBTREES_IN_LOGIN_MENU   = 'show_webtrees_in_login_menu';
     public const PREF_DONT_SHOW_WEBTREES_LOGIN_MENU = 'dont_show_webtrees_login_menu';
     public const PREF_DEBUGGING_ACTIVATED = 'debugging_activated';
@@ -362,6 +365,11 @@ class OAuth2Client extends AbstractModule implements
      */
     public function getMenu(Tree $tree): ?Menu
     {
+        //If the custom module sign in menu is deactivated, return
+        if (!boolval($this->getPreference(self::PREF_SHOW_LOGIN_MENU, '1'))) {
+            return null;
+        }
+
         $url = route(HomePage::class);
         $theme = Session::get('theme');
         $menu_title_shown = in_array($theme, ['webtrees', 'minimal', 'xenea', 'fab', 'rural', '_myartjaub_ruraltheme_', '_jc-theme-justlight_']);
@@ -472,15 +480,15 @@ class OAuth2Client extends AbstractModule implements
     {
         $this->checkCustomViewAvailability();
 
-        $base_url = Validator::attributes($request)->string('base_url');
-
-        $this->layout = 'layouts/administration';       
+        $this->layout = 'layouts/administration';
 
         return $this->viewResponse(
             self::viewsNamespace() . '::settings',
             [
                 'title'                                  => $this->title(),
-                'base_url'                               => $base_url,
+                'base_url'                               => Validator::attributes($request)->string('base_url'),
+                'trees_with_hidden_menu'                 => $this->getTreeNamesWithHiddenCustomMenu(),
+                self::PREF_SHOW_LOGIN_MENU               => boolval($this->getPreference(self::PREF_SHOW_LOGIN_MENU, '1')),
                 self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU   => boolval($this->getPreference(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, '1')),
                 self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU => boolval($this->getPreference(self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU, '0')),
                 self::PREF_DEBUGGING_ACTIVATED           => boolval($this->getPreference(self::PREF_DEBUGGING_ACTIVATED, '0')),
@@ -498,12 +506,14 @@ class OAuth2Client extends AbstractModule implements
     public function postAdminAction(ServerRequestInterface $request): ResponseInterface
     {
         $save                          = Validator::parsedBody($request)->string('save', '');
+        $show_login_menu               = Validator::parsedBody($request)->boolean(self::PREF_SHOW_LOGIN_MENU, false);
         $show_webtrees_in_login_menu   = Validator::parsedBody($request)->boolean(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, false);
         $dont_show_webtrees_login_menu = Validator::parsedBody($request)->boolean(self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU, false);
         $debugging_activated           = Validator::parsedBody($request)->boolean(self::PREF_DEBUGGING_ACTIVATED, false);
 
         //Save the received settings to the user preferences
         if ($save === '1') {
+			$this->setPreference(self::PREF_SHOW_LOGIN_MENU, $show_login_menu ? '1' : '0');
 			$this->setPreference(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, $show_webtrees_in_login_menu ? '1' : '0');
 			$this->setPreference(self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU, $dont_show_webtrees_login_menu ? '1' : '0');
 			$this->setPreference(self::PREF_DEBUGGING_ACTIVATED, $debugging_activated ? '1' : '0');
@@ -628,5 +638,24 @@ class OAuth2Client extends AbstractModule implements
         $redirectUrl = Html::url($url, $parameters) . self::REDIRECT_ROUTE;
 
         return $redirectUrl;
-    }  
+    }
+
+    /**
+     * Get the names of all trees, where the custom menu is hidden
+     *
+     * @return array[string]
+     */
+    public function getTreeNamesWithHiddenCustomMenu(): array {
+
+        $tree_service = new TreeService(new GedcomImportService());
+        $trees_with_hidden_menus = [];
+
+        foreach ($tree_service->all() as $tree) {
+            if ($this->accessLevel($tree, ModuleMenuInterface::class) !== Auth::PRIV_PRIVATE) {
+                $trees_with_hidden_menus[] = $tree->name();
+            }
+        }
+
+        return $trees_with_hidden_menus;
+    }
 }
