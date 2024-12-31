@@ -18,6 +18,7 @@ use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
  * @var bool   $show_webtrees_in_login_menu
  * @var bool   $dont_show_webtrees_login_menu
  * @var bool   $debugging_activated
+ * @var bool   $use_webtrees_password
  */
 
 $uses_https   = strpos(Strtoupper($base_url), 'HTTPS://') === false ? false : true;
@@ -104,6 +105,24 @@ $redirect_url = OAuth2Client::getRedirectUrl();
 				<?= view('components/checkbox', ['label' => I18N::translate('Hide'), 'name' => OAuth2Client::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU, 'checked' => $dont_show_webtrees_login_menu]) ?>
 				<div class="form-text">
 					<?= I18N::translate('By selecting this option, it is possible to hide the original webtrees sign in menu. This might be helpful if the custom module specific top menu for sign in is used instead.'); ?>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+
+	<div class="h4">
+		<?= I18N::translate('Settings for Password Management') ?>
+	</div>
+
+	<fieldset class="mb-3">
+		<div class="row">
+			<legend class="col-form-label col-sm-3">
+				<?= I18N::translate('Use webtrees password in parallel') ?>
+			</legend>
+			<div class="col-sm-9">
+				<?= view('components/checkbox', ['label' => MoreI18N::xlate('Allow'), 'name' => OAuth2Client::PREF_USE_WEBTREES_PASSWORD, 'checked' => $use_webtrees_password]) ?>
+				<div class="form-text">
+					<?= I18N::translate('If selecting this option, a user who signs in with an authorization provider will be allowed to use a webtrees password in parallel. This might allow the user to sign into webtrees if the authorization provider is not available. However, there is a risk that the user might get confused about the parallel password management at the provider and in webtrees.'); ?>
 				</div>
 			</div>
 		</div>
