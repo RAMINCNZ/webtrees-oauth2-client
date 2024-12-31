@@ -326,9 +326,15 @@ class LoginWithAuthorizationProviderAction implements RequestHandlerInterface
 
             //If time stamp is different from 0 (i.e. user already logged in at least once before)
             if ($user->getPreference(UserInterface::PREF_TIMESTAMP_ACTIVE) !== '0') {
-                Log::addAuthenticationLog($oauth_log_prefix . ': ' . 'Login denied (provided user/email from authorization provider is identical to an existing webtrees user, who has already logged in before): ' . $identifyer);
-                throw new Exception(I18N::translate('Login with the provided credentials denied. Username or email provided from authorization provider might already exist in webtrees.'));
+                Log::addAuthenticationLog($oauth_log_prefix . ': ' . 'Login denied. The provided username/email from the authorization provider is identical to an existing webtrees user, who has already logged in before: ' . $identifyer);
+                throw new Exception(I18N::translate('Login with the provided user credentials denied. The username or email provided from the authorization provider might already exist in webtrees.'));
             }
+        }
+        //Check if the user logs in with the same provider as before
+        elseif ($user->getPreference(OAuth2Client::USER_PREF_PROVIDER_NAME, '') !== $provider_name) {
+
+            Log::addAuthenticationLog($oauth_log_prefix . ': ' . 'Login denied. Wrong authorization provider for user: ' . $identifyer);
+            throw new Exception(I18N::translate('Login denied. Wrong authorization provider.'));
         }
 
         Auth::login($user);

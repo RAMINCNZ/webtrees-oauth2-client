@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-12-30 20:33+0100\n"
-"PO-Revision-Date: 2024-12-30 20:34+0100\n"
+"POT-Creation-Date: 2024-12-31 06:06+0100\n"
+"PO-Revision-Date: 2024-12-31 06:07+0100\n"
 "Last-Translator: Rick Malkin <rick@alineofmalkins.com>\n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -65,13 +65,17 @@ msgstr "Automatic user registration after sign in with authorisation provider"
 
 #: src/LoginWithAuthorizationProviderAction.php:330
 msgid ""
-"Login with the provided credentials denied. Username or email provided from "
-"authorization provider might already exist in webtrees."
+"Login with the provided user credentials denied. The username or email "
+"provided from the authorization provider might already exist in webtrees."
 msgstr ""
-"Login with the provided credentials denied. Username or email provided from "
-"authorisation provider might already exist in WebTrees."
+"Login with the provided user credentials denied. The username or email "
+"provided from the authorisation provider might already exist in webtrees."
 
-#: src/LoginWithAuthorizationProviderAction.php:371
+#: src/LoginWithAuthorizationProviderAction.php:337
+msgid "Login denied. Wrong authorization provider."
+msgstr "Login denied. Wrong authorisation provider."
+
+#: src/LoginWithAuthorizationProviderAction.php:377
 #, php-format
 msgid ""
 "The length of the \"%s\" exceeded the maximum length of %s and was reduced "
@@ -357,15 +361,19 @@ msgstr ""
 "in menu. This might be helpful if the custom module specific top menu for "
 "sign in is used instead."
 
-#: resources/views/settings.phtml:115
+#: resources/views/settings.phtml:113
+msgid "Settings for Debugging"
+msgstr ""
+
+#: resources/views/settings.phtml:119
 msgid "Debugging"
 msgstr ""
 
-#: resources/views/settings.phtml:118
+#: resources/views/settings.phtml:122
 msgid "Activate debug logs"
 msgstr ""
 
-#: resources/views/settings.phtml:120
+#: resources/views/settings.phtml:124
 msgid ""
 "By selecting this option, additional debug information about the protocol "
 "flow between webtrees and the authorization provider will be logged in the "
@@ -374,9 +382,6 @@ msgstr ""
 "By selecting this option, additional debug information about the protocol "
 "flow between webtrees and the authorisation provider will be logged in the "
 "webtrees website logs."
-
-#~ msgid "Sign in with authorization provider"
-#~ msgstr "Sign in with authorisation provider"
 
 #~ msgid "Sign out"
 #~ msgstr "Sign out"

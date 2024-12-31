@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth2Client\n"
-"POT-Creation-Date: 2024-12-30 21:43+0100\n"
-"PO-Revision-Date: 2024-12-30 21:45+0100\n"
+"POT-Creation-Date: 2024-12-31 06:03+0100\n"
+"PO-Revision-Date: 2024-12-31 06:05+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -67,14 +67,18 @@ msgstr ""
 
 #: src/LoginWithAuthorizationProviderAction.php:330
 msgid ""
-"Login with the provided credentials denied. Username or email provided from "
-"authorization provider might already exist in webtrees."
+"Login with the provided user credentials denied. The username or email "
+"provided from the authorization provider might already exist in webtrees."
 msgstr ""
-"Anmeldung mit den angegebenen Anmeldeinformationen abgelehnt. Benutzername "
-"oder E-Mail vom Autorisierungsanbieter sind möglicherweise bereits in "
-"webtrees vorhanden."
+"Anmeldung mit den angegebenen Benutzeranmeldeinformationen verweigert. Der "
+"vom Autorisierungsanbieter angegebene Benutzername oder die E-Mail-Adresse "
+"ist möglicherweise bereits in Webtrees vorhanden."
 
-#: src/LoginWithAuthorizationProviderAction.php:371
+#: src/LoginWithAuthorizationProviderAction.php:337
+msgid "Login denied. Wrong authorization provider."
+msgstr "Anmeldung verweigert. Falscher Autorisierungsanbieter."
+
+#: src/LoginWithAuthorizationProviderAction.php:377
 #, php-format
 msgid ""
 "The length of the \"%s\" exceeded the maximum length of %s and was reduced "
@@ -417,9 +421,6 @@ msgstr ""
 "Wenn Sie diese Option auswählen, werden zusätzliche Debug-Informationen über "
 "den Protokollfluss zwischen webtrees und dem Autorisierungsanbieter in den "
 "Website-Logs von webtrees protokolliert."
-
-#~ msgid "Sign in with authorization provider"
-#~ msgstr "Mit Autorisierungsanbieter anmelden"
 
 #~ msgid "Sign in with:"
 #~ msgstr "Anmelden mit:"
