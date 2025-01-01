@@ -33,32 +33,8 @@
  
 declare(strict_types=1);
 
-use Composer\Autoload\ClassLoader;
-use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
+namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
-$loader = new ClassLoader();
 
-//This webtrees custom module
-$loader->addPsr4('Jefferson49\\Webtrees\\Module\\OAuth2Client\\', __DIR__ . '/src');
-
-//Helper functions for webtrees custom modules
-$loader->addPsr4('Jefferson49\\Webtrees\\Helpers\\', __DIR__ . "/vendor/Jefferson49/Webtrees/Helpers/");
-
-//league/oauth2-clients
-$loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-client/src');
-$loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-github/src');
-$loader->addPsr4('League\\OAuth2\\Client\\', __DIR__ . '/vendor/league/oauth2-google/src');
-
-//More18N translation
-$loader->addPsr4('Cissee\\WebtreesExt\\', __DIR__ . "/vendor/cissee/vesta-webtrees-2-custom-modules/vesta_common/patchedWebtrees");
-
-$loader->register();
-
-//Provider wrappers are directly required, because they shall be detected by "get_declared_classes"
-require __DIR__ . '/src/Provider/GenericAuthorizationProvider.php';
-require __DIR__ . '/src/Provider/GithubAuthorizationProvider.php';
-require __DIR__ . '/src/Provider/GoogleAuthorizationProvider.php';
-require __DIR__ . '/src/Provider/JoomlaAuthorizationProvider.php';
-require __DIR__ . '/src/Provider/WordPressAuthorizationProvider.php';
-
+if (!require_once __DIR__ . '/autoload.php') return null;
 return new OAuth2Client();

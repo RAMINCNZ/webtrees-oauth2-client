@@ -31,11 +31,14 @@ declare(strict_types=1);
 
 namespace Jefferson49\Webtrees\Module\OAuth2Client\Provider;
 
+use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\User;
 use Jefferson49\Webtrees\Module\OAuth2Client\Contracts\AuthorizationProviderInterface;
 use League\OAuth2\Client\Provider\AbstractProvider;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Token\AccessToken;
+use Exception;
 
 /**
  * An OAuth2 authorization client for WordPress
@@ -57,7 +60,8 @@ class WordPressAuthorizationProvider extends AbstractAuthorizationProvider imple
 
         $options = array_merge($options, [
             'redirectUri'             => $redirectUri,
-            'Scopes'                  => 'openid profile email',
+            'scopes'                  => 'openid profile email',
+            'scopeSeparator'          => ' '
         ]);
         
         $this->provider = new GenericProvider($options, $collaborators);
@@ -79,8 +83,16 @@ class WordPressAuthorizationProvider extends AbstractAuthorizationProvider imple
         $resourceOwner = $this->provider->getResourceOwner($token);
         $user_data = $resourceOwner->toArray();
 
+        try {
+            $user_id = (int) $resourceOwner->getId() ?? '';
+        }
+        catch (Exception $e) {
+            throw new IdentityProviderException(I18N::translate('Invalid user data received from the authorization provider') . ': '. json_encode($user_data) . ' . ' . I18N::translate('Check the setting for urlResourceOwnerDetails in the webtrees configuration.'), 0, $user_data);
+        }
+
         $first_name = $user_data['first_name'] ?? '';
         $last_name = $user_data['last_name'] ?? '';
+        $display_name = $user_data['display_name'] ?? '';
 
         $real_name = $first_name;
 
@@ -88,10 +100,15 @@ class WordPressAuthorizationProvider extends AbstractAuthorizationProvider imple
             $real_name .= ' ';
         } 
 
-        $real_name .= $user_data['last_name'];
+        $real_name .= $last_name;
+
+        //If no real name could be generated from first/last name, use display name
+        if ($real_name === '') {
+            $real_name = $display_name;
+        }
 
         return new User(
-            (int) $resourceOwner->getId() ?? '',
+            $user_id,
 
             //User name: Default has to be empty, because empty username needs to be detected as error
             $user_data['username']        ?? $user_data['email'] ?? '',

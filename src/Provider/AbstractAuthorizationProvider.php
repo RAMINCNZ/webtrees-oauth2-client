@@ -38,6 +38,8 @@ use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
+use Exception;
+
 
 /**
  * An abstract OAuth2 authorization client, which provides basic methods
@@ -123,7 +125,12 @@ abstract class AbstractAuthorizationProvider
      */
     public function getAccessToken($grant, array $options = [])
     {
-        return $this->provider->getAccessToken($grant, $options);
+        try {
+            return $this->provider->getAccessToken($grant, $options);
+        }
+        catch (Exception $e) {
+            throw new IdentityProviderException(I18N::translate('Error while trying to get an access token from the authorization provider. Check the setting for urlAccessToken in the webtrees configuration. Check the server access logs (or .htaccess configuration files) whether any 301 or 302 redirects are applied, which might convert POST into GET requests.'), 0, 0);
+        }
     }
 
     /**
@@ -149,8 +156,15 @@ abstract class AbstractAuthorizationProvider
         $resourceOwner = $this->provider->getResourceOwner($token);
         $user_data = $resourceOwner->toArray();
 
+        try {
+            $user_id = (int) $resourceOwner->getId() ?? '';
+        }
+        catch (Exception $e) {
+            throw new IdentityProviderException(I18N::translate('Invalid user data received from the authorization provider') . ': '. json_encode($user_data) . ' . ' . I18N::translate('Check the setting for urlResourceOwnerDetails in the webtrees configuration.'), 0, $user_data);
+        }
+
         return new User(
-            (int) $resourceOwner->getId() ?? '',
+            $user_id,
             $user_data['username']        ?? '', //Default has to be empty, because empty username needs to be detected as error
             $user_data['name']            ?? $user_data['username'] ?? '',
             $user_data['email']           ?? '', //Default has to be empty, because empty email needs to be detected as error

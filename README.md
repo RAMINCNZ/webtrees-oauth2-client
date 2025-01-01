@@ -1,4 +1,4 @@
-[![Latest Release](https://img.shields.io/badge/not_released_yet-red)
+[![Latest Release](https://img.shields.io/github/v/release/Jefferson49/webtrees-oauth2-client?display_name=tag)](https://github.com/Jefferson49/webtrees-oauth2-client/releases/latest)
 [![webtrees major version](https://img.shields.io/badge/webtrees-v2.1.x-green)](https://webtrees.net/download)
 [![webtrees major version](https://img.shields.io/badge/webtrees-v2.2.x-green)](https://webtrees.net/download)
 
@@ -18,6 +18,7 @@ This README file contains the following main sections:
     + [Google](#google)
     + [Joomla](#joomla)
     + [WordPress](#wordpress)
++   [Trouble Shooting](#trouble-shooting)
 +   [Mapping of the User Data to webtrees](#mapping-of-the-user-data-to-webtrees)
 +   [Concept](#concept)
     + [Definitons](#definitions)
@@ -132,7 +133,7 @@ Github_clientSecret='xxx'
 + For organization, choose "No organization"
 + Press the "CREATE" button
 + Enter language/region data (or keep the default) and press the "SAVE" button
-+ From the menu on the left side, choose "OAuth consent screen"
++ From the menu on the left side, choose "APIs and services" and sub menu "OAuth consent screen"
 + Select "External" and press "CREATE" button
 + Enter the "App name", "User support email", and "Developer contact information"; do not enter data regarding the app domain
 + Press button "CREATE ÁND CONTINUE"
@@ -203,7 +204,6 @@ WordPress_clientSecret='xxx'
 WordPress_urlAuthorize='xxx'
 WordPress_urlAccessToken='xxx'
 WordPress_urlResourceOwnerDetails='xxx'
-WordPress_Scopes='openid profile email'
 WordPress_signInButtonLabel='WordPress'
 ```
 + Insert the configuration details from the WP OAuth Server plugin into the newly included configuration lines of your config.ini.php file:
@@ -212,8 +212,27 @@ WordPress_signInButtonLabel='WordPress'
     + **WordPress_urlAuthorize**='...' (value for "Authorization Endpoint" shown in the WordPress plugin, like described above)
     + **WordPress_urlAccessToken**='...' (value for "Token Endpoint" shown in the WordPress plugin, like described above)
     + **WordPress_urlResourceOwnerDetails**='...' (value for "Userinfo Endpoint" shown in the WordPress plugin, like described above)
-    + **WordPress_Scopes**='openid profile email' (DON'T change!)
     + **WordPress_signInButtonLabel**='...' (the label, which shall be shown for the sign in button etc.)    
+
+#### PHP/Apache configuration
+If using Apache and the OAuth 2 authorization fails, check the following settings: 
++ In certain PHP/Apache configurations, PHP is not receiving GET headers and GET requests for authorization and the OAuth 2 authorization will fail.
++ In order to solve this issue, a line with the Apache settings below needs to be added to the Apache .htaccess configuration file.
++ If you already use an .htaccess file on your server, you should add this line. If you do not yet have an .htaccess file, create an empty file and insert the mentioned line. Afterwards, use FTP to transfer this file into the top directory of your WordPress installation.
+```PHP
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+```
+
+## Trouble Shooting
+Although OAuth 2 is a standard protocol and is used on lots of websites, the authorization process is very sensitive to certain server configurations. The list below provides some hints for trouble shooting:
++ Study any webtrees flash messages of the OAuth2 client with error messages, which might contain valuable hints for trouble shooting
++ **Activate debug logs** in the module settings
++ Check the debug logs of the OAuth2 client in the webtrees website logs (control panel)
++ Check your website access logs for requested URLs, HTTP request methods, HTTP status/error codes
++ Check the logs for any 301/302 redirects. Within 301 or 302 redirects, the server might change HTTP POST methods into GET methods
++ Check if your website uses the HTTPS protocol. A lot of authorization providers require to use the HTTPS protocol for OAuth 2 autorization. HTTPS is strongly recommended for security reasons anyway.
++ Check the server configuration for any redirects from sub-domains, e.g. https://www.my_site.net to https://my_site.net
++ If using the WordPress authorization provider, check the [PHP/Apache configuration](#phpapache-configuration)
 
 ## Mapping of the User Data to webtrees
 The user data (i.e. user name, real name, email address), which is received with the OAuth 2.0 protocol from the authorization provider, is mapped to a webtrees user. Since there might be differences regarding availablility and changability of the user data, the following mapping is used:

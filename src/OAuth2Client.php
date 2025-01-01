@@ -35,7 +35,6 @@ declare(strict_types=1);
 
 namespace Jefferson49\Webtrees\Module\OAuth2Client;
 
-use Cissee\WebtreesExt\MoreI18N;
 use Fig\Http\Message\RequestMethodInterface;
 use Fig\Http\Message\StatusCodeInterface;
 use Fisharebest\Localization\Translation;
@@ -57,12 +56,16 @@ use Fisharebest\Webtrees\Module\ModuleGlobalTrait;
 use Fisharebest\Webtrees\Module\ModuleMenuInterface;
 use Fisharebest\Webtrees\Module\ModuleMenuTrait;
 use Fisharebest\Webtrees\Registry;
+use Fisharebest\Webtrees\Services\GedcomImportService;
 use Fisharebest\Webtrees\Services\ModuleService;
+use Fisharebest\Webtrees\Services\TreeService;
 use Fisharebest\Webtrees\Session;
 use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
 use Jefferson49\Webtrees\Helpers\Functions;
+use Jefferson49\Webtrees\Internationalization\MoreI18N;
+use Jefferson49\Webtrees\Log\CustomModuleLogInterface;
 use Jefferson49\Webtrees\Module\OAuth2Client\Factories\AuthorizationProviderFactory;
 use Jefferson49\Webtrees\Module\OAuth2Client\LoginWithAuthorizationProviderAction;
 use GuzzleHttp\Client;
@@ -79,7 +82,8 @@ class OAuth2Client extends AbstractModule implements
 	ModuleCustomInterface, 
 	ModuleConfigInterface,
     ModuleGlobalInterface,
-    ModuleMenuInterface
+    ModuleMenuInterface,
+    CustomModuleLogInterface
 {
     use ModuleCustomTrait;
     use ModuleConfigTrait;
@@ -93,7 +97,7 @@ class OAuth2Client extends AbstractModule implements
     private Collection $custom_view_list;
 
 	//Custom module version
-	public const CUSTOM_VERSION = '1.0.0-rc';
+	public const CUSTOM_VERSION = '1.0.0-rc.2';
 
     //Routes
 	public const REDIRECT_ROUTE = '/OAuth2Client';
@@ -116,8 +120,11 @@ class OAuth2Client extends AbstractModule implements
 	public const ALERT_SUCCESS = 'alert_success';
 
     //Preferences
+    public const PREF_SHOW_LOGIN_MENU = 'show_login_menu';
     public const PREF_SHOW_WEBTREES_IN_LOGIN_MENU   = 'show_webtrees_in_login_menu';
     public const PREF_DONT_SHOW_WEBTREES_LOGIN_MENU = 'dont_show_webtrees_login_menu';
+    public const PREF_DEBUGGING_ACTIVATED = 'debugging_activated';
+    public const PREF_USE_WEBTREES_PASSWORD = 'use_webtrees_password';
 
     //User preferences
     public const USER_PREF_PROVIDER_NAME = 'provider_name';
@@ -128,6 +135,8 @@ class OAuth2Client extends AbstractModule implements
      */
     public function __construct()
     {
+        //Caution: Do not use the shared library jefferson47/webtrees-common within __construct(), 
+        //         because it might result in wrong autoload behavior
     }
 
     /**
@@ -136,7 +145,7 @@ class OAuth2Client extends AbstractModule implements
      * @return void
      */
     public function boot(): void
-    {
+    {              
         //Check update of module version
         $this->checkModuleVersionUpdate();
 
@@ -357,9 +366,14 @@ class OAuth2Client extends AbstractModule implements
      */
     public function getMenu(Tree $tree): ?Menu
     {
+        //If the custom module sign in menu is deactivated, return
+        if (!boolval($this->getPreference(self::PREF_SHOW_LOGIN_MENU, '1'))) {
+            return null;
+        }
+
         $url = route(HomePage::class);
         $theme = Session::get('theme');
-        $menu_title_shown = in_array($theme, ['webtrees', 'minimal', 'xenea', 'fab']);
+        $menu_title_shown = in_array($theme, ['webtrees', 'minimal', 'xenea', 'fab', 'rural', '_myartjaub_ruraltheme_', '_jc-theme-justlight_']);
 
         $submenus = [];
         $sign_in_button_labels = AuthorizationProviderFactory::getSignInButtonLables();
@@ -372,7 +386,7 @@ class OAuth2Client extends AbstractModule implements
         //Add submenu items for authorization providers
         foreach ($sign_in_button_labels as $provider_name => $sign_in_button_label) {
 
-            $submenus[] = new Menu(I18N::translate('Sign in with') . ': ' . $sign_in_button_label, 
+            $submenus[] = new Menu(I18N::translate('Sign in with') . ' ' . $sign_in_button_label, 
                             route(LoginWithAuthorizationProviderAction::class, [
                                 'tree'          => $tree instanceof Tree ? $tree->name() : null,
                                 'url'           => $url,
@@ -427,6 +441,24 @@ class OAuth2Client extends AbstractModule implements
             return new Menu(MoreI18N::xlate('Sign in'), '#', 'menu-oauth2-client' , ['rel' => 'nofollow'], $submenus);
         }
     }  
+
+    /**
+     * Get the prefix for custom module specific logs
+     * 
+     * @return string
+     */
+    public static function getLogPrefix() : string {
+        return 'OAuth2 Client';
+    }  
+    
+    /**
+     * Whether debugging is activated
+     * 
+     * @return bool
+     */
+    public function debuggingActivated(): bool {
+        return boolval($this->getPreference(self::PREF_DEBUGGING_ACTIVATED, '0'));
+    }
     
     /**
      * Get the namespace for the views
@@ -447,17 +479,21 @@ class OAuth2Client extends AbstractModule implements
      */
     public function getAdminAction(ServerRequestInterface $request): ResponseInterface
     {
-        $base_url = Validator::attributes($request)->string('base_url');
+        $this->checkCustomViewAvailability();
 
-        $this->layout = 'layouts/administration';       
+        $this->layout = 'layouts/administration';
 
         return $this->viewResponse(
             self::viewsNamespace() . '::settings',
             [
                 'title'                                  => $this->title(),
-                'base_url'                               => $base_url,
+                'base_url'                               => Validator::attributes($request)->string('base_url'),
+                'trees_with_hidden_menu'                 => $this->getTreeNamesWithHiddenCustomMenu(),
+                self::PREF_SHOW_LOGIN_MENU               => boolval($this->getPreference(self::PREF_SHOW_LOGIN_MENU, '1')),
                 self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU   => boolval($this->getPreference(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, '1')),
                 self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU => boolval($this->getPreference(self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU, '0')),
+                self::PREF_DEBUGGING_ACTIVATED           => boolval($this->getPreference(self::PREF_DEBUGGING_ACTIVATED, '0')),
+                self::PREF_USE_WEBTREES_PASSWORD         => boolval($this->getPreference(self::PREF_USE_WEBTREES_PASSWORD, '0')),
             ]
         );
     }
@@ -472,13 +508,19 @@ class OAuth2Client extends AbstractModule implements
     public function postAdminAction(ServerRequestInterface $request): ResponseInterface
     {
         $save                          = Validator::parsedBody($request)->string('save', '');
+        $show_login_menu               = Validator::parsedBody($request)->boolean(self::PREF_SHOW_LOGIN_MENU, false);
         $show_webtrees_in_login_menu   = Validator::parsedBody($request)->boolean(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, false);
         $dont_show_webtrees_login_menu = Validator::parsedBody($request)->boolean(self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU, false);
+        $debugging_activated           = Validator::parsedBody($request)->boolean(self::PREF_DEBUGGING_ACTIVATED, false);
+        $use_webtrees_password         = Validator::parsedBody($request)->boolean(self::PREF_USE_WEBTREES_PASSWORD, false);
 
         //Save the received settings to the user preferences
         if ($save === '1') {
+			$this->setPreference(self::PREF_SHOW_LOGIN_MENU, $show_login_menu ? '1' : '0');
 			$this->setPreference(self::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, $show_webtrees_in_login_menu ? '1' : '0');
 			$this->setPreference(self::PREF_DONT_SHOW_WEBTREES_LOGIN_MENU, $dont_show_webtrees_login_menu ? '1' : '0');
+			$this->setPreference(self::PREF_DEBUGGING_ACTIVATED, $debugging_activated ? '1' : '0');
+			$this->setPreference(self::PREF_USE_WEBTREES_PASSWORD, $use_webtrees_password ? '1' : '0');
         }
 
         //Finally, show a success message
@@ -496,11 +538,15 @@ class OAuth2Client extends AbstractModule implements
     public function checkModuleVersionUpdate(): void
     {
         $updated = false;
-       
+
         //Update custom module version if changed
         if($this->getPreference(self::PREF_MODULE_VERSION, '') !== self::CUSTOM_VERSION) {
-            $this->setPreference(self::PREF_MODULE_VERSION, self::CUSTOM_VERSION);
-            $updated = true;
+
+            //Update module files
+            if (require __DIR__ . '/../update_module_files.php') {
+                $this->setPreference(self::PREF_MODULE_VERSION, self::CUSTOM_VERSION);
+                $updated = true;    
+            }
         }
 
         if ($updated) {
@@ -523,7 +569,7 @@ class OAuth2Client extends AbstractModule implements
 
         foreach($this->custom_view_list as $custom_view) {
 
-            [[$namespace], $view_name] = explode(View::NAMESPACE_SEPARATOR, $custom_view, 2);
+            [[$namespace], $view_name] = explode(View::NAMESPACE_SEPARATOR, (string) $custom_view, 2);
 
             foreach($custom_modules->forget($this->activeModuleName()) as $custom_module) {
 
@@ -596,5 +642,24 @@ class OAuth2Client extends AbstractModule implements
         $redirectUrl = Html::url($url, $parameters) . self::REDIRECT_ROUTE;
 
         return $redirectUrl;
-    }  
+    }
+
+    /**
+     * Get the names of all trees, where the custom menu is hidden
+     *
+     * @return array[string]
+     */
+    public function getTreeNamesWithHiddenCustomMenu(): array {
+
+        $tree_service = new TreeService(new GedcomImportService());
+        $trees_with_hidden_menus = [];
+
+        foreach ($tree_service->all() as $tree) {
+            if ($this->accessLevel($tree, ModuleMenuInterface::class) !== Auth::PRIV_PRIVATE) {
+                $trees_with_hidden_menus[] = $tree->name();
+            }
+        }
+
+        return $trees_with_hidden_menus;
+    }
 }

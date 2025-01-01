@@ -2,18 +2,23 @@
 
 declare(strict_types=1);
 
-use Cissee\WebtreesExt\MoreI18N;
+namespace Jefferson49\Webtrees\Module\OAuth2Client;
+
 use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\View;
-use Jefferson49\Webtrees\Module\OAuth2Client\LoginWithAuthorizationProviderAction;
+use Jefferson49\Webtrees\Internationalization\MoreI18N;
 use Jefferson49\Webtrees\Module\OAuth2Client\OAuth2Client;
 
 /**
  * @var string $title
  * @var string $base_url
+ * @var array  $trees_with_hidden_menu
+ * @var bool   $show_login_menu
  * @var bool   $show_webtrees_in_login_menu
  * @var bool   $dont_show_webtrees_login_menu
+ * @var bool   $debugging_activated
+ * @var bool   $use_webtrees_password
  */
 
 $uses_https   = strpos(Strtoupper($base_url), 'HTTPS://') === false ? false : true;
@@ -49,10 +54,38 @@ $redirect_url = OAuth2Client::getRedirectUrl();
 		<?= I18N::translate('Settings for Sign In Menus') ?>	
 	</div>
 
+	<?php if (!$show_login_menu && $dont_show_webtrees_login_menu) : ?>
+		<div class="alert alert-danger">
+			<p><?= I18N::translate('Currently, all sign in menus are deactivated/hidden. Please activate one of the sign in menus with the settings below. Hint: You can still access the original webtrees login page by typing the login route into the browser line, e.g.:') . ' http://my_site.net/webtrees/index.php?route=login' ?></p>
+		</div>
+	<?php elseif (!$show_webtrees_in_login_menu && $dont_show_webtrees_login_menu) : ?>
+		<div class="alert alert-danger">
+			<p><?= I18N::translate('Currently, all menus to directly sign in with webtrees are deactivated. Therefore, only sign in with authorization providers is possible. Please be sure that you establish a webtrees administrator account with an authorization provider. Otherwise, administrator sign in is not possible any more. Hint: You can still access the original webtrees login page by typing the login route into the browser line, e.g.:') . ' http://my_site.net/webtrees/index.php?route=login' ?></p>
+		</div>
+	<?php elseif ($dont_show_webtrees_login_menu && sizeof($trees_with_hidden_menu) > 0) : ?>
+		<div class="alert alert-warning">
+			<p><?= I18N::translate('Currently, the webtrees sign in menu is deactivated and the custom module sign in menu is hidden for the following trees: %s. Some of the users will not be able to sign in. Please consider to activate one of the sign in menus with the settings below.', implode (', ',$trees_with_hidden_menu)) ?></p>
+		</div>
+	<?php endif ?>
+
 	<fieldset class="mb-3">
 		<div class="row">
 			<legend class="col-form-label col-sm-3">
-				<?= I18N::translate('Show menu item for webtrees in sign in menu') ?>
+				<?= I18N::translate('Show a custom module specific sign in menu') ?>
+			</legend>
+			<div class="col-sm-9">
+				<?= view('components/checkbox', ['label' => MoreI18N::xlate('Show'), 'name' => OAuth2Client::PREF_SHOW_LOGIN_MENU, 'checked' => $show_login_menu]) ?>
+				<div class="form-text">
+					<?= I18N::translate('By selecting/unselecting this option, it is possible to show/hide a custom module specific sign in menu in the webtrees main menu.'); ?>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset class="mb-3">
+		<div class="row">
+			<legend class="col-form-label col-sm-3">
+				<?= I18N::translate('Show original webtrees sign in as menu item') ?>
 			</legend>
 			<div class="col-sm-9">
 				<?= view('components/checkbox', ['label' => MoreI18N::xlate('Show'), 'name' => OAuth2Client::PREF_SHOW_WEBTREES_IN_LOGIN_MENU, 'checked' => $show_webtrees_in_login_menu]) ?>
@@ -77,11 +110,41 @@ $redirect_url = OAuth2Client::getRedirectUrl();
 		</div>
 	</fieldset>
 
-	<?php if (!$show_webtrees_in_login_menu && $dont_show_webtrees_login_menu) : ?>
-		<div class="alert alert-warning">
-			<p><?= I18N::translate('Currently, all menus to directly sign in with webtrees are deactivated. Therefore, only sign in with authorization providers is possible. Please be sure that you establish a webtrees administrator account with an authorization provider. Otherwise, administrator sign in is not possible any more. Hint: You can still access the original webtrees login page by typing the login route into the browser line, e.g.:') . ' http://my_site.net/webtrees/index.php?route=login' ?></p>
+	<div class="h4">
+		<?= I18N::translate('Settings for Password Management') ?>
+	</div>
+
+	<fieldset class="mb-3">
+		<div class="row">
+			<legend class="col-form-label col-sm-3">
+				<?= I18N::translate('Use webtrees password in parallel') ?>
+			</legend>
+			<div class="col-sm-9">
+				<?= view('components/checkbox', ['label' => MoreI18N::xlate('Allow'), 'name' => OAuth2Client::PREF_USE_WEBTREES_PASSWORD, 'checked' => $use_webtrees_password]) ?>
+				<div class="form-text">
+					<?= I18N::translate('If selecting this option, a user who signs in with an authorization provider will be allowed to use a webtrees password in parallel. This might allow the user to sign into webtrees if the authorization provider is not available. However, there is a risk that the user might get confused about the parallel password management at the provider and in webtrees.'); ?>
+				</div>
+			</div>
 		</div>
-	<?php endif ?>	
+	</fieldset>
+
+	<div class="h4">
+		<?= I18N::translate('Settings for Debugging') ?>
+	</div>
+
+	<fieldset class="mb-3">
+		<div class="row">
+			<legend class="col-form-label col-sm-3">
+				<?= I18N::translate('Debugging') ?>
+			</legend>
+			<div class="col-sm-9">
+				<?= view('components/checkbox', ['label' => I18N::translate('Activate debug logs'), 'name' => OAuth2Client::PREF_DEBUGGING_ACTIVATED, 'checked' => $debugging_activated]) ?>
+				<div class="form-text">
+					<?= I18N::translate('By selecting this option, additional debug information about the protocol flow between webtrees and the authorization provider will be logged in the webtrees website logs.'); ?>
+				</div>
+			</div>
+		</div>
+	</fieldset>
 
     <div class="row mb-3">
 		<div class="col">
